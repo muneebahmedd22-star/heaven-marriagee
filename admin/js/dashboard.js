@@ -1,0 +1,458 @@
+// Admin Dashboard logic management
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Session verification
+  const token = localStorage.getItem('hmb_admin_token');
+  if (!token) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // Display Admin Username
+  const adminUser = JSON.parse(localStorage.getItem('hmb_admin_user') || '{}');
+  const adminDisplay = document.getElementById('admin-display-name');
+  if (adminDisplay && adminUser.username) {
+    adminDisplay.textContent = adminUser.username;
+  }
+
+  // 2. Tab Navigation
+  const navItems = document.querySelectorAll('.nav-item');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const targetTab = item.getAttribute('data-tab');
+
+      navItems.forEach(nav => nav.classList.remove('active'));
+      tabContents.forEach(tab => tab.classList.remove('active'));
+
+      item.classList.add('active');
+      const tabElement = document.getElementById(`${targetTab}-tab`);
+      if (tabElement) tabElement.classList.add('active');
+
+      // Refresh corresponding content
+      if (targetTab === 'proposals') loadProposals();
+      if (targetTab === 'employees') loadEmployees();
+      if (targetTab === 'inquiries') loadInquiries();
+      if (targetTab === 'overview') loadOverview();
+    });
+  });
+
+  // Logout button
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    adminApi.logout();
+  });
+
+  // 3. Overview Loading
+  loadOverview();
+
+  // 4. Proposals CRUD Handlers
+  setupProposalsHandlers();
+
+  // 5. Employees CRUD Handlers
+  setupEmployeesHandlers();
+
+  // 6. Inquiries CRUD Handlers
+  setupInquiriesHandlers();
+});
+
+// --- Overview Dashboard stats ---
+async function loadOverview() {
+  try {
+    const proposalsResp = await adminApi.getProposals();
+    const employeesResp = await adminApi.getEmployees();
+    const inquiriesResp = await adminApi.getInquiries();
+
+    document.getElementById('stat-total-proposals').textContent = proposalsResp.total || 0;
+    document.getElementById('stat-total-employees').textContent = employeesResp.count || 0;
+    document.getElementById('stat-total-inquiries').textContent = inquiriesResp.count || 0;
+    
+    // Recent list preview inside overview
+    const recentGrid = document.getElementById('recent-activity-list');
+    if (recentGrid) {
+      const inquiries = inquiriesResp.data || [];
+      recentGrid.innerHTML = inquiries.slice(0, 5).map(iq => `
+        <div style="padding: 10px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+          <span><strong>${iq.fullName}</strong> (${iq.phone})</span>
+          <span class="badge" style="background: ${iq.status === 'New' ? '#d9534f' : '#5cb85c'}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">${iq.status}</span>
+        </div>
+      `).join('') || '<p style="color: var(--light-text);">No recent activities</p>';
+    }
+  } catch (error) {
+    console.error('Error loading overview statistics:', error.message);
+  }
+}
+
+// --- Proposals CRUD Operations ---
+let currentEditingProposalId = null;
+
+function setupProposalsHandlers() {
+  const openModalBtn = document.getElementById('btn-add-proposal');
+  const modal = document.getElementById('proposal-modal');
+  const closeModalBtn = modal.querySelector('.modal-close');
+  const proposalForm = document.getElementById('proposal-form');
+
+  openModalBtn.addEventListener('click', () => {
+    currentEditingProposalId = null;
+    document.getElementById('proposal-modal-title').textContent = 'Add Match Proposal';
+    proposalForm.reset();
+    modal.classList.add('active');
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  proposalForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = proposalForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Saving...';
+
+    // Build Form Data (Multer multipart/form-data support for images)
+    const formData = new FormData();
+    formData.append('fullName', document.getElementById('prop-name').value);
+    formData.append('gender', document.getElementById('prop-gender').value);
+    formData.append('maritalStatus', document.getElementById('prop-status').value);
+    formData.append('dob', document.getElementById('prop-dob').value);
+    formData.append('education', document.getElementById('prop-education').value);
+    formData.append('occupation', document.getElementById('prop-occupation').value);
+    formData.append('caste', document.getElementById('prop-caste').value);
+    formData.append('religion', document.getElementById('prop-religion').value);
+    formData.append('city', document.getElementById('prop-city').value);
+    formData.append('state', document.getElementById('prop-state').value);
+    formData.append('aboutMe', document.getElementById('prop-about').value);
+    formData.append('isFeatured', document.getElementById('prop-featured').checked);
+    formData.append('region', document.getElementById('prop-region').value);
+    formData.append('category', document.getElementById('prop-category').value);
+
+    // Nested object stringified so backend parses correctly
+    const contactDetails = {
+      phone: document.getElementById('prop-phone').value,
+      email: document.getElementById('prop-email').value,
+    };
+    formData.append('contactDetails', JSON.stringify(contactDetails));
+
+    const photoFile = document.getElementById('prop-photo').files[0];
+    if (photoFile) {
+      formData.append('photo', photoFile);
+    }
+
+    try {
+      if (currentEditingProposalId) {
+        await adminApi.updateProposal(currentEditingProposalId, formData);
+        alert('Proposal updated successfully');
+      } else {
+        await adminApi.createProposal(formData);
+        alert('Proposal created successfully');
+      }
+      modal.classList.remove('active');
+      loadProposals();
+      loadOverview();
+    } catch (error) {
+      alert(`Error saving proposal: ${error.message}`);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Save Proposal';
+    }
+  });
+}
+
+async function loadProposals() {
+  const tbody = document.getElementById('proposals-table-body');
+  tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">Loading proposals data...</td></tr>';
+
+  try {
+    const response = await adminApi.getProposals();
+    const proposals = response.data || [];
+
+    if (proposals.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--light-text);">No proposals database matches found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    proposals.forEach(p => {
+      const birthYear = new Date(p.dob).getFullYear();
+      const currentYear = new Date().getFullYear();
+      const age = currentYear - birthYear;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${p.profileId}</strong></td>
+        <td>${p.fullName}</td>
+        <td>${p.gender}</td>
+        <td>${age} yrs</td>
+        <td>${p.region || '-'}</td>
+        <td>${p.category || '-'}</td>
+        <td>${p.city}</td>
+        <td>${p.caste}</td>
+        <td>${p.isFeatured ? '<span style="color: #C9972B; font-weight:bold;">Yes</span>' : 'No'}</td>
+        <td>
+          <button class="btn btn-primary" onclick="editProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+          <button class="btn btn-danger" onclick="deleteProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem;">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (error) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: red;">Error: ${error.message}</td></tr>`;
+  }
+}
+
+async function editProposal(id) {
+  try {
+    const response = await fetch(`http://localhost:5000/api/v1/proposals/${id}`); // Direct detail get
+    const resObj = await response.json();
+    const p = resObj.data;
+
+    currentEditingProposalId = p._id;
+    document.getElementById('proposal-modal-title').textContent = 'Edit Match Proposal';
+    
+    document.getElementById('prop-name').value = p.fullName;
+    document.getElementById('prop-gender').value = p.gender;
+    document.getElementById('prop-status').value = p.maritalStatus;
+    
+    // Format date string for standard date inputs (YYYY-MM-DD)
+    if (p.dob) {
+      document.getElementById('prop-dob').value = new Date(p.dob).toISOString().split('T')[0];
+    }
+    
+    document.getElementById('prop-education').value = p.education;
+    document.getElementById('prop-occupation').value = p.occupation || '';
+    document.getElementById('prop-caste').value = p.caste;
+    document.getElementById('prop-religion').value = p.religion;
+    document.getElementById('prop-city').value = p.city;
+    document.getElementById('prop-state').value = p.state || '';
+    document.getElementById('prop-about').value = p.aboutMe || '';
+    document.getElementById('prop-featured').checked = p.isFeatured || false;
+    document.getElementById('prop-region').value = p.region || '';
+    document.getElementById('prop-category').value = p.category || '';
+
+    if (p.contactDetails) {
+      document.getElementById('prop-phone').value = p.contactDetails.phone || '';
+      document.getElementById('prop-email').value = p.contactDetails.email || '';
+    }
+
+    document.getElementById('proposal-modal').classList.add('active');
+  } catch (error) {
+    alert(`Failed to load details: ${error.message}`);
+  }
+}
+
+async function deleteProposal(id) {
+  if (confirm('Are you absolutely sure you want to delete this proposal profile? This action is irreversible.')) {
+    try {
+      await adminApi.deleteProposal(id);
+      loadProposals();
+      loadOverview();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+}
+
+
+// --- Employees CRUD Operations ---
+let currentEditingEmployeeId = null;
+
+function setupEmployeesHandlers() {
+  const openModalBtn = document.getElementById('btn-add-employee');
+  const modal = document.getElementById('employee-modal');
+  const closeModalBtn = modal.querySelector('.modal-close');
+  const employeeForm = document.getElementById('employee-form');
+
+  openModalBtn.addEventListener('click', () => {
+    currentEditingEmployeeId = null;
+    document.getElementById('employee-modal-title').textContent = 'Add Employee';
+    employeeForm.reset();
+    modal.classList.add('active');
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  employeeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = employeeForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    const empData = {
+      name: document.getElementById('emp-name').value,
+      role: document.getElementById('emp-role').value,
+      email: document.getElementById('emp-email').value,
+      phone: document.getElementById('emp-phone').value,
+      salary: parseFloat(document.getElementById('emp-salary').value) || 0,
+      status: document.getElementById('emp-status').value
+    };
+
+    try {
+      if (currentEditingEmployeeId) {
+        await adminApi.updateEmployee(currentEditingEmployeeId, empData);
+        alert('Employee record updated successfully');
+      } else {
+        await adminApi.createEmployee(empData);
+        alert('Employee created successfully');
+      }
+      modal.classList.remove('active');
+      loadEmployees();
+      loadOverview();
+    } catch (error) {
+      alert(`Error saving employee: ${error.message}`);
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+async function loadEmployees() {
+  const tbody = document.getElementById('employees-table-body');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Loading employee database...</td></tr>';
+
+  try {
+    const response = await adminApi.getEmployees();
+    const employees = response.data || [];
+
+    if (employees.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--light-text);">No employees databank profiles found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    employees.forEach(emp => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${emp.employeeId}</strong></td>
+        <td>${emp.name}</td>
+        <td>${emp.role}</td>
+        <td>${emp.email}</td>
+        <td>${emp.phone || '-'}</td>
+        <td>PKR ${emp.salary?.toLocaleString() || '0'}</td>
+        <td>
+          <button class="btn btn-primary" onclick="editEmployee('${emp._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+          <button class="btn btn-danger" onclick="deleteEmployee('${emp._id}')" style="padding: 4px 10px; font-size: 0.8rem;">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (error) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Error: ${error.message}</td></tr>`;
+  }
+}
+
+async function editEmployee(id) {
+  try {
+    const token = localStorage.getItem('hmb_admin_token');
+    const response = await fetch(`http://localhost:5000/api/v1/employees`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const resObj = await response.json();
+    const emp = resObj.data.find(e => e._id === id);
+
+    if (!emp) return;
+
+    currentEditingEmployeeId = emp._id;
+    document.getElementById('employee-modal-title').textContent = 'Edit Employee Profile';
+    
+    document.getElementById('emp-name').value = emp.name;
+    document.getElementById('emp-role').value = emp.role;
+    document.getElementById('emp-email').value = emp.email;
+    document.getElementById('emp-phone').value = emp.phone || '';
+    document.getElementById('emp-salary').value = emp.salary || '';
+    document.getElementById('emp-status').value = emp.status;
+
+    document.getElementById('employee-modal').classList.add('active');
+  } catch (error) {
+    alert(`Failed to load employee details: ${error.message}`);
+  }
+}
+
+async function deleteEmployee(id) {
+  if (confirm('Delete this employee record?')) {
+    try {
+      await adminApi.deleteEmployee(id);
+      loadEmployees();
+      loadOverview();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+}
+
+
+// --- Inquiries Operations ---
+function setupInquiriesHandlers() {
+  // Inquiries are view-only and change-status/delete only, no complex create form needed
+}
+
+async function loadInquiries() {
+  const tbody = document.getElementById('inquiries-table-body');
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading public inquiries...</td></tr>';
+
+  try {
+    const response = await adminApi.getInquiries();
+    const inquiries = response.data || [];
+
+    if (inquiries.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--light-text);">No contact forms have been submitted yet.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    inquiries.forEach(iq => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${new Date(iq.createdAt).toLocaleDateString()}</td>
+        <td><strong>${iq.fullName}</strong></td>
+        <td>${iq.phone} / ${iq.email}</td>
+        <td><em>${iq.message}</em></td>
+        <td>
+          <select onchange="updateInquiryStatus('${iq._id}', this.value)" style="padding: 4px; border-radius: 4px; font-size: 0.8rem;">
+            <option value="New" ${iq.status === 'New' ? 'selected' : ''}>New</option>
+            <option value="Reviewed" ${iq.status === 'Reviewed' ? 'selected' : ''}>Reviewed</option>
+            <option value="Resolved" ${iq.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn btn-danger" onclick="deleteInquiry('${iq._id}')" style="padding: 4px 10px; font-size: 0.8rem;">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (error) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Error: ${error.message}</td></tr>`;
+  }
+}
+
+async function updateInquiryStatus(id, newStatus) {
+  try {
+    await adminApi.updateInquiryStatus(id, newStatus);
+    alert('Inquiry status updated');
+    loadInquiries();
+    loadOverview();
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+async function deleteInquiry(id) {
+  if (confirm('Delete this inquiry submission log?')) {
+    try {
+      await adminApi.deleteInquiry(id);
+      loadInquiries();
+      loadOverview();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+}
+
+// Global mappings so onclick attributes on HTML rows work
+window.editProposal = editProposal;
+window.deleteProposal = deleteProposal;
+window.editEmployee = editEmployee;
+window.deleteEmployee = deleteEmployee;
+window.updateInquiryStatus = updateInquiryStatus;
+window.deleteInquiry = deleteInquiry;

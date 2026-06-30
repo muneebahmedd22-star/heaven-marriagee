@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Heaven Marriage Bureau</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside>
+      <div class="brand">Heaven Marriage Bureau</div>
+      <ul class="nav-menu">
+        <li class="nav-item active" data-tab="overview">
+          <span>Overview Dashboard</span>
+        </li>
+        <li class="nav-item" data-tab="proposals">
+          <span>Match Proposals</span>
+        </li>
+        <li class="nav-item" data-tab="employees">
+          <span>Employee Databank</span>
+        </li>
+        <li class="nav-item" data-tab="inquiries">
+          <span>Public Inquiries</span>
+        </li>
+      </ul>
+      <div class="logout-btn" id="logout-btn">Log Out</div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+      <div class="top-bar">
+        <h2>Dashboard Workspace</h2>
+        <div style="font-size: 0.95rem;">Logged in as: <strong id="admin-display-name" style="color: var(--primary-color);">Admin</strong></div>
+      </div>
+
+      <!-- TAB: Overview -->
+      <section class="tab-content active" id="overview-tab">
+        <div class="stats-row">
+          <div class="stat-box">
+            <h4>Active Match Proposals</h4>
+            <div class="number" id="stat-total-proposals">0</div>
+          </div>
+          <div class="stat-box">
+            <h4>Office Employees</h4>
+            <div class="number" id="stat-total-employees">0</div>
+          </div>
+          <div class="stat-box">
+            <h4>Pending Inquiries</h4>
+            <div class="number" id="stat-total-inquiries">0</div>
+          </div>
+        </div>
+
+        <div style="background: var(--white); padding: 30px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow);">
+          <h3 style="margin-bottom: 20px; color: var(--primary-color);">Recent Public Form Inquiries</h3>
+          <div id="recent-activity-list">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Proposals -->
+      <section class="tab-content" id="proposals-tab">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>Manage Proposals</h3>
+          <button class="btn btn-primary" id="btn-add-proposal">+ Add New Proposal</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Profile ID</th>
+                <th>Full Name</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Region</th>
+                <th>Category</th>
+                <th>City</th>
+                <th>Caste</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="proposals-table-body">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB: Employees -->
+      <section class="tab-content" id="employees-tab">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>Manage Employees</h3>
+          <button class="btn btn-primary" id="btn-add-employee">+ Add Employee</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Emp ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Salary</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="employees-table-body">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB: Inquiries -->
+      <section class="tab-content" id="inquiries-tab">
+        <div style="margin-bottom: 20px;">
+          <h3>Website Contact Submissions</h3>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Sender Name</th>
+                <th>Contact Details</th>
+                <th>Message Content</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inquiries-table-body">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL: Proposals Create/Edit -->
+  <div class="modal" id="proposal-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="proposal-modal-title">Add Match Proposal</h3>
+        <span class="modal-close">&times;</span>
+      </div>
+      <form id="proposal-form" enctype="multipart/form-data">
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="prop-name">Full Name</label>
+            <input type="text" id="prop-name" required>
+          </div>
+          <div class="form-group">
+            <label for="prop-gender">Gender</label>
+            <select id="prop-gender" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="prop-status">Marital Status</label>
+            <select id="prop-status" required>
+              <option value="Never Married">Never Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Awaiting Divorce">Awaiting Divorce</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prop-dob">Date of Birth</label>
+            <input type="date" id="prop-dob" required>
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="prop-education">Education Level</label>
+            <input type="text" id="prop-education" placeholder="e.g. Masters in IT" required>
+          </div>
+          <div class="form-group">
+            <label for="prop-occupation">Occupation</label>
+            <input type="text" id="prop-occupation" placeholder="e.g. Software Engineer">
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="prop-caste">Caste</label>
+            <input type="text" id="prop-caste" placeholder="e.g. Rajput" required>
+          </div>
+          <div class="form-group">
+            <label for="prop-religion">Religion</label>
+            <input type="text" id="prop-religion" value="Islam" required>
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="prop-city">City</label>
+            <input type="text" id="prop-city" placeholder="e.g. Lahore" required>
+          </div>
+          <div class="form-group">
+            <label for="prop-state">State / Province</label>
+            <input type="text" id="prop-state" placeholder="e.g. Punjab">
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="prop-region">Region</label>
+            <select id="prop-region" required>
+              <option value="">Select Region</option>
+              <option value="Lahore">Lahore</option>
+              <option value="Karachi">Karachi</option>
+              <option value="Islamabad/Rawalpindi">Islamabad/Rawalpindi</option>
+              <option value="KPK">KPK</option>
+              <option value="Kashmir">Kashmir</option>
+              <option value="South Punjab">South Punjab</option>
+              <option value="Punjab Other Cities">Punjab Other Cities</option>
+              <option value="International">International</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prop-category">Category</label>
+            <select id="prop-category" required>
+              <option value="">Select Category</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Engineer">Engineer</option>
+              <option value="Other Educated">Other Educated</option>
+              <option value="2nd Marriage">2nd Marriage</option>
+              <option value="Late Marriage">Late Marriage</option>
+              <option value="Ahle Tashi">Ahle Tashi</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="prop-phone">Contact Phone</label>
+            <input type="text" id="prop-phone" required>
+          </div>
+          <div class="form-group">
+            <label for="prop-email">Contact Email</label>
+            <input type="email" id="prop-email">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="prop-photo">Profile Photo</label>
+          <input type="file" id="prop-photo" accept="image/*">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="prop-about">About/Description</label>
+          <textarea id="prop-about" rows="3" placeholder="Describe personality, family background, etc."></textarea>
+        </div>
+
+        <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" id="prop-featured" style="width: 18px; height: 18px; cursor: pointer;">
+          <label for="prop-featured" style="cursor: pointer; font-weight: 600; color: var(--primary-color);">Feature this Profile on Landing Page</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; height: 46px;">Save Proposal</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Employees Create/Edit -->
+  <div class="modal" id="employee-modal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 id="employee-modal-title">Add Employee</h3>
+        <span class="modal-close">&times;</span>
+      </div>
+      <form id="employee-form">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="emp-name">Full Name</label>
+          <input type="text" id="emp-name" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="emp-role">Role / Job Title</label>
+          <input type="text" id="emp-role" placeholder="e.g. Senior Matchmaker" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="emp-email">Email Address</label>
+          <input type="email" id="emp-email" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="emp-phone">Phone Number</label>
+          <input type="text" id="emp-phone">
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="emp-salary">Monthly Salary (PKR)</label>
+          <input type="number" id="emp-salary">
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="emp-status">Employment Status</label>
+          <select id="emp-status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; height: 46px;">Save Employee</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin-api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
