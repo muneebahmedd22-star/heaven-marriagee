@@ -1,7 +1,7 @@
 // Heaven Marriage Bureau Admin API Client
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:'
   ? 'http://localhost:5000/api/v1'
-  : 'https://heaven-marriage-bureau-backend.onrender.com/api/v1';
+  : 'https://heaven-marriagee.onrender.com/api/v1';
 
 const adminApi = {
   // Helper to fetch authorization header
