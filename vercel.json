@@ -1,7 +1,17 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/frontend", "destination": "/", "statusCode": 308 },
+    { "source": "/frontend/index.html", "destination": "/", "statusCode": 308 },
+    { "source": "/frontend/:path.html", "destination": "/:path", "statusCode": 308 },
+    { "source": "/frontend/:path*", "destination": "/:path*", "statusCode": 308 }
+  ],
   "rewrites": [
     { "source": "/", "destination": "/frontend/index.html" },
+    { "source": "/about", "destination": "/frontend/about.html" },
+    { "source": "/proposals", "destination": "/frontend/proposals.html" },
+    { "source": "/services", "destination": "/frontend/services.html" },
+    { "source": "/contact", "destination": "/frontend/contact.html" },
     { "source": "/about.html", "destination": "/frontend/about.html" },
     { "source": "/proposals.html", "destination": "/frontend/proposals.html" },
     { "source": "/services.html", "destination": "/frontend/services.html" },
