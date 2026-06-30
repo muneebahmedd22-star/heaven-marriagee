@@ -930,3 +930,58 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* Dark/Light Mode Variables Override */
+body.dark-theme {
+  --bg-color: #120000;           /* Dark Maroon Background */
+  --white: #1A0000;              /* Card Background: Dark Burgundy */
+  --dark-text: #FAF7F2;          /* Off White Text */
+  --light-text: #e6dfd3;          /* Soft Gold/Cream text */
+  --border-muted: #4d0000;       /* Dark Maroon border */
+}
+
+/* Base Transition for Theme swap */
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.clean-proposal-card, 
+.service-card, 
+.trust-card, 
+.step-box, 
+.contact-card-box, 
+.contact-form-wrapper {
+  transition: background-color 0.5s ease, border-color 0.5s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Minimal Theme Toggle Button Styling */
+.theme-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 0;
+  margin-left: 10px;
+  outline: none;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--accent-color);
+  color: #1A0000;
+  transform: rotate(20deg) scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle-btn {
+    margin-left: 0;
+    margin-top: 10px;
+    align-self: center;
+  }
+}

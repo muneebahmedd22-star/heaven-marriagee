@@ -79,6 +79,39 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollElements.forEach(el => el.classList.add('active'));
   }
 
+  // Theme Toggle Logic
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  
+  // Set theme on load
+  const currentTheme = localStorage.getItem('theme');
+  if (currentTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    if (themeToggleBtn) {
+      themeToggleBtn.querySelector('.sun-icon').style.display = 'block';
+      themeToggleBtn.querySelector('.moon-icon').style.display = 'none';
+    }
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme');
+      
+      const isDark = document.body.classList.contains('dark-theme');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      
+      const sunIcon = themeToggleBtn.querySelector('.sun-icon');
+      const moonIcon = themeToggleBtn.querySelector('.moon-icon');
+      
+      if (isDark) {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      } else {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      }
+    });
+  }
+
   // Check if we are on the landing page and load featured/trending proposals
   if (document.getElementById('trending-proposals-grid')) {
     loadFeaturedProposals();
