@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse verified bride and groom proposals at Heaven Marriage Bureau. Find matching profiles in Pakistan.">
+  <title>Browse Proposals | Heaven Marriage Bureau</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 3-Step Navigation Flow Styling */
+    
+    /* Common step wrapper animation */
+    .step-wrapper {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Back Navigation Button */
+    .btn-step-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary-color);
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+      border: 1px solid var(--accent-color);
+      padding: 8px 16px;
+      background: var(--white);
+      border-radius: 4px;
+    }
+    .btn-step-back:hover {
+      background: var(--primary-color);
+      color: var(--accent-color);
+    }
+    .btn-step-back svg {
+      stroke: currentColor;
+    }
+
+    /* Step 1: Category Selector Cards */
+    .category-selection-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 40px auto;
+      max-width: 800px;
+      flex-wrap: wrap;
+    }
+    .category-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--border-muted);
+      padding: 45px 30px;
+      text-align: center;
+      flex: 1;
+      min-width: 280px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-color);
+    }
+    .category-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-color: var(--bg-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      border: 2px solid var(--accent-color);
+      transition: var(--transition);
+      color: var(--primary-color);
+    }
+    .category-card:hover .category-avatar {
+      background-color: var(--primary-color);
+      color: var(--accent-color);
+      transform: scale(1.05);
+    }
+    .category-card h3 {
+      font-size: 1.6rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    .category-card p {
+      color: var(--light-text);
+      font-size: 0.95rem;
+    }
+
+    /* Step 2: City Cards & Subcategory Lists */
+    .cities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .city-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-muted);
+      border-top: 4px solid var(--primary-color);
+      padding: 25px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .city-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent-color);
+    }
+    .city-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-muted);
+      padding-bottom: 15px;
+    }
+    .city-card-header svg {
+      color: var(--accent-color);
+    }
+    .city-card-header h3 {
+      font-size: 1.3rem;
+      color: var(--primary-color);
+    }
+    
+    .subcategory-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .subcategory-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--dark-text);
+      transition: var(--transition);
+      border: 1px solid transparent;
+    }
+    .subcategory-item:hover {
+      background-color: rgba(107, 0, 0, 0.04);
+      color: var(--primary-color);
+      border-color: rgba(212, 175, 55, 0.25);
+    }
+    .subcategory-item svg {
+      color: var(--primary-color);
+      transition: var(--transition);
+    }
+    .subcategory-item:hover svg {
+      color: var(--accent-color);
+      transform: translateX(2px);
+    }
+
+    /* Step 3: Proposals Page Grid */
+    .proposals-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 40px;
+      margin-top: 20px;
+    }
+    .filters-sidebar {
+      background: var(--white);
+      padding: 30px 20px;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-muted);
+      align-self: start;
+      position: sticky;
+      top: 100px;
+      box-shadow: var(--shadow-sm);
+    }
+    .filters-sidebar h3 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 8px;
+    }
+    .sidebar-group {
+      margin-bottom: 15px;
+    }
+    .sidebar-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .sidebar-group select,
+    .sidebar-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--accent-color);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      outline: none;
+      background-color: var(--bg-color);
+    }
+    .sidebar-group select:focus,
+    .sidebar-group input:focus {
+      border-color: var(--primary-color);
+    }
+    .clear-filters {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .clear-filters:hover {
+      text-decoration: underline;
+    }
+    
+    .clean-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    @media (max-width: 900px) {
+      .proposals-layout {
+        grid-template-columns: 1fr;
+      }
+      .filters-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum, I would like to inquire about premium matchmaking services on Heaven Marriage Bureau." class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp">
+    💬
+  </a>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar" id="main-nav">
+      <a href="index.html" class="logo" id="nav-logo">
+        <img src="logo.jpg" alt="Heaven Marriage Bureau Logo">
+        Heaven <span>Marriage Bureau</span>
+      </a>
+      <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="proposals.html" class="active">Proposals</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="../admin/index.html" class="btn btn-outline" style="padding: 6px 16px; font-size: 0.85rem; border-radius: 4px; border-color: var(--accent-color); color: var(--accent-color);">Admin Portal</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Page Banner -->
+  <section class="hero" style="min-height: 35vh; padding: 40px 20px;">
+    <!-- Top gold scroll ornament -->
+    <div class="royal-flourish" style="margin-bottom: 10px;"></div>
+    <h1>Browse Proposals</h1>
+    <p>Discover matches curated specifically for your tastes and credentials. Filter below to begin matching.</p>
+  </section>
+
+  <!-- Proposals Flow Wrapper -->
+  <section class="section" style="padding-top: 40px;">
+    
+    <!-- STEP 1: GENDER SELECTION -->
+    <div class="step-wrapper" id="step-1-gender">
+      <div class="category-selection-container">
+        <div class="category-card" onclick="goToStep2('Male')">
+          <div class="category-avatar">
+            <!-- User Silhouette (SVG) -->
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3>Male Profiles</h3>
+          <p>Find your Perfect Match</p>
+        </div>
+        <div class="category-card" onclick="goToStep2('Female')">
+          <div class="category-avatar">
+            <!-- Female Silhouette Silhouette (SVG) -->
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/>
+              <path d="M17 14h-1.5a3 3 0 0 0-3-3h-1a3 3 0 0 0-3 3H7c-1.5 0-3 1.5-3 3v4h16v-4c0-1.5-1.5-3-3-3z"/>
+            </svg>
+          </div>
+          <h3>Female Profiles</h3>
+          <p>Find your Perfect Match</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: CITY & CATEGORY LIST SELECTION -->
+    <div class="step-wrapper" id="step-2-locations" style="display: none;">
+      <div class="btn-step-back" onclick="backToStep1()">
+        <!-- Arrow Left SVG -->
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to Genders
+      </div>
+      <h2 style="font-size: 2rem; color: var(--primary-color); text-align: center; margin-bottom: 10px;">Select Region & Specialization</h2>
+      <p style="text-align: center; color: var(--light-text); font-style: italic; font-family: var(--font-headings); margin-bottom: 30px;" id="selected-gender-title">Profiles</p>
+      
+      <div class="cities-grid" id="regions-display-grid">
+        <!-- Generated dynamically via JS -->
+      </div>
+    </div>
+
+    <!-- STEP 3: PROPOSALS WORKSPACE GRID -->
+    <div class="step-wrapper" id="step-3-results" style="display: none;">
+      <div class="btn-step-back" onclick="backToStep2()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to Regions
+      </div>
+      
+      <div class="proposals-layout">
+        <!-- Filter Sidebar -->
+        <aside class="filters-sidebar">
+          <h3>Filter Profiles</h3>
+          <form id="sidebar-filter-form">
+            <div class="sidebar-group" style="display: none;">
+              <label for="filter-gender">Gender</label>
+              <select id="filter-gender">
+                <option value="">All Genders</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="sidebar-group" style="display: none;">
+              <label for="filter-region">Region</label>
+              <input type="text" id="filter-region" />
+            </div>
+            <div class="sidebar-group" style="display: none;">
+              <label for="filter-category">Category</label>
+              <select id="filter-category">
+                <option value="">All</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Engineer">Engineer</option>
+                <option value="Other Educated">Other Educated</option>
+                <option value="2nd Marriage">2nd Marriage</option>
+                <option value="Late Marriage">Late Marriage</option>
+                <option value="Ahle Tashi">Ahle Tashi</option>
+              </select>
+            </div>
+            <div class="sidebar-group">
+              <label for="filter-status">Marital Status</label>
+              <select id="filter-status">
+                <option value="">Any Status</option>
+                <option value="Never Married">Never Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Awaiting Divorce">Awaiting Divorce</option>
+              </select>
+            </div>
+            <div class="sidebar-group">
+              <label for="filter-city">City</label>
+              <input type="text" id="filter-city" placeholder="e.g. Lahore" />
+            </div>
+            <div class="sidebar-group">
+              <label for="filter-caste">Caste</label>
+              <input type="text" id="filter-caste" placeholder="e.g. Rajput" />
+            </div>
+            <div class="sidebar-group">
+              <label for="filter-education">Education</label>
+              <input type="text" id="filter-education" placeholder="e.g. Masters" />
+            </div>
+            
+            <h4 style="font-family: var(--font-body); font-size: 0.9rem; color: var(--primary-color); margin: 20px 0 10px 0; border-top: 1px solid var(--border-muted); padding-top: 15px;">Your Match Preferences</h4>
+            <div class="sidebar-group">
+              <label for="pref-city">My City (30%)</label>
+              <input type="text" id="pref-city" placeholder="For match score" />
+            </div>
+            <div class="sidebar-group">
+              <label for="pref-caste">My Caste (25%)</label>
+              <input type="text" id="pref-caste" placeholder="For match score" />
+            </div>
+            <div class="sidebar-group">
+              <label for="pref-education">My Education (25%)</label>
+              <input type="text" id="pref-education" placeholder="For match score" />
+            </div>
+            <div class="sidebar-group">
+              <label for="pref-age">My Preferred Age (20%)</label>
+              <input type="number" id="pref-age" min="18" max="70" placeholder="For match score" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 4px; margin-top: 15px;">Apply Filters</button>
+            <span class="clear-filters" id="btn-clear-filters">Reset Filters</span>
+          </form>
+        </aside>
+
+        <!-- Grid Results Area -->
+        <main>
+          <div id="results-info" style="margin-bottom: 20px; font-weight: 600; color: var(--primary-color);"></div>
+          <div class="clean-cards-grid" id="proposals-display-grid">
+            <!-- Dynamic rendering -->
+          </div>
+        </main>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Gold section divider -->
+  <div class="section-flourish-divider"></div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Heaven Marriage Bureau</h4>
+        <p>Pakistan's most trusted elite matrimonial service. Dedicated to bringing hearts together with values, integrity, and discretion since 2010.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="proposals.html">Browse Proposals</a></li>
+          <li><a href="services.html">Our Services</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <p>
+          Address: 45-C, Gulberg III, Lahore, Pakistan<br>
+          Phone: +92 300 1234567<br>
+          Email: info@heavenmarriage.com
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Social Connections</h4>
+        <p>Stay connected on Facebook and Instagram for success stories, matchmaking tips, and upcoming events.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Heaven Marriage Bureau. All Rights Reserved.</p>
+      <p style="color: var(--accent-color);">Premium Matchmaking, Crafted with Royal Elegance.</p>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/compatibility.js"></script>
+  <script>
+    // Region configuration list
+    const regions = [
+      { id: 'lahore', name: 'Lahore' },
+      { id: 'karachi', name: 'Karachi' },
+      { id: 'islamabad', name: 'Islamabad/Rawalpindi' },
+      { id: 'kpk', name: 'KPK' },
+      { id: 'kashmir', name: 'Kashmir' },
+      { id: 'southpunjab', name: 'South Punjab' },
+      { id: 'punjabother', name: 'Punjab Other Cities' },
+      { id: 'international', name: 'International' }
+    ];
+
+    // Subcategory details with SVG definitions (strictly no emojis)
+    const subcategories = [
+      { 
+        id: 'Doctor', 
+        name: 'Doctors', 
+        svg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>` 
+      },
+      { 
+        id: 'Engineer', 
+        name: 'Engineers', 
+        svg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`
+      },
+      { 
+        id: 'Other Educated', 
+        name: 'Other Educated', 
+        svg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>`
+      },
+      { 
+        id: '2nd Marriage', 
+        name: '2nd Marriage', 
+        svg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`
+      },
+      { 
+        id: 'Late Marriage', 
+        name: 'Late Marriage', 
+        svg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`
+      },
+      { 
+        id: 'Ahle Tashi', 
+        name: 'Ahle Tashi', 
+        svg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M19 21v-8a2 2 0 0 0-2-2h-3a2 2 0 0 0-2 2v8M12 21V10a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11M12 3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>`
+      }
+    ];
+
+    let flowGender = '';
+    let flowRegion = '';
+    let flowCategory = '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hamburger menu trigger
+      const hamburger = document.querySelector('.hamburger');
+      const navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+      }
+
+      // Check URL parameters on mount
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlGender = urlParams.get('gender');
+      const urlRegion = urlParams.get('region');
+      const urlCategory = urlParams.get('category');
+
+      if (urlGender && urlRegion && urlCategory) {
+        // Direct jump to step 3 if full query params are supplied
+        flowGender = urlGender;
+        flowRegion = urlRegion;
+        flowCategory = urlCategory;
+        
+        document.getElementById('filter-gender').value = flowGender;
+        document.getElementById('filter-region').value = flowRegion;
+        document.getElementById('filter-category').value = flowCategory;
+        
+        showStep3();
+      } else if (urlGender) {
+        // Jump to step 2 if only gender is loaded
+        goToStep2(urlGender);
+      } else {
+        // Default to step 1
+        showStep1();
+      }
+
+      // Sidebar form filters submit
+      const filterForm = document.getElementById('sidebar-filter-form');
+      filterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        fetchAndRenderProposals();
+      });
+
+      // Reset filters button
+      document.getElementById('btn-clear-filters').addEventListener('click', () => {
+        filterForm.reset();
+        document.getElementById('filter-gender').value = flowGender;
+        document.getElementById('filter-region').value = flowRegion;
+        document.getElementById('filter-category').value = flowCategory;
+        fetchAndRenderProposals();
+      });
+    });
+
+    // Step Toggles
+    function showStep1() {
+      document.getElementById('step-1-gender').style.display = 'block';
+      document.getElementById('step-2-locations').style.display = 'none';
+      document.getElementById('step-3-results').style.display = 'none';
+      window.history.pushState({}, '', 'proposals.html');
+    }
+
+    function goToStep2(gender) {
+      flowGender = gender;
+      document.getElementById('selected-gender-title').textContent = `${gender} Profiles by Location & Specialization`;
+      
+      // Render the region/specialization grid dynamically
+      renderRegionsGrid();
+
+      document.getElementById('step-1-gender').style.display = 'none';
+      document.getElementById('step-2-locations').style.display = 'block';
+      document.getElementById('step-3-results').style.display = 'none';
+    }
+
+    function renderRegionsGrid() {
+      const container = document.getElementById('regions-display-grid');
+      container.innerHTML = '';
+
+      regions.forEach(reg => {
+        const card = document.createElement('div');
+        card.className = 'city-card';
+        
+        // Pin icon SVG
+        const pinSvg = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+
+        card.innerHTML = `
+          <div class="city-card-header">
+            ${pinSvg}
+            <h3>${flowGender} ${reg.name}</h3>
+          </div>
+          <ul class="subcategory-list">
+            ${subcategories.map(sub => `
+              <li class="subcategory-item" onclick="selectSubcategory('${reg.name}', '${sub.id}')">
+                ${sub.svg}
+                <span>${reg.name} ${sub.name}</span>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectSubcategory(regionName, categoryId) {
+      flowRegion = regionName;
+      flowCategory = categoryId;
+
+      document.getElementById('filter-gender').value = flowGender;
+      document.getElementById('filter-region').value = flowRegion;
+      document.getElementById('filter-category').value = flowCategory;
+
+      showStep3();
+    }
+
+    function showStep3() {
+      // Update history string state
+      const params = new URLSearchParams();
+      params.append('gender', flowGender);
+      params.append('region', flowRegion);
+      params.append('category', flowCategory);
+      window.history.pushState({}, '', `proposals.html?${params.toString()}`);
+
+      document.getElementById('step-1-gender').style.display = 'none';
+      document.getElementById('step-2-locations').style.display = 'none';
+      document.getElementById('step-3-results').style.display = 'block';
+
+      fetchAndRenderProposals();
+    }
+
+    function backToStep1() {
+      showStep1();
+    }
+
+    function backToStep2() {
+      goToStep2(flowGender);
+    }
+
+    // Proposals list loader (Step 3)
+    async function fetchAndRenderProposals() {
+      const grid = document.getElementById('proposals-display-grid');
+      const resultsInfo = document.getElementById('results-info');
+      grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px 0;"><div class="gold-spinner"></div><p style="color: var(--light-text); font-size: 0.95rem; font-family: var(--font-headings); font-style: italic;">Finding matching profiles in our database...</p></div>';
+      resultsInfo.textContent = '';
+
+      const params = {
+        gender: document.getElementById('filter-gender').value,
+        region: document.getElementById('filter-region').value,
+        category: document.getElementById('filter-category').value,
+        maritalStatus: document.getElementById('filter-status').value,
+        city: document.getElementById('filter-city').value,
+        caste: document.getElementById('filter-caste').value,
+        education: document.getElementById('filter-education').value,
+        // Comp matches prefs
+        prefCity: document.getElementById('pref-city').value,
+        prefCaste: document.getElementById('pref-caste').value,
+        prefEducation: document.getElementById('pref-education').value,
+        prefAge: document.getElementById('pref-age').value
+      };
+
+      try {
+        const response = await api.getProposals(params);
+        const proposals = response.data || [];
+
+        resultsInfo.textContent = `Displaying ${proposals.length} matches for ${flowGender} in ${flowRegion} (${flowCategory})`;
+
+        if (proposals.length === 0) {
+          grid.innerHTML = `
+            <div class="no-results" style="grid-column: 1/-1;">
+              <h3>No matching proposals found</h3>
+              <p>Try modifying your sidebar filter values or step criteria to broaden search matching.</p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = ''; // Clear spinner
+
+        proposals.forEach(p => {
+          const birthYear = new Date(p.dob).getFullYear();
+          const currentYear = new Date().getFullYear();
+          const age = currentYear - birthYear;
+          const dobFormatted = p.dob ? new Date(p.dob).toLocaleDateString('en-GB') : '-';
+          const heightStr = p.gender === 'Male' ? `5' 8"` : `5' 4"`;
+
+          const card = document.createElement('div');
+          card.className = 'clean-proposal-card';
+
+          // Clean SVGs for all fields - NO EMOJIS!
+          card.innerHTML = `
+            <div class="clean-card-id">ID: ${p.profileId}</div>
+            <span class="clean-card-premium-badge">Premium</span>
+            
+            ${p.compatibilityScore !== null ? `
+              <span style="position: absolute; top: 15px; left: 30px; background: rgba(123, 29, 29, 0.08); color: var(--primary-color); font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(123, 29, 29, 0.2);">
+                Match: ${p.compatibilityScore}%
+              </span>
+            ` : ''}
+
+            <div class="info-rows" style="margin-top: 15px;">
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <span class="row-label">Gender:</span>
+                <span class="row-value">${p.gender}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </span>
+                <span class="row-label">Marital Status:</span>
+                <span class="row-value">${p.maritalStatus}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </span>
+                <span class="row-label">Country:</span>
+                <span class="row-value">${p.country || 'Pakistan'}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="row-label">City:</span>
+                <span class="row-value">${p.city}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                <span class="row-label">Caste:</span>
+                <span class="row-value">${p.caste}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
+                <span class="row-label">DOB:</span>
+                <span class="row-value">${dobFormatted}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/></svg>
+                </span>
+                <span class="row-label">Height:</span>
+                <span class="row-value">${heightStr}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                </span>
+                <span class="row-label">Education:</span>
+                <span class="row-value">${p.education}</span>
+              </div>
+              <div class="info-row">
+                <span class="row-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </span>
+                <span class="row-label">Profession:</span>
+                <span class="row-value">${p.occupation || '-'}</span>
+              </div>
+            </div>
+
+            <!-- For More Information -->
+            <div class="more-info-section">
+              <div class="more-info-title">For More Information</div>
+              <div class="more-info-box">
+                <span class="contact-person-name">Heaven Matchmaker</span>
+                <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum, I am inquiring about Profile ID ${p.profileId} on Heaven Marriage Bureau" target="_blank" class="whatsapp-contact-link">
+                  <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
+                    <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.233-1.371a9.945 9.945 0 0 0 4.777 1.224h.005c5.505 0 9.99-4.478 9.99-9.985 0-2.67-1.037-5.178-2.92-7.062C17.162 2.922 14.654 2 12.012 2zm5.727 14.072c-.314.888-1.543 1.637-2.13 1.722-.529.076-1.222.137-3.52-.816-2.936-1.218-4.836-4.218-4.983-4.417-.147-.197-1.184-1.579-1.184-3.013 0-1.433.748-2.137 1.015-2.423.267-.285.586-.356.782-.356.197 0 .393.002.563.01.18.009.421-.07.659.502.247.595.842 2.062.915 2.211.072.148.12.321.02.522-.097.2-.147.324-.294.496-.147.172-.31.385-.441.517-.148.147-.302.308-.13.603.172.295.767 1.266 1.644 2.049.88.784 1.62 1.025 1.915 1.173.295.148.466.12.639-.08.172-.2.748-.871.947-1.17.2-.298.397-.248.663-.148.267.1.1.92 2.052 1.947c.2.1.332.148.482.397.149.248.149 1.432-.165 2.32z"/>
+                  </svg> Chat
+                </a>
+              </div>
+            </div>
+          `;
+          
+          grid.appendChild(card);
+        });
+      } catch (error) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: red;">Error loading proposals: ${error.message}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>
