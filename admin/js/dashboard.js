@@ -102,6 +102,8 @@ function setupProposalsHandlers() {
     document.getElementById('proposal-modal-title').textContent = 'Add Match Proposal';
     proposalForm.reset();
     modal.classList.add('active');
+    const modalContent = document.querySelector('#proposal-modal .modal-content');
+    if (modalContent) modalContent.scrollTop = 0;
   });
 
   closeModalBtn.addEventListener('click', () => {
@@ -248,6 +250,8 @@ async function editProposal(id) {
     }
 
     document.getElementById('proposal-modal').classList.add('active');
+    const modalContent = document.querySelector('#proposal-modal .modal-content');
+    if (modalContent) modalContent.scrollTop = 0;
   } catch (error) {
     alert(`Failed to load details: ${error.message}`);
   }
