@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Check if already logged in, redirect to dashboard
   const token = localStorage.getItem('hmb_admin_token');
   if (token) {
-    window.location.href = 'dashboard.html';
+    window.location.href = '/admin/dashboard.html';
   }
 
   const loginForm = document.getElementById('admin-login-form');
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         await adminApi.login(usernameInput, passwordInput);
-        window.location.href = 'dashboard.html';
+        window.location.href = '/admin/dashboard.html';
       } catch (error) {
         errorMsg.textContent = error.message || 'Invalid username or password';
         errorMsg.style.display = 'block';

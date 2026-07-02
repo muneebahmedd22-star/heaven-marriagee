@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Heaven Marriage Bureau</title>
-  <link rel="icon" type="image/jpeg" href="logo.jpg">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="icon" type="image/jpeg" href="/admin/logo.jpg">
+  <link rel="stylesheet" href="/admin/css/admin.css">
   <script>
     (function() {
       const token = localStorage.getItem('hmb_admin_token');
       if (!token) {
-        window.location.replace('index.html');
+        window.location.replace('/admin/index.html');
       }
     })();
   </script>
@@ -326,7 +326,7 @@
     </div>
   </div>
 
-  <script src="js/admin-api.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="/admin/js/admin-api.js"></script>
+  <script src="/admin/js/dashboard.js"></script>
 </body>
 </html>
