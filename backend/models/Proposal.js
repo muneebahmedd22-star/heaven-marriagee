@@ -101,9 +101,9 @@ const ProposalSchema = new mongoose.Schema({
   },
 });
 
-// Auto-increment ProfileId (format: HMB1000)
+// Auto-increment ProfileId (format: HMB1000) - Only if not manually provided
 ProposalSchema.pre('save', async function (next) {
-  if (this.isNew) {
+  if (this.isNew && !this.profileId) {
     try {
       let counter = await Counter.findOne({ id: 'profileId' });
       if (!counter) {

@@ -117,6 +117,8 @@ function setupProposalsHandlers() {
 
     // Build Form Data (Multer multipart/form-data support for images)
     const formData = new FormData();
+    const idNum = document.getElementById('prop-id-num').value;
+    formData.append('profileId', 'HMB' + idNum);
     formData.append('fullName', document.getElementById('prop-name').value);
     formData.append('gender', document.getElementById('prop-gender').value);
     formData.append('maritalStatus', document.getElementById('prop-status').value);
@@ -214,6 +216,10 @@ async function editProposal(id) {
 
     currentEditingProposalId = p._id;
     document.getElementById('proposal-modal-title').textContent = 'Edit Match Proposal';
+    
+    if (p.profileId) {
+      document.getElementById('prop-id-num').value = p.profileId.replace('HMB', '');
+    }
     
     document.getElementById('prop-name').value = p.fullName;
     document.getElementById('prop-gender').value = p.gender;
