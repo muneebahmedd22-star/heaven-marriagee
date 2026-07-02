@@ -703,7 +703,7 @@
           const currentYear = new Date().getFullYear();
           const age = currentYear - birthYear;
           const dobFormatted = p.dob ? new Date(p.dob).toLocaleDateString('en-GB') : '-';
-          const heightStr = p.gender === 'Male' ? `5' 8"` : `5' 4"`;
+          const heightStr = p.height || (p.gender === 'Male' ? "5' 8\"" : "5' 4\"");
 
           const card = document.createElement('div');
           card.className = 'clean-proposal-card';

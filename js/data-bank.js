@@ -253,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </td>
               <td class="profile-details-text">
                 <strong>Age:</strong> ${age} yrs (DOB: ${dateFormatted})<br>
+                <strong>Height:</strong> ${p.height || '-'}<br>
                 <strong>Education:</strong> ${p.education}<br>
                 <strong>Profession:</strong> ${p.occupation || '-'}
               </td>
@@ -316,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <div class="modal-details-grid">
         <div class="modal-grid-item"><strong>Age / Date of Birth:</strong> ${age} yrs (${dateFormatted})</div>
+        <div class="modal-grid-item"><strong>Height:</strong> ${p.height || '-'}</div>
         <div class="modal-grid-item"><strong>Education Level:</strong> ${p.education}</div>
         <div class="modal-grid-item"><strong>Profession/Job:</strong> ${p.occupation || '-'}</div>
         <div class="modal-grid-item"><strong>Religion:</strong> ${p.religion || 'Islam'}</div>

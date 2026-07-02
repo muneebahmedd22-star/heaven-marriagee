@@ -39,6 +39,9 @@ const RegistrationSchema = new mongoose.Schema({
     required: [true, 'Please select marital status'],
     enum: ['Never Married', 'Divorced', 'Widowed', 'Awaiting Divorce'],
   },
+  height: {
+    type: String,
+  },
   caste: {
     type: String,
     required: [true, 'Please add caste'],

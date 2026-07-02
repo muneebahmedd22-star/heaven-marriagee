@@ -96,7 +96,6 @@
                 <th>Category</th>
                 <th>City</th>
                 <th>Caste</th>
-                <th>Featured</th>
                 <th>Visibility</th>
                 <th>Actions</th>
               </tr>
@@ -238,6 +237,11 @@
           </div>
         </div>
 
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="prop-height">Height</label>
+          <input type="text" id="prop-height" placeholder="e.g. 5'6&quot;, 5'10&quot;" required>
+        </div>
+
         <div class="form-inline">
           <div class="form-group">
             <label for="prop-caste">Caste</label>
@@ -308,11 +312,6 @@
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="prop-about">About/Description</label>
           <textarea id="prop-about" rows="3" placeholder="Describe personality, family background, etc."></textarea>
-        </div>
-
-        <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-          <input type="checkbox" id="prop-featured" style="width: 18px; height: 18px; cursor: pointer;">
-          <label for="prop-featured" style="cursor: pointer; font-weight: 600; color: var(--primary-color);">Feature this Profile on Landing Page</label>
         </div>
 
         <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
@@ -389,8 +388,8 @@
         </div>
 
         <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-          <input type="checkbox" id="convert-featured" style="width: 18px; height: 18px; cursor: pointer;">
-          <label for="convert-featured" style="cursor: pointer; font-weight: 600; color: var(--primary-color);">Feature this Profile on Landing Page</label>
+          <input type="checkbox" id="convert-show-public" style="width: 18px; height: 18px; cursor: pointer;">
+          <label for="convert-show-public" style="cursor: pointer; font-weight: 600; color: var(--primary-color);">Show on Public Website (Otherwise private/internal to data bank)</label>
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; height: 46px;">Confirm & Convert</button>

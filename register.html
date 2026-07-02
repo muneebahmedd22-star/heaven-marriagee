@@ -196,6 +196,12 @@
           <input type="date" id="reg-dob" name="dob" required>
         </div>
 
+        <!-- Height -->
+        <div class="form-group">
+          <label for="reg-height">Height</label>
+          <input type="text" id="reg-height" name="height" required placeholder="e.g. 5'6&quot;, 5'10&quot;">
+        </div>
+
         <!-- Marital Status -->
         <div class="form-group">
           <label for="reg-status">Marital Status</label>
@@ -304,6 +310,7 @@
           formData.append('gender', document.getElementById('reg-gender').value);
           formData.append('lookingFor', document.getElementById('reg-looking').value);
           formData.append('dob', document.getElementById('reg-dob').value);
+          formData.append('height', document.getElementById('reg-height').value);
           formData.append('maritalStatus', document.getElementById('reg-status').value);
           formData.append('caste', document.getElementById('reg-caste').value);
           formData.append('education', document.getElementById('reg-edu').value);

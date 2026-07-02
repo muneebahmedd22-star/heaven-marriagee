@@ -94,7 +94,7 @@ router.post('/:id/convert', protect, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Registration already converted to proposal' });
     }
 
-    const { category, isFeatured } = req.body;
+    const { category, showOnPublicWebsite } = req.body;
 
     // Map registration fields to proposal fields
     const proposalData = {
@@ -108,6 +108,7 @@ router.post('/:id/convert', protect, async (req, res) => {
       religion: 'Islam', // Default
       city: registration.city,
       region: registration.region,
+      height: registration.height || '-',
       aboutMe: registration.partnerPreferences || '',
       contactDetails: {
         phone: registration.phone,
@@ -116,7 +117,7 @@ router.post('/:id/convert', protect, async (req, res) => {
       photoUrl: registration.photoUrl || '',
       photoPublicId: registration.photoPublicId || '',
       category: category || 'Other Educated',
-      isFeatured: isFeatured === 'true' || isFeatured === true,
+      showOnPublicWebsite: showOnPublicWebsite === 'true' || showOnPublicWebsite === true,
     };
 
     // Save as proper proposal (increment pre-save hook runs automatically)

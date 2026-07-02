@@ -54,6 +54,9 @@ const ProposalSchema = new mongoose.Schema({
     type: String,
     default: 'Pakistan',
   },
+  height: {
+    type: String,
+  },
   photoUrl: {
     type: String,
     default: '',

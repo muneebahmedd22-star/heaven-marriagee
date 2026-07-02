@@ -123,12 +123,12 @@ function setupProposalsHandlers() {
     formData.append('dob', document.getElementById('prop-dob').value);
     formData.append('education', document.getElementById('prop-education').value);
     formData.append('occupation', document.getElementById('prop-occupation').value);
+    formData.append('height', document.getElementById('prop-height').value);
     formData.append('caste', document.getElementById('prop-caste').value);
     formData.append('religion', document.getElementById('prop-religion').value);
     formData.append('city', document.getElementById('prop-city').value);
     formData.append('state', document.getElementById('prop-state').value);
     formData.append('aboutMe', document.getElementById('prop-about').value);
-    formData.append('isFeatured', document.getElementById('prop-featured').checked);
     formData.append('showOnPublicWebsite', document.getElementById('prop-show-public').checked);
     formData.append('region', document.getElementById('prop-region').value);
     formData.append('category', document.getElementById('prop-category').value);
@@ -194,7 +194,6 @@ async function loadProposals() {
         <td>${p.category || '-'}</td>
         <td>${p.city}</td>
         <td>${p.caste}</td>
-        <td>${p.isFeatured ? '<span style="color: #C9972B; font-weight:bold;">Yes</span>' : 'No'}</td>
         <td>${p.showOnPublicWebsite ? '<span style="color: #5cb85c; font-weight:bold;">Public</span>' : '<span style="color: #d9534f; font-weight:bold;">Private</span>'}</td>
         <td>
           <button class="btn btn-primary" onclick="editProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
@@ -227,12 +226,12 @@ async function editProposal(id) {
     
     document.getElementById('prop-education').value = p.education;
     document.getElementById('prop-occupation').value = p.occupation || '';
+    document.getElementById('prop-height').value = p.height || '';
     document.getElementById('prop-caste').value = p.caste;
     document.getElementById('prop-religion').value = p.religion;
     document.getElementById('prop-city').value = p.city;
     document.getElementById('prop-state').value = p.state || '';
     document.getElementById('prop-about').value = p.aboutMe || '';
-    document.getElementById('prop-featured').checked = p.isFeatured || false;
     document.getElementById('prop-show-public').checked = p.showOnPublicWebsite || false;
     document.getElementById('prop-region').value = p.region || '';
     document.getElementById('prop-category').value = p.category || '';
@@ -544,14 +543,14 @@ function setupRegistrationsHandlers() {
       e.preventDefault();
       const id = document.getElementById('convert-registration-id').value;
       const category = document.getElementById('convert-category').value;
-      const isFeatured = document.getElementById('convert-featured').checked;
+      const showOnPublicWebsite = document.getElementById('convert-show-public').checked;
 
       const submitBtn = convertForm.querySelector('button[type="submit"]');
       submitBtn.textContent = 'Converting...';
       submitBtn.disabled = true;
 
       try {
-        await adminApi.convertRegistration(id, { category, isFeatured });
+        await adminApi.convertRegistration(id, { category, showOnPublicWebsite });
         alert('Registration successfully converted to match proposal profile!');
         modal.classList.remove('active');
         loadRegistrations();
@@ -569,7 +568,7 @@ function setupRegistrationsHandlers() {
 function openConvertModal(id) {
   const modal = document.getElementById('convert-modal');
   document.getElementById('convert-registration-id').value = id;
-  document.getElementById('convert-featured').checked = false;
+  document.getElementById('convert-show-public').checked = false;
   modal.classList.add('active');
 }
 
