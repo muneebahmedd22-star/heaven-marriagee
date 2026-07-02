@@ -101,17 +101,24 @@ const ProposalSchema = new mongoose.Schema({
   },
 });
 
-// Auto-increment ProfileId (format: HMB00001)
+// Auto-increment ProfileId (format: HMB1000)
 ProposalSchema.pre('save', async function (next) {
   if (this.isNew) {
     try {
-      const counter = await Counter.findOneAndUpdate(
+      let counter = await Counter.findOne({ id: 'profileId' });
+      if (!counter) {
+        counter = await Counter.create({ id: 'profileId', seq: 999 });
+      } else if (counter.seq < 1000) {
+        counter.seq = 999;
+        await counter.save();
+      }
+
+      counter = await Counter.findOneAndUpdate(
         { id: 'profileId' },
         { $inc: { seq: 1 } },
-        { new: true, upsert: true }
+        { new: true }
       );
-      const seqStr = String(counter.seq).padStart(5, '0');
-      this.profileId = `HMB${seqStr}`;
+      this.profileId = `HMB${counter.seq}`;
       next();
     } catch (error) {
       next(error);
