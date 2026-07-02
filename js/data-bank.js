@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       lockError.style.display = 'none';
 
+      const username = document.getElementById('db-username').value;
       const password = passwordInput.value;
       const submitBtn = document.getElementById('btn-unlock');
       submitBtn.textContent = 'Verifying...';
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            username: 'staff',
+            username: username,
             password: password
           })
         });
