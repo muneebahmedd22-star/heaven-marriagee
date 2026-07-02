@@ -480,21 +480,26 @@ header {
 }
 
 .city-pill {
-  background-color: var(--white);
+  background-color: var(--primary-color);
   border: 1px solid var(--accent-color);
-  padding: 8px 20px;
+  padding: 10px 24px;
   border-radius: 30px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--accent-color);
   transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .city-pill:hover {
-  background-color: var(--primary-color);
-  color: var(--accent-color);
+  background-color: var(--accent-color);
+  color: #1A0000;
   border-color: var(--accent-color);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: var(--shadow-md);
 }
 
 /* Section Spacers (80px - 100px consistent padding) */
