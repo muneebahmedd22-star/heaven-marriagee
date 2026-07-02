@@ -356,12 +356,14 @@ header {
   animation-fill-mode: both;
 }
 
-/* Search Container with gold border */
+/* Search Container with gold border and glassmorphism */
 .search-container {
-  background: #1A0000;
+  background: rgba(26, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius);
   padding: 35px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(107, 0, 0, 0.15);
   width: 100%;
   max-width: 1100px;
   border: 2px solid var(--accent-color);
