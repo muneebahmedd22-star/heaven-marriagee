@@ -75,5 +75,5 @@ function searchWithPreferences(event) {
     params.append('prefAge', age);
   }
 
-  window.location.href = `proposals.html?${params.toString()}`;
+  window.location.href = `/proposals?${params.toString()}`;
 }
