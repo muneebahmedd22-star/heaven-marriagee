@@ -88,6 +88,10 @@ const ProposalSchema = new mongoose.Schema({
     enum: ['Lahore', 'Karachi', 'Islamabad/Rawalpindi', 'KPK', 'Kashmir', 'South Punjab', 'Punjab Other Cities', 'International'],
     required: [true, 'Please select region'],
   },
+  showOnPublicWebsite: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

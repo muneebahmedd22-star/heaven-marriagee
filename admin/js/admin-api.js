@@ -61,7 +61,14 @@ const adminApi = {
   // CRUD Proposals
   async getProposals(filters = {}) {
     const queryParams = new URLSearchParams(filters);
-    const response = await fetch(`${API_BASE_URL}/proposals?${queryParams.toString()}`, {
+    const response = await fetch(`${API_BASE_URL}/proposals/admin?${queryParams.toString()}`, {
+      headers: this.getHeaders()
+    });
+    return this.handleResponse(response);
+  },
+
+  async getProposal(id) {
+    const response = await fetch(`${API_BASE_URL}/proposals/${id}`, {
       headers: this.getHeaders()
     });
     return this.handleResponse(response);

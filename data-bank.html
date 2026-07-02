@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Proposals Data Bank | Heaven Marriage Bureau</title>
+  <link rel="icon" type="image/jpeg" href="/admin/logo.jpg">
+  <link rel="stylesheet" href="/admin/css/admin.css">
+  <style>
+    :root {
+      --primary-color: #6B0000;
+      --accent-color: #C9972B;
+      --bg-color: #1A0000;
+      --white: #FFFFFF;
+      --light-bg: #2D0808;
+      --gray-border: rgba(201, 151, 43, 0.3);
+      --font-body: 'Outfit', sans-serif;
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--white);
+      font-family: var(--font-body);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Lock Screen Style */
+    #lock-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #2D0808 0%, #1A0000 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out, visibility 0.5s;
+    }
+    
+    #lock-screen.unlocked {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .lock-box {
+      background: rgba(45, 8, 8, 0.65);
+      border: 1px solid var(--accent-color);
+      padding: 50px 40px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .lock-box h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--accent-color);
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .lock-box input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 20px;
+      border: 1px solid var(--accent-color);
+      background: rgba(26, 0, 0, 0.8);
+      color: var(--white);
+      font-size: 1rem;
+      border-radius: 4px;
+      outline: none;
+      box-sizing: border-box;
+      text-align: center;
+      transition: border-color 0.3s;
+    }
+
+    .lock-box input[type="password"]:focus {
+      border-color: var(--white);
+      box-shadow: 0 0 10px rgba(201, 151, 43, 0.3);
+    }
+
+    .lock-box button {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent-color);
+      color: #1A0000;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .lock-box button:hover {
+      background: #dfaa37;
+      transform: translateY(-2px);
+    }
+
+    /* Main Data Bank View */
+    .data-bank-container {
+      display: none;
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .data-bank-container.active {
+      display: block;
+    }
+
+    header.db-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--gray-border);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    header.db-header h1 {
+      font-family: 'Cinzel', serif;
+      color: var(--accent-color);
+      margin: 0;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+    }
+
+    /* Search Filters Panel */
+    .filters-panel {
+      background: var(--light-bg);
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      padding: 25px;
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      align-items: flex-end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+    }
+
+    .filter-group input,
+    .filter-group select {
+      padding: 12px;
+      border: 1px solid var(--accent-color);
+      border-radius: 4px;
+      background-color: var(--bg-color);
+      color: var(--white);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+      border-color: var(--white);
+    }
+
+    /* Details styling */
+    .profile-details-text {
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .profile-details-text strong {
+      color: var(--accent-color);
+    }
+
+    /* Photo size */
+    .db-photo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--accent-color);
+    }
+
+    /* Custom badge colors */
+    .badge-status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-public {
+      background-color: #5cb85c;
+      color: #fff;
+    }
+
+    .badge-private {
+      background-color: #d9534f;
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- 1. Password Lock Gate Screen -->
+  <section id="lock-screen">
+    <div class="lock-box">
+      <h2>Heaven Matrimonials</h2>
+      <p style="color: var(--white); opacity: 0.8; font-size: 0.9rem; margin-bottom: 25px;">Employee proposals search data bank. Enter password to view available matches.</p>
+      <form id="db-lock-form">
+        <input type="password" id="db-password" placeholder="Enter Staff Password" required autocomplete="current-password">
+        <div id="lock-error" style="color: #ff6b6b; font-size: 0.85rem; margin-top: -10px; margin-bottom: 20px; display: none;">
+          Incorrect password. Access denied.
+        </div>
+        <button type="submit" id="btn-unlock">Unlock Data Bank</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 2. Main Read-Only Proposals Data Bank View -->
+  <div class="data-bank-container" id="db-content">
+    <header class="db-header">
+      <div>
+        <h1>Proposals Data Bank</h1>
+        <div style="font-size: 0.85rem; color: var(--accent-color); margin-top: 5px; font-weight: 600;">CONFIDENTIAL STAFF DIRECTORY | READ-ONLY</div>
+      </div>
+      <button class="btn btn-outline" id="btn-lock-db" style="border-color: var(--accent-color); color: var(--accent-color); padding: 8px 16px; font-size: 0.85rem;">Lock Console</button>
+    </header>
+
+    <!-- Search Filters -->
+    <section class="filters-panel">
+      <div class="filter-group">
+        <label for="db-filter-gender">Gender</label>
+        <select id="db-filter-gender">
+          <option value="">All Genders</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="db-filter-marital">Marital Status</label>
+        <select id="db-filter-marital">
+          <option value="">Any Status</option>
+          <option value="Never Married">Never Married</option>
+          <option value="Divorced">Divorced</option>
+          <option value="Widowed">Widowed</option>
+          <option value="Awaiting Divorce">Awaiting Divorce</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="db-filter-city">City / Address</label>
+        <input type="text" id="db-filter-city" placeholder="e.g. Lahore">
+      </div>
+
+      <div class="filter-group">
+        <label for="db-filter-caste">Caste</label>
+        <input type="text" id="db-filter-caste" placeholder="e.g. Rajput">
+      </div>
+
+      <div class="filter-group">
+        <label for="db-filter-edu">Education</label>
+        <input type="text" id="db-filter-edu" placeholder="e.g. Bachelors">
+      </div>
+
+      <button id="btn-db-search" class="btn btn-primary" style="height: 48px; border-radius: 4px; font-weight: 700;">Apply Filters</button>
+      <button id="btn-db-reset" class="btn btn-outline" style="height: 48px; border-radius: 4px; border-color: rgba(255,255,255,0.3); color: white;">Reset</button>
+    </section>
+
+    <!-- Data Grid Table -->
+    <div class="table-wrapper" style="background: rgba(45,8,8,0.3); border: 1px solid var(--gray-border);">
+      <table>
+        <thead>
+          <tr>
+            <th>Profile ID</th>
+            <th>Photo</th>
+            <th>Candidate Details</th>
+            <th>Physique / Bio</th>
+            <th>Region / City</th>
+            <th>Requirements / Preferences</th>
+            <th>Contact Info</th>
+            <th>Website Vis.</th>
+          </tr>
+        </thead>
+        <tbody id="db-table-body">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/js/data-bank.js"></script>
+</body>
+</html>

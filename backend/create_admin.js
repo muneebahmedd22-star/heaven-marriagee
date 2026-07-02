@@ -13,24 +13,37 @@ async function createAdmin() {
     });
     console.log('Connected.');
 
-    const username = 'admin';
-    const password = 'admin123';
-
-    let admin = await Admin.findOne({ username });
+    let admin = await Admin.findOne({ username: 'admin' });
 
     if (admin) {
       console.log('Admin user found. Updating password to "admin123"...');
-      admin.password = password;
+      admin.password = 'admin123';
       await admin.save();
       console.log('Password updated successfully.');
     } else {
       console.log('Admin user not found. Creating default admin...');
       await Admin.create({
-        username,
-        password,
+        username: 'admin',
+        password: 'admin123',
         role: 'SuperAdmin'
       });
       console.log('Admin user created successfully.');
+    }
+
+    let staff = await Admin.findOne({ username: 'staff' });
+    if (staff) {
+      console.log('Staff user found. Updating password to "staff123"...');
+      staff.password = 'staff123';
+      await staff.save();
+      console.log('Staff password updated successfully.');
+    } else {
+      console.log('Staff user not found. Creating default staff...');
+      await Admin.create({
+        username: 'staff',
+        password: 'staff123',
+        role: 'Employee'
+      });
+      console.log('Staff user created successfully.');
     }
   } catch (error) {
     console.error('Error creating admin:', error.message);

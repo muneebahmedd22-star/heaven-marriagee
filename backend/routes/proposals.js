@@ -99,7 +99,7 @@ router.get('/', async (req, res) => {
       page
     } = req.query;
 
-    const query = {};
+    const query = { showOnPublicWebsite: true };
 
     if (gender) query.gender = gender;
     if (maritalStatus) query.maritalStatus = maritalStatus;
@@ -272,6 +272,100 @@ router.delete('/:id', protect, async (req, res) => {
 
     await proposal.deleteOne();
     res.json({ success: true, message: 'Proposal removed successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// @desc    Get all proposals for Admin/Data Bank (both public and private)
+// @route   GET /api/v1/proposals/admin
+// @access  Private
+router.get('/admin', protect, async (req, res) => {
+  try {
+    const {
+      gender,
+      maritalStatus,
+      education,
+      caste,
+      city,
+      religion,
+      isFeatured,
+      category,
+      region,
+      prefCity,
+      prefCaste,
+      prefEducation,
+      prefAge,
+      limit,
+      page
+    } = req.query;
+
+    const query = {};
+
+    if (gender) query.gender = gender;
+    if (maritalStatus) query.maritalStatus = maritalStatus;
+    if (education) query.education = new RegExp(education, 'i');
+    if (caste) query.caste = new RegExp(caste, 'i');
+    if (city) query.city = new RegExp(city, 'i');
+    if (religion) query.religion = new RegExp(religion, 'i');
+    if (isFeatured) query.isFeatured = isFeatured === 'true';
+    if (category) query.category = category;
+
+    if (region) {
+      const reg = region.trim().toLowerCase();
+      if (reg === 'lahore') {
+        query.city = /Lahore/i;
+      } else if (reg === 'karachi') {
+        query.city = /Karachi/i;
+      } else if (reg === 'islamabad/rawalpindi' || reg === 'islamabad' || reg === 'rawalpindi') {
+        query.city = { $in: [/Islamabad/i, /Rawalpindi/i] };
+      } else if (reg === 'kpk') {
+        query.$or = [{ city: /Peshawar/i }, { state: /KPK/i }, { state: /Khyber/i }];
+      } else if (reg === 'kashmir') {
+        query.$or = [{ city: /Muzaffarabad/i }, { city: /Kashmir/i }, { state: /Kashmir/i }];
+      } else if (reg === 'south punjab') {
+        query.city = { $in: [/Multan/i, /Bahawalpur/i, /Dera Ghazi Khan/i, /DG Khan/i] };
+      } else if (reg === 'punjab other cities') {
+        query.city = { $in: [/Faisalabad/i, /Sialkot/i, /Gujranwala/i, /Sargodha/i, /Gujrat/i] };
+      } else if (reg === 'international') {
+        query.country = { $ne: 'Pakistan' };
+      }
+    }
+
+    const pageNum = parseInt(page, 10) || 1;
+    const limitNum = parseInt(limit, 10) || 20;
+    const skip = (pageNum - 1) * limitNum;
+
+    const proposals = await Proposal.find(query)
+      .skip(skip)
+      .limit(limitNum)
+      .sort({ createdAt: -1 });
+
+    const total = await Proposal.countDocuments(query);
+
+    // Calculate compatibility if preference params exist
+    let responseData = proposals;
+    if (prefCity || prefCaste || prefEducation || prefAge) {
+      responseData = proposals.map(p => {
+        const score = calculateCompatibility(p, {
+          city: prefCity,
+          caste: prefCaste,
+          education: prefEducation,
+          age: prefAge
+        });
+        const obj = p.toObject();
+        obj.compatibilityScore = score;
+        return obj;
+      });
+      responseData.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
+    }
+
+    res.json({
+      success: true,
+      count: proposals.length,
+      total,
+      data: responseData,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

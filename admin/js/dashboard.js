@@ -129,6 +129,7 @@ function setupProposalsHandlers() {
     formData.append('state', document.getElementById('prop-state').value);
     formData.append('aboutMe', document.getElementById('prop-about').value);
     formData.append('isFeatured', document.getElementById('prop-featured').checked);
+    formData.append('showOnPublicWebsite', document.getElementById('prop-show-public').checked);
     formData.append('region', document.getElementById('prop-region').value);
     formData.append('category', document.getElementById('prop-category').value);
 
@@ -194,6 +195,7 @@ async function loadProposals() {
         <td>${p.city}</td>
         <td>${p.caste}</td>
         <td>${p.isFeatured ? '<span style="color: #C9972B; font-weight:bold;">Yes</span>' : 'No'}</td>
+        <td>${p.showOnPublicWebsite ? '<span style="color: #5cb85c; font-weight:bold;">Public</span>' : '<span style="color: #d9534f; font-weight:bold;">Private</span>'}</td>
         <td>
           <button class="btn btn-primary" onclick="editProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
           <button class="btn btn-danger" onclick="deleteProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem;">Delete</button>
@@ -208,8 +210,7 @@ async function loadProposals() {
 
 async function editProposal(id) {
   try {
-    const response = await fetch(`http://localhost:5000/api/v1/proposals/${id}`); // Direct detail get
-    const resObj = await response.json();
+    const resObj = await adminApi.getProposal(id);
     const p = resObj.data;
 
     currentEditingProposalId = p._id;
@@ -232,6 +233,7 @@ async function editProposal(id) {
     document.getElementById('prop-state').value = p.state || '';
     document.getElementById('prop-about').value = p.aboutMe || '';
     document.getElementById('prop-featured').checked = p.isFeatured || false;
+    document.getElementById('prop-show-public').checked = p.showOnPublicWebsite || false;
     document.getElementById('prop-region').value = p.region || '';
     document.getElementById('prop-category').value = p.category || '';
 

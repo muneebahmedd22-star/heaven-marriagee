@@ -53,8 +53,22 @@ const seedDefaultAdmin = async () => {
       await admin.save();
       console.log('Default Admin Account verified and password updated.');
     }
+
+    let staff = await Admin.findOne({ username: 'staff' });
+    if (!staff) {
+      await Admin.create({
+        username: 'staff',
+        password: 'staff123',
+        role: 'Employee'
+      });
+      console.log('Default Staff Account Created: staff / staff123');
+    } else {
+      staff.password = 'staff123';
+      await staff.save();
+      console.log('Default Staff Account verified and password updated.');
+    }
   } catch (error) {
-    console.error('Error seeding default admin:', error.message);
+    console.error('Error seeding default admin & staff:', error.message);
   }
 };
 
