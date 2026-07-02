@@ -23,13 +23,27 @@ router.get('/', async (req, res) => {
 // @route   POST /api/v1/employees
 // @access  Private (Admin only)
 router.post('/', async (req, res) => {
+  let adminId;
   try {
+    // Check if username is already taken
+    let existingAdmin = await Admin.findOne({ username: req.body.username });
+    if (existingAdmin) {
+      const linkedEmployee = await Employee.findOne({ adminId: existingAdmin._id });
+      if (!linkedEmployee) {
+        // Ghost document from previous failed creation. Delete it.
+        await Admin.findByIdAndDelete(existingAdmin._id);
+      } else {
+        return res.status(400).json({ success: false, message: 'Username is already taken by another employee.' });
+      }
+    }
+
     // 1. Create matching Admin account first
     const admin = await Admin.create({
       username: req.body.username,
       password: req.body.password,
       role: 'Employee'
     });
+    adminId = admin._id;
 
     // 2. Create Employee profile
     const employeeData = { ...req.body };
@@ -38,6 +52,10 @@ router.post('/', async (req, res) => {
 
     res.status(201).json({ success: true, data: employee });
   } catch (error) {
+    // Cleanup if employee creation failed but admin was created
+    if (adminId) {
+      await Admin.findByIdAndDelete(adminId);
+    }
     res.status(500).json({ success: false, message: error.message });
   }
 });
