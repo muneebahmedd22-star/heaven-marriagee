@@ -1048,3 +1048,56 @@ body {
     align-self: center;
   }
 }
+
+/* Custom Footer Additions */
+.social-icons-wrapper {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.social-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.social-icon-link:hover {
+  background-color: var(--accent-color);
+  color: #1a0000;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 4px 10px rgba(201, 151, 43, 0.3);
+}
+
+.trust-badges-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 20px 10px;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  margin: 30px auto 0 auto;
+  max-width: 1200px;
+}
+
+.trust-badge-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #e6dfd3;
+  font-weight: 500;
+}
+
+.trust-badge-item svg {
+  color: var(--accent-color);
+  flex-shrink: 0;
+}
