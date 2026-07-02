@@ -22,8 +22,11 @@ const adminApi = {
     if (response.status === 401) {
       localStorage.removeItem('hmb_admin_token');
       localStorage.removeItem('hmb_admin_user');
-      window.location.href = 'index.html'; // Redirect to login page
-      throw new Error('Session expired. Please login again.');
+      const currentPath = window.location.pathname;
+      if (!currentPath.endsWith('index.html') && !currentPath.endsWith('/admin') && !currentPath.endsWith('/admin/')) {
+        window.location.href = 'index.html'; // Redirect to login page
+      }
+      throw new Error('Invalid credentials or session expired.');
     }
     const data = await response.json();
     if (!response.ok) {

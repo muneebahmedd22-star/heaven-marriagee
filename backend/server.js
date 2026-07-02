@@ -38,14 +38,18 @@ app.get('/', (req, res) => {
 // Auto-seed a default SuperAdmin if DB is empty
 const seedDefaultAdmin = async () => {
   try {
-    const adminCount = await Admin.countDocuments();
-    if (adminCount === 0) {
+    let admin = await Admin.findOne({ username: 'admin' });
+    if (!admin) {
       await Admin.create({
         username: 'admin',
         password: 'admin123',
         role: 'SuperAdmin'
       });
       console.log('Default Admin Account Created: admin / admin123');
+    } else {
+      admin.password = 'admin123';
+      await admin.save();
+      console.log('Default Admin Account verified and password updated.');
     }
   } catch (error) {
     console.error('Error seeding default admin:', error.message);
