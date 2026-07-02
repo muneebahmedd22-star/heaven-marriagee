@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (targetTab === 'proposals') loadProposals();
       if (targetTab === 'employees') loadEmployees();
       if (targetTab === 'inquiries') loadInquiries();
+      if (targetTab === 'registrations') loadRegistrations();
       if (targetTab === 'overview') loadOverview();
     });
   });
@@ -53,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. Inquiries CRUD Handlers
   setupInquiriesHandlers();
+
+  // 7. Registrations CRUD Handlers
+  setupRegistrationsHandlers();
 });
 
 // --- Overview Dashboard stats ---
@@ -61,10 +65,12 @@ async function loadOverview() {
     const proposalsResp = await adminApi.getProposals();
     const employeesResp = await adminApi.getEmployees();
     const inquiriesResp = await adminApi.getInquiries();
+    const registrationsResp = await adminApi.getRegistrations();
 
     document.getElementById('stat-total-proposals').textContent = proposalsResp.total || 0;
     document.getElementById('stat-total-employees').textContent = employeesResp.count || 0;
     document.getElementById('stat-total-inquiries').textContent = inquiriesResp.count || 0;
+    document.getElementById('stat-total-registrations').textContent = registrationsResp.count || 0;
     
     // Recent list preview inside overview
     const recentGrid = document.getElementById('recent-activity-list');
@@ -456,3 +462,129 @@ window.editEmployee = editEmployee;
 window.deleteEmployee = deleteEmployee;
 window.updateInquiryStatus = updateInquiryStatus;
 window.deleteInquiry = deleteInquiry;
+
+// --- Registrations CRUD Operations ---
+async function loadRegistrations() {
+  const tbody = document.getElementById('registrations-table-body');
+  if (!tbody) return;
+
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Loading registrations...</td></tr>';
+
+  try {
+    const response = await adminApi.getRegistrations();
+    const registrations = response.data || [];
+
+    if (registrations.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--light-text);">No registrations submitted yet.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = registrations.map(reg => {
+      const dateFormatted = new Date(reg.createdAt).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+      const birthFormatted = new Date(reg.dob).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+      const photoHtml = reg.photoUrl 
+        ? `<img src="${reg.photoUrl}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-color);">`
+        : '<span style="font-size: 0.8rem; color: var(--light-text);">No photo</span>';
+
+      const statusBadgeColor = reg.status === 'Converted' ? '#5cb85c' : '#f0ad4e';
+
+      const actionButtons = reg.status === 'Pending'
+        ? `<button class="btn" style="background-color: var(--accent-color); color: #1A0000; padding: 4px 8px; font-size: 0.75rem; font-weight:700;" onclick="openConvertModal('${reg._id}')">Convert</button>
+           <button class="btn btn-outline" style="border-color: #d9534f; color: #d9534f; padding: 4px 8px; font-size: 0.75rem;" onclick="deleteRegistration('${reg._id}')">Delete</button>`
+        : `<button class="btn btn-outline" style="border-color: #d9534f; color: #d9534f; padding: 4px 8px; font-size: 0.75rem;" onclick="deleteRegistration('${reg._id}')">Delete</button>`;
+
+      return `
+        <tr>
+          <td>${dateFormatted}</td>
+          <td>${photoHtml}</td>
+          <td><strong>${reg.fullName}</strong><br><span style="font-size: 0.8rem; color: var(--light-text);">${reg.phone}</span></td>
+          <td>
+            <span style="font-size: 0.8rem; line-height:1.4; display:block;">
+              Gender: ${reg.gender} (Prefers: ${reg.lookingFor})<br>
+              DOB: ${birthFormatted}<br>
+              Caste: ${reg.caste} | Status: ${reg.maritalStatus}<br>
+              Edu: ${reg.education} | Prof: ${reg.profession || '-'}
+            </span>
+          </td>
+          <td><strong>${reg.region}</strong><br><span style="font-size: 0.8rem; color: var(--light-text);">${reg.city}</span></td>
+          <td><div style="max-width: 200px; max-height: 80px; overflow-y: auto; font-size: 0.8rem; text-align: left; line-height:1.3;">${reg.partnerPreferences || '-'}</div></td>
+          <td><span class="badge" style="background: ${statusBadgeColor}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">${reg.status}</span></td>
+          <td>
+            <div style="display: flex; gap: 5px;">
+              ${actionButtons}
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } catch (error) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: red;">Error: ${error.message}</td></tr>`;
+  }
+}
+
+function setupRegistrationsHandlers() {
+  const modal = document.getElementById('convert-modal');
+  const closeModalBtn = document.getElementById('convert-modal-close');
+  const convertForm = document.getElementById('convert-form');
+
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+  }
+
+  if (convertForm) {
+    convertForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('convert-registration-id').value;
+      const category = document.getElementById('convert-category').value;
+      const isFeatured = document.getElementById('convert-featured').checked;
+
+      const submitBtn = convertForm.querySelector('button[type="submit"]');
+      submitBtn.textContent = 'Converting...';
+      submitBtn.disabled = true;
+
+      try {
+        await adminApi.convertRegistration(id, { category, isFeatured });
+        alert('Registration successfully converted to match proposal profile!');
+        modal.classList.remove('active');
+        loadRegistrations();
+        loadOverview();
+      } catch (error) {
+        alert('Error: ' + error.message);
+      } finally {
+        submitBtn.textContent = 'Confirm & Convert';
+        submitBtn.disabled = false;
+      }
+    });
+  }
+}
+
+function openConvertModal(id) {
+  const modal = document.getElementById('convert-modal');
+  document.getElementById('convert-registration-id').value = id;
+  document.getElementById('convert-featured').checked = false;
+  modal.classList.add('active');
+}
+
+async function deleteRegistration(id) {
+  if (confirm('Are you sure you want to dismiss/delete this user registration?')) {
+    try {
+      await adminApi.deleteRegistration(id);
+      loadRegistrations();
+      loadOverview();
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  }
+}
+
+// Global mappings
+window.openConvertModal = openConvertModal;
+window.deleteRegistration = deleteRegistration;
+window.loadRegistrations = loadRegistrations;
+window.setupRegistrationsHandlers = setupRegistrationsHandlers;

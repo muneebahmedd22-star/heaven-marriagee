@@ -151,5 +151,30 @@ const adminApi = {
       headers: this.getHeaders()
     });
     return this.handleResponse(response);
+  },
+
+  // CRUD Registrations
+  async getRegistrations() {
+    const response = await fetch(`${API_BASE_URL}/registrations`, {
+      headers: this.getHeaders()
+    });
+    return this.handleResponse(response);
+  },
+
+  async convertRegistration(id, conversionData) {
+    const response = await fetch(`${API_BASE_URL}/registrations/${id}/convert`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(conversionData)
+    });
+    return this.handleResponse(response);
+  },
+
+  async deleteRegistration(id) {
+    const response = await fetch(`${API_BASE_URL}/registrations/${id}`, {
+      method: 'DELETE',
+      headers: this.getHeaders()
+    });
+    return this.handleResponse(response);
   }
 };

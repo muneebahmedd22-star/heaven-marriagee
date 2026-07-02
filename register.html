@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Heaven Marriage Bureau</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .register-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--gray-border);
+      box-shadow: var(--shadow-md);
+    }
+    .register-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+    .register-form .full-width {
+      grid-column: 1 / -1;
+    }
+    .register-form .form-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .register-form label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+    .register-form input,
+    .register-form select,
+    .register-form textarea {
+      padding: 12px 16px;
+      border: 1px solid var(--accent-color);
+      border-radius: 4px;
+      background-color: var(--bg-color);
+      color: var(--dark-text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+    .register-form input:focus,
+    .register-form select:focus,
+    .register-form textarea:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 8px rgba(107, 0, 0, 0.15);
+    }
+    .register-form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .success-banner {
+      display: none;
+      background-color: #d4edda;
+      color: #155724;
+      padding: 25px;
+      border-radius: var(--border-radius);
+      border: 1px solid #c3e6cb;
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .success-banner h3 {
+      color: #155724;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 768px) {
+      .register-form {
+        grid-template-columns: 1fr;
+      }
+      .register-container {
+        padding: 20px;
+        margin: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum, I would like to inquire about matchmaking services on Heaven Marriage Bureau." class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp">
+    💬
+  </a>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar" id="main-nav">
+      <a href="index.html" class="logo" id="nav-logo">
+        <img src="logo.jpg" alt="Heaven Marriage Bureau Logo">
+        Heaven <span>Marriage Bureau</span>
+      </a>
+      <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="proposals.html">Proposals</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="register.html" class="btn btn-accent" style="padding: 8px 18px; border-radius: 4px; font-weight: 700; color: #1A0000;">Register Now</a></li>
+        <li>
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Page Banner -->
+  <section class="hero" style="min-height: 40vh; padding: 60px 20px;">
+    <div class="royal-flourish" style="margin-bottom: 10px;"></div>
+    <h1>Matchmaking Registration</h1>
+    <p>Submit your profile details below. Our matchmakers will verify your credentials and contact you within 24 hours.</p>
+  </section>
+
+  <!-- Main Content Form Section -->
+  <section class="section scroll-reveal" style="padding-top: 40px;">
+    
+    <!-- Success Message Banner -->
+    <div id="success-banner" class="success-banner">
+      <h3>✓ Registration Successful!</h3>
+      <p>Your details have been submitted. A Heaven Matchmaking Consultant will reach out to you on WhatsApp or Phone shortly to verify your profile.</p>
+    </div>
+
+    <!-- Error Message Alert -->
+    <div id="error-alert" style="display: none; background-color: #f2dede; color: #a94442; padding: 15px; border-radius: 4px; border: 1px solid #ebccd1; text-align: center; margin-bottom: 30px;">
+      An error occurred. Please check all fields and try again.
+    </div>
+
+    <div class="register-container" id="form-container">
+      <form class="register-form" id="matrimonial-registration-form">
+        
+        <!-- Full Name -->
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" name="fullName" required placeholder="e.g. Muhammad Ahmed">
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+          <label for="reg-phone">Phone / WhatsApp Number</label>
+          <input type="text" id="reg-phone" name="phone" required placeholder="e.g. +92 300 1234567">
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="reg-email">Email Address (Optional)</label>
+          <input type="email" id="reg-email" name="email" placeholder="e.g. ahmed@example.com">
+        </div>
+
+        <!-- Address/City -->
+        <div class="form-group">
+          <label for="reg-city">Address / City</label>
+          <input type="text" id="reg-city" name="city" required placeholder="e.g. Gulberg, Lahore">
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group">
+          <label for="reg-gender">Gender</label>
+          <select id="reg-gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <!-- Looking For -->
+        <div class="form-group">
+          <label for="reg-looking">Looking For</label>
+          <select id="reg-looking" name="lookingFor" required>
+            <option value="">Select Option</option>
+            <option value="Female">Bride (Female)</option>
+            <option value="Male">Groom (Male)</option>
+          </select>
+        </div>
+
+        <!-- DOB -->
+        <div class="form-group">
+          <label for="reg-dob">Date of Birth</label>
+          <input type="date" id="reg-dob" name="dob" required>
+        </div>
+
+        <!-- Marital Status -->
+        <div class="form-group">
+          <label for="reg-status">Marital Status</label>
+          <select id="reg-status" name="maritalStatus" required>
+            <option value="">Select Marital Status</option>
+            <option value="Never Married">Never Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+            <option value="Awaiting Divorce">Awaiting Divorce</option>
+          </select>
+        </div>
+
+        <!-- Caste -->
+        <div class="form-group">
+          <label for="reg-caste">Caste / Clan</label>
+          <input type="text" id="reg-caste" name="caste" required placeholder="e.g. Rajput, Awan, Syed">
+        </div>
+
+        <!-- Education -->
+        <div class="form-group">
+          <label for="reg-edu">Education Level</label>
+          <select id="reg-edu" name="education" required>
+            <option value="">Select Education</option>
+            <option value="Bachelors">Bachelors (B.Sc / B.A / BBA)</option>
+            <option value="Masters">Masters (M.Sc / MBA / M.A)</option>
+            <option value="PhD">PhD / Doctorate</option>
+            <option value="MBBS / BDS">MBBS / BDS</option>
+            <option value="DPT / PharmD">DPT / PharmD</option>
+            <option value="CA / ACCA">CA / ACCA</option>
+            <option value="Intermediate">Intermediate (F.Sc / A-Level)</option>
+            <option value="Metric">Matric / O-Level</option>
+          </select>
+        </div>
+
+        <!-- Profession -->
+        <div class="form-group">
+          <label for="reg-profession">Profession / Occupation</label>
+          <input type="text" id="reg-profession" name="profession" placeholder="e.g. Software Engineer, Business Owner">
+        </div>
+
+        <!-- Region -->
+        <div class="form-group">
+          <label for="reg-region">Region / City Filter</label>
+          <select id="reg-region" name="region" required>
+            <option value="">Select Region</option>
+            <option value="Lahore">Lahore</option>
+            <option value="Karachi">Karachi</option>
+            <option value="Islamabad/Rawalpindi">Islamabad / Rawalpindi</option>
+            <option value="KPK">KPK</option>
+            <option value="Kashmir">Kashmir</option>
+            <option value="South Punjab">South Punjab (Multan, Bahawalpur...)</option>
+            <option value="Punjab Other Cities">Punjab Other Cities (Faisalabad, Sialkot...)</option>
+            <option value="International">International (UK, USA, UAE...)</option>
+          </select>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="form-group full-width">
+          <label for="reg-photo">Upload Image Photo (Optional)</label>
+          <input type="file" id="reg-photo" name="photo" accept="image/*" style="border: 1px dashed var(--accent-color); background: none; cursor: pointer;">
+        </div>
+
+        <!-- Partner Requirements -->
+        <div class="form-group full-width">
+          <label for="reg-prefs">Partner Requirements / Preferences</label>
+          <textarea id="reg-prefs" name="partnerPreferences" placeholder="Detail the age range, education, caste, or city requirements you seek for your life partner..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary full-width" style="height: 50px; border-radius: 4px; font-weight: 700; margin-top: 15px;">Submit Registration</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Heaven Matrimonials. All rights reserved.</p>
+      <p>Designed with absolute respect & confidentiality.</p>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const regForm = document.getElementById('matrimonial-registration-form');
+      const formContainer = document.getElementById('form-container');
+      const successBanner = document.getElementById('success-banner');
+      const errorAlert = document.getElementById('error-alert');
+
+      if (regForm) {
+        regForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          errorAlert.style.display = 'none';
+
+          const submitBtn = regForm.querySelector('button[type="submit"]');
+          submitBtn.textContent = 'Submitting Profile...';
+          submitBtn.disabled = true;
+
+          // Assemble Multipart FormData
+          const formData = new FormData();
+          formData.append('fullName', document.getElementById('reg-name').value);
+          formData.append('phone', document.getElementById('reg-phone').value);
+          formData.append('email', document.getElementById('reg-email').value);
+          formData.append('city', document.getElementById('reg-city').value);
+          formData.append('gender', document.getElementById('reg-gender').value);
+          formData.append('lookingFor', document.getElementById('reg-looking').value);
+          formData.append('dob', document.getElementById('reg-dob').value);
+          formData.append('maritalStatus', document.getElementById('reg-status').value);
+          formData.append('caste', document.getElementById('reg-caste').value);
+          formData.append('education', document.getElementById('reg-edu').value);
+          formData.append('profession', document.getElementById('reg-profession').value);
+          formData.append('region', document.getElementById('reg-region').value);
+          formData.append('partnerPreferences', document.getElementById('reg-prefs').value);
+
+          const photoInput = document.getElementById('reg-photo');
+          if (photoInput.files && photoInput.files[0]) {
+            formData.append('photo', photoInput.files[0]);
+          }
+
+          // Production API Server URL resolving
+          const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:'
+            ? 'http://localhost:5000/api/v1/registrations'
+            : 'https://heaven-marriagee.onrender.com/api/v1/registrations';
+
+          try {
+            const response = await fetch(API_URL, {
+              method: 'POST',
+              body: formData // Body is FormData (Multer parses on backend)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+              // Show Success
+              formContainer.style.display = 'none';
+              successBanner.style.display = 'block';
+              window.scrollTo({ top: 150, behavior: 'smooth' });
+            } else {
+              throw new Error(result.message || 'Submission failed');
+            }
+          } catch (error) {
+            errorAlert.textContent = 'Error: ' + error.message;
+            errorAlert.style.display = 'block';
+            submitBtn.textContent = 'Submit Registration';
+            submitBtn.disabled = false;
+            window.scrollTo({ top: 150, behavior: 'smooth' });
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

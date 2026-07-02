@@ -23,12 +23,14 @@ const auth = require('./routes/auth');
 const proposals = require('./routes/proposals');
 const employees = require('./routes/employees');
 const inquiries = require('./routes/inquiries');
+const registrations = require('./routes/registrations');
 
 // Mount routers
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/proposals', proposals);
 app.use('/api/v1/employees', employees);
 app.use('/api/v1/inquiries', inquiries);
+app.use('/api/v1/registrations', registrations);
 
 // Root route
 app.get('/', (req, res) => {
