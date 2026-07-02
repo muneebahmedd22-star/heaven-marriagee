@@ -9,8 +9,22 @@
   <script>
     (function() {
       const token = localStorage.getItem('hmb_admin_token');
+      const userStr = localStorage.getItem('hmb_admin_user');
       if (!token) {
         window.location.replace('/admin/index.html');
+        return;
+      }
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          if (user.role === 'Employee') {
+            localStorage.removeItem('hmb_admin_token');
+            localStorage.removeItem('hmb_admin_user');
+            window.location.replace('/admin/index.html');
+          }
+        } catch(e) {
+          window.location.replace('/admin/index.html');
+        }
       }
     })();
   </script>
@@ -360,6 +374,15 @@
           <label for="emp-salary">Monthly Salary (PKR)</label>
           <input type="number" id="emp-salary">
         </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="emp-username">Login Username</label>
+          <input type="text" id="emp-username" required placeholder="e.g. ali_staff">
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="emp-password">Login Password</label>
+          <input type="password" id="emp-password" placeholder="Enter login password">
+        </div>
+
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="emp-status">Employment Status</label>
           <select id="emp-status">

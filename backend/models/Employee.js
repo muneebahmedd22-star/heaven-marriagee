@@ -39,6 +39,20 @@ const EmployeeSchema = new mongoose.Schema({
     enum: ['Active', 'Inactive'],
     default: 'Active',
   },
+  username: {
+    type: String,
+    required: [true, 'Please add a login username'],
+    unique: true,
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: [true, 'Please add a password'],
+  },
+  adminId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Admin',
+  },
 });
 
 // Auto-increment EmployeeId (format: HMB-EMP-001)

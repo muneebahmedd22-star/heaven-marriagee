@@ -296,14 +296,28 @@ function setupEmployeesHandlers() {
     const submitBtn = employeeForm.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
 
+    const username = document.getElementById('emp-username').value;
+    const password = document.getElementById('emp-password').value;
+
+    if (!currentEditingEmployeeId && !password) {
+      alert('Password is required for new employees!');
+      submitBtn.disabled = false;
+      return;
+    }
+
     const empData = {
       name: document.getElementById('emp-name').value,
       role: document.getElementById('emp-role').value,
       email: document.getElementById('emp-email').value,
       phone: document.getElementById('emp-phone').value,
       salary: parseFloat(document.getElementById('emp-salary').value) || 0,
-      status: document.getElementById('emp-status').value
+      status: document.getElementById('emp-status').value,
+      username: username
     };
+
+    if (password) {
+      empData.password = password;
+    }
 
     try {
       if (currentEditingEmployeeId) {
@@ -361,11 +375,7 @@ async function loadEmployees() {
 
 async function editEmployee(id) {
   try {
-    const token = localStorage.getItem('hmb_admin_token');
-    const response = await fetch(`http://localhost:5000/api/v1/employees`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const resObj = await response.json();
+    const resObj = await adminApi.getEmployees();
     const emp = resObj.data.find(e => e._id === id);
 
     if (!emp) return;
@@ -378,6 +388,8 @@ async function editEmployee(id) {
     document.getElementById('emp-email').value = emp.email;
     document.getElementById('emp-phone').value = emp.phone || '';
     document.getElementById('emp-salary').value = emp.salary || '';
+    document.getElementById('emp-username').value = emp.username || '';
+    document.getElementById('emp-password').value = '';
     document.getElementById('emp-status').value = emp.status;
 
     document.getElementById('employee-modal').classList.add('active');

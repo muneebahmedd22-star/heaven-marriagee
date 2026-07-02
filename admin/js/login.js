@@ -23,6 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         await adminApi.login(usernameInput, passwordInput);
+        const userStr = localStorage.getItem('hmb_admin_user');
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user.role === 'Employee') {
+            localStorage.removeItem('hmb_admin_token');
+            localStorage.removeItem('hmb_admin_user');
+            throw new Error('Access Denied: Employees must use the Data Bank portal at /data-bank.');
+          }
+        }
         window.location.href = '/admin/dashboard.html';
       } catch (error) {
         errorMsg.textContent = error.message || 'Invalid username or password';

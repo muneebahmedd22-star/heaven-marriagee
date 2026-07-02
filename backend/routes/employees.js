@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Employee = require('../models/Employee');
+const Admin = require('../models/Admin');
 const { protect } = require('../middleware/auth');
 
 // Apply protection to all employee routes
@@ -23,7 +24,18 @@ router.get('/', async (req, res) => {
 // @access  Private (Admin only)
 router.post('/', async (req, res) => {
   try {
-    const employee = await Employee.create(req.body);
+    // 1. Create matching Admin account first
+    const admin = await Admin.create({
+      username: req.body.username,
+      password: req.body.password,
+      role: 'Employee'
+    });
+
+    // 2. Create Employee profile
+    const employeeData = { ...req.body };
+    employeeData.adminId = admin._id;
+    const employee = await Employee.create(employeeData);
+
     res.status(201).json({ success: true, data: employee });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -38,6 +50,20 @@ router.put('/:id', async (req, res) => {
     let employee = await Employee.findById(req.params.id);
     if (!employee) {
       return res.status(404).json({ success: false, message: 'Employee not found' });
+    }
+
+    // Sync admin credentials if updated
+    if (employee.adminId) {
+      if (req.body.password) {
+        const adminDoc = await Admin.findById(employee.adminId);
+        if (adminDoc) {
+          adminDoc.password = req.body.password;
+          if (req.body.username) adminDoc.username = req.body.username;
+          await adminDoc.save();
+        }
+      } else if (req.body.username) {
+        await Admin.findByIdAndUpdate(employee.adminId, { username: req.body.username });
+      }
     }
 
     employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
@@ -59,6 +85,11 @@ router.delete('/:id', async (req, res) => {
     const employee = await Employee.findById(req.params.id);
     if (!employee) {
       return res.status(404).json({ success: false, message: 'Employee not found' });
+    }
+
+    // Delete associated Admin account
+    if (employee.adminId) {
+      await Admin.findByIdAndDelete(employee.adminId);
     }
 
     await employee.deleteOne();
