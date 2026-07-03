@@ -4,8 +4,9 @@
   --primary-color: #6B0000;      /* Royal Maroon */
   --primary-gradient: linear-gradient(135deg, #6B0000 0%, #1A0000 100%);
   --accent-color: #D4AF37;       /* Rich Gold */
-  --accent-light: #e6cb7b;
-  --accent-dark: #aa851c;
+  --accent-light: #FFE082;       /* Warm Soft Gold */
+  --accent-dark: #B8860B;        /* Deep Gold / Ochre */
+  --accent-gradient: linear-gradient(135deg, #FFE082 0%, #D4AF37 50%, #B8860B 100%); /* Calibrated Metallic Gold */
   --bg-color: #FAF7F2;           /* Off White / Cream */
   --white: #ffffff;
   --dark-text: #1A1A1A;          /* Charcoal */
@@ -111,10 +112,11 @@ button, .btn {
 }
 
 .btn-accent {
-  background: var(--accent-color);
+  background: var(--accent-gradient);
   color: #1A0000;
   border: 1px solid var(--accent-color);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+  font-weight: 700;
 }
 
 .btn-accent:hover {
