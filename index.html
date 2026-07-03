@@ -52,24 +52,24 @@
       opacity: 0.9;
     }
     
-    /* City Slider Container */
+    /* Neat City Links Card Overlay */
     .city-slider-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
       max-width: 1200px;
-      margin: 40px auto 20px auto;
-      padding: 0 20px;
+      margin: -60px auto 40px auto;
+      padding: 30px 40px;
       position: relative;
-      gap: 15px;
+      z-index: 10;
+      border: 1px solid var(--border-muted);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .city-links-slider-wrapper {
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-behavior: smooth;
       width: 100%;
-      display: flex;
-      align-items: center;
+      overflow-x: auto;
       scrollbar-width: none;
     }
     .city-links-slider-wrapper::-webkit-scrollbar {
@@ -77,10 +77,10 @@
     }
     .city-links-row {
       display: flex;
-      gap: 30px;
-      padding: 20px 10px;
+      justify-content: space-around;
+      gap: 20px;
       align-items: center;
-      flex-wrap: nowrap;
+      width: 100%;
     }
     .city-grid-card {
       display: flex;
@@ -88,74 +88,32 @@
       align-items: center;
       text-align: center;
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      width: 150px;
-      flex-shrink: 0;
+      transition: all 0.3s ease;
+      min-width: 120px;
     }
     .city-grid-icon-circle {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #500000;
-      border: 2px solid var(--accent-color);
-      color: var(--accent-color);
+      height: 60px;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 12px;
+      color: var(--primary-color);
+      margin-bottom: 15px;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
     .city-grid-card:hover .city-grid-icon-circle {
-      background-color: var(--accent-color);
-      color: #1a0000;
+      color: var(--accent-color);
       transform: translateY(-5px) scale(1.08);
-      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
     }
     .city-grid-label {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      color: var(--primary-color);
+      color: var(--dark-text);
       transition: all 0.3s ease;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
     .city-grid-card:hover .city-grid-label {
       color: var(--accent-color);
-      transform: scale(1.03);
-    }
-    .city-slider-arrow {
-      background: #500000;
-      border: 1px solid var(--accent-color);
-      color: var(--accent-color);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 10;
-      flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      outline: none;
-      padding: 0;
-    }
-    .city-slider-arrow svg {
-      stroke: var(--accent-color) !important;
-      fill: none !important;
-      width: 20px;
-      height: 20px;
-      display: block;
-    }
-    .city-slider-arrow:hover {
-      background-color: var(--accent-color);
-      color: #120000;
-      transform: scale(1.1);
-      box-shadow: 0 4px 15px rgba(212,175,55,0.4);
-    }
-    .city-slider-arrow:hover svg {
-      stroke: #120000 !important;
     }
   </style>
 </head>
@@ -255,12 +213,8 @@
     </div>
   </section>
 
-  <!-- Quick City Links Slider -->
+  <!-- Quick City Links Card Overlay -->
   <div class="city-slider-container">
-    <button class="city-slider-arrow left" id="slide-left-btn" aria-label="Slide Left">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    
     <div class="city-links-slider-wrapper">
       <div class="city-links-row" id="city-links-row">
         <!-- 1. Lahore Profiles -->
@@ -380,10 +334,6 @@
         </a>
       </div>
     </div>
-    
-    <button class="city-slider-arrow right" id="slide-right-btn" aria-label="Slide Right">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-    </button>
   </div>
 
   <!-- Gold section divider -->
@@ -569,32 +519,6 @@
   <script src="js/api.js"></script>
   <script src="js/compatibility.js"></script>
   <script src="js/main.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const sliderWrapper = document.querySelector(".city-links-slider-wrapper");
-      const btnLeft = document.getElementById("slide-left-btn");
-      const btnRight = document.getElementById("slide-right-btn");
-      
-      if (sliderWrapper && btnLeft && btnRight) {
-        btnRight.addEventListener("click", () => {
-          const maxScroll = sliderWrapper.scrollWidth - sliderWrapper.clientWidth;
-          if (sliderWrapper.scrollLeft >= maxScroll - 5) {
-            sliderWrapper.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            sliderWrapper.scrollBy({ left: 250, behavior: 'smooth' });
-          }
-        });
-        
-        btnLeft.addEventListener("click", () => {
-          if (sliderWrapper.scrollLeft <= 5) {
-            const maxScroll = sliderWrapper.scrollWidth - sliderWrapper.clientWidth;
-            sliderWrapper.scrollTo({ left: maxScroll, behavior: 'smooth' });
-          } else {
-            sliderWrapper.scrollBy({ left: -250, behavior: 'smooth' });
-          }
-        });
-      }
-    });
-  </script>
+
 </body>
 </html>
