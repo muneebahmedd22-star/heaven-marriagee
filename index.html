@@ -77,29 +77,50 @@
     }
     .city-links-row {
       display: flex;
-      gap: 20px;
-      white-space: nowrap;
-      padding: 10px 0;
+      gap: 30px;
+      padding: 20px 10px;
+      align-items: center;
     }
-    .city-pill {
-      background-color: #500000;
-      color: var(--accent-color);
-      border: 1px solid var(--accent-color);
-      padding: 12px 30px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 0.95rem;
+    .city-grid-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      width: 150px;
       flex-shrink: 0;
-      display: inline-block;
     }
-    .city-pill:hover {
+    .city-grid-icon-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #500000;
+      border: 2px solid var(--accent-color);
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    .city-grid-card:hover .city-grid-icon-circle {
       background-color: var(--accent-color);
       color: #1a0000;
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+      transform: translateY(-5px) scale(1.08);
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+    }
+    .city-grid-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+    .city-grid-card:hover .city-grid-label {
+      color: var(--accent-color);
+      transform: scale(1.03);
     }
     .city-slider-arrow {
       background: #120000;
@@ -230,13 +251,94 @@
     
     <div class="city-links-slider-wrapper">
       <div class="city-links-row" id="city-links-row">
-        <a href="/proposals?gender=Female&city=Lahore&prefCity=Lahore" class="city-pill">Lahore Profiles</a>
-        <a href="/proposals?gender=Female&city=Karachi&prefCity=Karachi" class="city-pill">Karachi Profiles</a>
-        <a href="/proposals?gender=Female&city=Islamabad&prefCity=Islamabad" class="city-pill">Islamabad Profiles</a>
-        <a href="/proposals?gender=Female&city=Rawalpindi&prefCity=Rawalpindi" class="city-pill">Rawalpindi Profiles</a>
-        <a href="/proposals?gender=Female&city=Faisalabad&prefCity=Faisalabad" class="city-pill">Faisalabad Profiles</a>
-        <a href="/proposals?gender=Female&city=Multan&prefCity=Multan" class="city-pill">Multan Profiles</a>
-        <a href="/proposals?gender=Female&city=Peshawar&prefCity=Peshawar" class="city-pill">Peshawar Profiles</a>
+        <!-- South Punjab / Couple Profile -->
+        <a href="/proposals?gender=Female&city=Multan&prefCity=Multan" class="city-grid-card">
+          <div class="city-grid-icon-circle">
+            <svg viewBox="0 0 64 64" width="42" height="42" fill="currentColor">
+              <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="2.5"/>
+              <circle cx="25" cy="27" r="4"/>
+              <path d="M18 45c0-4 3-6 7-6s7 2 7 6H18z"/>
+              <circle cx="39" cy="27" r="4"/>
+              <path d="M32 45c0-4 3-6 7-6s7 2 7 6H32z"/>
+              <path d="M32 17c0 0-1-1.5-2-2s-2.5 0-2.5 2c0 2 2.5 4 4.5 5.5c2-1.5 4.5-3.5 4.5-5.5s-1.5-2.5-2.5-2s-2 2-2 2z" fill="var(--accent-color)"/>
+            </svg>
+          </div>
+          <div class="city-grid-label">South Punjab</div>
+        </a>
+
+        <!-- Other Cities -->
+        <a href="/proposals?gender=Female&city=Faisalabad&prefCity=Faisalabad" class="city-grid-card">
+          <div class="city-grid-icon-circle">
+            <svg viewBox="0 0 64 64" width="42" height="42" fill="currentColor">
+              <path d="M6 52h52v2H6z"/>
+              <path d="M12 32h8v20h-8z"/>
+              <path d="M22 18h10v34H22z"/>
+              <path d="M34 26h8v26h-8z"/>
+              <path d="M44 36h8v16h-8z"/>
+              <path d="M25 24h4v4h-4zm0 8h4v4h-4zm0 8h4v4h-4z" fill="#500000"/>
+            </svg>
+          </div>
+          <div class="city-grid-label">Other Cities</div>
+        </a>
+
+        <!-- International Profiles -->
+        <a href="/proposals?gender=Female&city=Overseas" class="city-grid-card">
+          <div class="city-grid-icon-circle">
+            <svg viewBox="0 0 64 64" width="42" height="42" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="32" cy="32" r="20"/>
+              <path d="M12 32h40"/>
+              <path d="M32 12a30 30 0 0 0 0 40 30 30 0 0 0 0-40"/>
+              <path d="M42 20l5-3-1 4 4 1-5 3v3l-3 1v-3l-2-2-5 3v1l-2 1v-3z" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="city-grid-label">International</div>
+        </a>
+
+        <!-- Lahore Profiles (Minar-e-Pakistan) -->
+        <a href="/proposals?gender=Female&city=Lahore&prefCity=Lahore" class="city-grid-card">
+          <div class="city-grid-icon-circle">
+            <svg viewBox="0 0 64 64" width="42" height="42" fill="currentColor">
+              <path d="M12 54h40v2H12z"/>
+              <path d="M18 50h28v4H18z"/>
+              <path d="M24 42h16v8H24z"/>
+              <path d="M26 34h12v8H26z"/>
+              <path d="M29 16h6v18h-6z"/>
+              <path d="M27 20h10v2H27z"/>
+              <path d="M27 12h10v2H27z"/>
+              <path d="M30 7c0 3 2 5 2 5s2-2 2-5h-4z"/>
+            </svg>
+          </div>
+          <div class="city-grid-label">Lahore Profiles</div>
+        </a>
+
+        <!-- Islamabad / Pindi Profiles (Faisal Mosque) -->
+        <a href="/proposals?gender=Female&city=Islamabad&prefCity=Islamabad" class="city-grid-card">
+          <div class="city-grid-icon-circle">
+            <svg viewBox="0 0 64 64" width="42" height="42" fill="currentColor">
+              <path d="M8 50h48v2H8z"/>
+              <path d="M20 50l12-22 12 22H20z"/>
+              <path d="M13 14h2v36h-2z"/>
+              <path d="M11 12h6v2h-6z"/>
+              <path d="M49 14h2v36h-2z"/>
+              <path d="M47 12h6v2h-6z"/>
+            </svg>
+          </div>
+          <div class="city-grid-label">Islamabad / Pindi</div>
+        </a>
+
+        <!-- Karachi Profiles (Mazar-e-Quaid) -->
+        <a href="/proposals?gender=Female&city=Karachi&prefCity=Karachi" class="city-grid-card">
+          <div class="city-grid-icon-circle">
+            <svg viewBox="0 0 64 64" width="42" height="42" fill="currentColor">
+              <path d="M6 52h52v2H6z"/>
+              <path d="M10 48h44v4H10z"/>
+              <path d="M15 26h34v22H15z"/>
+              <path d="M20 26c0-9 5-15 12-15s12 6 12 15H20z"/>
+              <path d="M27 48v-12a5 5 0 0 1 10 0v12H27z" fill="#500000"/>
+            </svg>
+          </div>
+          <div class="city-grid-label">Karachi Profiles</div>
+        </a>
       </div>
     </div>
     
