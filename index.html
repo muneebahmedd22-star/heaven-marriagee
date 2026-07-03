@@ -576,12 +576,22 @@
       const btnRight = document.getElementById("slide-right-btn");
       
       if (sliderWrapper && btnLeft && btnRight) {
-        btnLeft.addEventListener("click", () => {
-          sliderWrapper.scrollBy({ left: -250, behavior: 'smooth' });
+        btnRight.addEventListener("click", () => {
+          const maxScroll = sliderWrapper.scrollWidth - sliderWrapper.clientWidth;
+          if (sliderWrapper.scrollLeft >= maxScroll - 5) {
+            sliderWrapper.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            sliderWrapper.scrollBy({ left: 250, behavior: 'smooth' });
+          }
         });
         
-        btnRight.addEventListener("click", () => {
-          sliderWrapper.scrollBy({ left: 250, behavior: 'smooth' });
+        btnLeft.addEventListener("click", () => {
+          if (sliderWrapper.scrollLeft <= 5) {
+            const maxScroll = sliderWrapper.scrollWidth - sliderWrapper.clientWidth;
+            sliderWrapper.scrollTo({ left: maxScroll, behavior: 'smooth' });
+          } else {
+            sliderWrapper.scrollBy({ left: -250, behavior: 'smooth' });
+          }
         });
       }
     });
