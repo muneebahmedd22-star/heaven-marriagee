@@ -51,6 +51,79 @@
       margin-bottom: 25px;
       opacity: 0.9;
     }
+    
+    /* City Slider Container */
+    .city-slider-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 1200px;
+      margin: 40px auto 20px auto;
+      padding: 0 20px;
+      position: relative;
+      gap: 15px;
+    }
+    .city-links-slider-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      scrollbar-width: none;
+    }
+    .city-links-slider-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+    .city-links-row {
+      display: flex;
+      gap: 20px;
+      white-space: nowrap;
+      padding: 10px 0;
+    }
+    .city-pill {
+      background-color: #500000;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      flex-shrink: 0;
+      display: inline-block;
+    }
+    .city-pill:hover {
+      background-color: var(--accent-color);
+      color: #1a0000;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+    }
+    .city-slider-arrow {
+      background: #120000;
+      border: 1px solid var(--accent-color);
+      color: var(--accent-color);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      outline: none;
+    }
+    .city-slider-arrow:hover {
+      background-color: var(--accent-color);
+      color: #120000;
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+    }
   </style>
 </head>
 <body>
@@ -149,15 +222,27 @@
     </div>
   </section>
 
-  <!-- Quick City Links -->
-  <div class="city-links-row">
-    <a href="/proposals?gender=Female&city=Lahore&prefCity=Lahore" class="city-pill">Lahore Profiles</a>
-    <a href="/proposals?gender=Female&city=Karachi&prefCity=Karachi" class="city-pill">Karachi Profiles</a>
-    <a href="/proposals?gender=Female&city=Islamabad&prefCity=Islamabad" class="city-pill">Islamabad Profiles</a>
-    <a href="/proposals?gender=Female&city=Rawalpindi&prefCity=Rawalpindi" class="city-pill">Rawalpindi Profiles</a>
-    <a href="/proposals?gender=Female&city=Faisalabad&prefCity=Faisalabad" class="city-pill">Faisalabad Profiles</a>
-    <a href="/proposals?gender=Female&city=Multan&prefCity=Multan" class="city-pill">Multan Profiles</a>
-    <a href="/proposals?gender=Female&city=Peshawar&prefCity=Peshawar" class="city-pill">Peshawar Profiles</a>
+  <!-- Quick City Links Slider -->
+  <div class="city-slider-container">
+    <button class="city-slider-arrow left" id="slide-left-btn" aria-label="Slide Left">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    
+    <div class="city-links-slider-wrapper">
+      <div class="city-links-row" id="city-links-row">
+        <a href="/proposals?gender=Female&city=Lahore&prefCity=Lahore" class="city-pill">Lahore Profiles</a>
+        <a href="/proposals?gender=Female&city=Karachi&prefCity=Karachi" class="city-pill">Karachi Profiles</a>
+        <a href="/proposals?gender=Female&city=Islamabad&prefCity=Islamabad" class="city-pill">Islamabad Profiles</a>
+        <a href="/proposals?gender=Female&city=Rawalpindi&prefCity=Rawalpindi" class="city-pill">Rawalpindi Profiles</a>
+        <a href="/proposals?gender=Female&city=Faisalabad&prefCity=Faisalabad" class="city-pill">Faisalabad Profiles</a>
+        <a href="/proposals?gender=Female&city=Multan&prefCity=Multan" class="city-pill">Multan Profiles</a>
+        <a href="/proposals?gender=Female&city=Peshawar&prefCity=Peshawar" class="city-pill">Peshawar Profiles</a>
+      </div>
+    </div>
+    
+    <button class="city-slider-arrow right" id="slide-right-btn" aria-label="Slide Right">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
   </div>
 
   <!-- Gold section divider -->
@@ -343,5 +428,22 @@
   <script src="js/api.js"></script>
   <script src="js/compatibility.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const sliderWrapper = document.querySelector(".city-links-slider-wrapper");
+      const btnLeft = document.getElementById("slide-left-btn");
+      const btnRight = document.getElementById("slide-right-btn");
+      
+      if (sliderWrapper && btnLeft && btnRight) {
+        btnLeft.addEventListener("click", () => {
+          sliderWrapper.scrollBy({ left: -250, behavior: 'smooth' });
+        });
+        
+        btnRight.addEventListener("click", () => {
+          sliderWrapper.scrollBy({ left: 250, behavior: 'smooth' });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
