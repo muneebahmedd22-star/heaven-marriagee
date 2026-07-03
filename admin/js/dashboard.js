@@ -503,12 +503,12 @@ async function loadRegistrations() {
     }
 
     tbody.innerHTML = registrations.map(reg => {
-      const dateFormatted = new Date(reg.createdAt).toLocaleDateString('en-US', {
+      const dateFormatted = reg.createdAt ? new Date(reg.createdAt).toLocaleDateString('en-US', {
         year: 'numeric', month: 'short', day: 'numeric'
-      });
-      const birthFormatted = new Date(reg.dob).toLocaleDateString('en-US', {
+      }) : '-';
+      const birthFormatted = reg.dob ? new Date(reg.dob).toLocaleDateString('en-US', {
         year: 'numeric', month: 'short', day: 'numeric'
-      });
+      }) : '-';
       const photoHtml = reg.photoUrl 
         ? `<img src="${reg.photoUrl}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-color);">`
         : '<span style="font-size: 0.8rem; color: var(--light-text);">No photo</span>';
@@ -524,16 +524,16 @@ async function loadRegistrations() {
         <tr>
           <td>${dateFormatted}</td>
           <td>${photoHtml}</td>
-          <td><strong>${reg.fullName}</strong><br><span style="font-size: 0.8rem; color: var(--light-text);">${reg.phone}</span></td>
+          <td><strong>${reg.fullName}</strong><br><span style="font-size: 0.8rem; color: var(--light-text);">${reg.phone}</span><br><span style="font-size: 0.8rem; color: var(--light-text);">${reg.email || '-'}</span></td>
           <td>
             <span style="font-size: 0.8rem; line-height:1.4; display:block;">
-              Gender: ${reg.gender} (Prefers: ${reg.lookingFor})<br>
+              Gender: ${reg.gender || '-'} (Prefers: ${reg.lookingFor || '-'})<br>
               DOB: ${birthFormatted}<br>
-              Caste: ${reg.caste} | Status: ${reg.maritalStatus}<br>
-              Edu: ${reg.education} | Prof: ${reg.profession || '-'}
+              Caste: ${reg.caste || '-'} | Status: ${reg.maritalStatus || '-'}<br>
+              Edu: ${reg.education || '-'} | Prof: ${reg.profession || '-'}
             </span>
           </td>
-          <td><strong>${reg.region}</strong><br><span style="font-size: 0.8rem; color: var(--light-text);">${reg.city}</span></td>
+          <td><strong>${reg.region || '-'}</strong><br><span style="font-size: 0.8rem; color: var(--light-text);">${reg.city || '-'}</span></td>
           <td><div style="max-width: 200px; max-height: 80px; overflow-y: auto; font-size: 0.8rem; text-align: left; line-height:1.3;">${reg.partnerPreferences || '-'}</div></td>
           <td><span class="badge" style="background: ${statusBadgeColor}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">${reg.status}</span></td>
           <td>
