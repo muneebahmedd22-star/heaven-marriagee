@@ -157,6 +157,66 @@
     .city-slider-arrow:hover svg {
       stroke: #120000 !important;
     }
+
+    /* Mobile Responsive Optimizations for City Grid Card Overlay */
+    @media (max-width: 768px) {
+      .city-slider-container {
+        margin: -40px 15px 30px 15px;
+        padding: 20px 45px;
+      }
+      .city-grid-card {
+        width: 100px;
+      }
+      .city-grid-icon-circle {
+        height: 48px;
+        margin-bottom: 10px;
+      }
+      .city-grid-icon-circle svg {
+        width: 32px;
+        height: 32px;
+      }
+      .city-grid-label {
+        font-size: 0.75rem;
+      }
+      .city-slider-arrow {
+        width: 36px;
+        height: 36px;
+      }
+      .city-slider-arrow svg {
+        width: 16px;
+        height: 16px;
+      }
+      .city-slider-arrow.left {
+        left: 8px;
+      }
+      .city-slider-arrow.right {
+        right: 8px;
+      }
+    }
+    
+    /* Entry animation for city cards */
+    @keyframes cardSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .city-grid-card {
+      animation: cardSlideIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) both;
+    }
+    /* Staggered animation delays for premium feel */
+    .city-grid-card:nth-child(1) { animation-delay: 0.1s; }
+    .city-grid-card:nth-child(2) { animation-delay: 0.15s; }
+    .city-grid-card:nth-child(3) { animation-delay: 0.2s; }
+    .city-grid-card:nth-child(4) { animation-delay: 0.25s; }
+    .city-grid-card:nth-child(5) { animation-delay: 0.3s; }
+    .city-grid-card:nth-child(6) { animation-delay: 0.35s; }
+    .city-grid-card:nth-child(7) { animation-delay: 0.4s; }
+    .city-grid-card:nth-child(8) { animation-delay: 0.45s; }
   </style>
 </head>
 <body>
