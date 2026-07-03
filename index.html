@@ -80,6 +80,7 @@
       gap: 30px;
       padding: 20px 10px;
       align-items: center;
+      flex-wrap: nowrap;
     }
     .city-grid-card {
       display: flex;
@@ -123,13 +124,13 @@
       transform: scale(1.03);
     }
     .city-slider-arrow {
-      background: #120000;
+      background: #500000;
       border: 1px solid var(--accent-color);
       color: var(--accent-color);
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -138,12 +139,23 @@
       flex-shrink: 0;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       outline: none;
+      padding: 0;
+    }
+    .city-slider-arrow svg {
+      stroke: var(--accent-color) !important;
+      fill: none !important;
+      width: 20px;
+      height: 20px;
+      display: block;
     }
     .city-slider-arrow:hover {
       background-color: var(--accent-color);
       color: #120000;
       transform: scale(1.1);
       box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+    }
+    .city-slider-arrow:hover svg {
+      stroke: #120000 !important;
     }
   </style>
 </head>
