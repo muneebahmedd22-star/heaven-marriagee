@@ -95,6 +95,7 @@ button, .btn {
   padding: 12px 30px;
   text-transform: uppercase;
   font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 .btn-primary {
@@ -183,16 +184,17 @@ header {
 .logo {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
   font-family: var(--font-headings);
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--accent-color);
+  white-space: nowrap;
 }
 
 .logo img {
-  height: 50px;
-  width: 50px;
+  height: 48px;
+  width: 48px;
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid var(--accent-color);
@@ -200,19 +202,20 @@ header {
 
 .nav-links {
   display: flex;
-  gap: 35px;
+  gap: 16px; /* Reduced gap to prevent multi-line wrapping */
   list-style: none;
   align-items: center;
 }
 
 .nav-links a {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.82rem; /* Slightly smaller for premium compact styling */
   color: var(--accent-color);
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   position: relative;
   padding-bottom: 4px;
+  white-space: nowrap; /* Prevent items like REVIEWS & FAQ from wrapping */
 }
 
 .nav-links a::after {
