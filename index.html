@@ -726,18 +726,13 @@
     document.addEventListener("DOMContentLoaded", function() {
       // Royal Preloader Controller
       const preloader = document.getElementById("royal-preloader");
-      if (sessionStorage.getItem("seenPreloader") === "true") {
-        if (preloader) preloader.remove();
-      } else {
-        if (preloader) {
+      if (preloader) {
+        setTimeout(() => {
+          preloader.classList.add("fade-out");
           setTimeout(() => {
-            preloader.classList.add("fade-out");
-            sessionStorage.setItem("seenPreloader", "true");
-            setTimeout(() => {
-              preloader.remove();
-            }, 800);
-          }, 2000);
-        }
+            preloader.remove();
+          }, 800);
+        }, 2000);
       }
 
       const sliderWrapper = document.querySelector(".city-links-slider-wrapper");
