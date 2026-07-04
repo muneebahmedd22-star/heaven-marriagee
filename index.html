@@ -216,104 +216,90 @@
     .city-grid-card:nth-child(5) { animation-delay: 0.3s; }
     .city-grid-card:nth-child(6) { animation-delay: 0.35s; }
     .city-grid-card:nth-child(7) { animation-delay: 0.4s; }
-    /* Enhanced Royal Preloader Overlay */
+    /* Royal Preloader Overlay */
     .preloader-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at center, #1C0000 0%, #050000 100%);
+      background: radial-gradient(circle, #1A0000 0%, #080000 100%);
       z-index: 100000; /* Highest priority above all elements */
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .preloader-content {
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      perspective: 1000px;
     }
     .preloader-logo {
-      height: 105px;
-      width: 105px;
+      height: 95px;
+      width: 95px;
       object-fit: cover;
       border-radius: 50%;
-      border: 2px solid var(--accent-color);
-      box-shadow: 0 0 35px rgba(212, 175, 55, 0.4);
+      border: 2.5px solid var(--accent-color);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
       opacity: 0;
-      filter: blur(8px);
-      transform: scale(0.7) rotate(-15deg);
-      animation: logoEntrance 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transform: scale(0.85);
+      animation: logoEntrance 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
       animation-delay: 0.2s;
     }
     .preloader-title {
       font-family: var(--font-headings);
-      font-size: 2.5rem;
+      font-size: 2.3rem;
       color: var(--accent-color);
-      margin-top: 25px;
+      margin-top: 20px;
       opacity: 0;
-      filter: blur(4px);
-      transform: translateY(20px);
-      letter-spacing: 4px;
-      animation: titleEntrance 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 0.6s;
+      transform: translateY(15px);
+      animation: titleEntrance 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      animation-delay: 0.5s;
+      letter-spacing: 1px;
     }
     .preloader-title span {
       font-family: var(--font-body);
-      font-size: 1.1rem;
+      font-size: 1.4rem;
       font-weight: 300;
       display: block;
       color: var(--white);
-      opacity: 0;
-      letter-spacing: 6px;
+      opacity: 0.9;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      margin-top: 8px;
-      animation: subtitleEntrance 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 0.9s;
+      margin-top: 4px;
     }
     .preloader-line {
       width: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-      margin-top: 30px;
-      box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
-      animation: lineProgress 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 0.5s;
+      height: 2px;
+      background: var(--accent-gradient);
+      margin-top: 25px;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      animation: lineProgress 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      animation-delay: 0.4s;
     }
     @keyframes logoEntrance {
       to {
         opacity: 1;
-        filter: blur(0);
-        transform: scale(1) rotate(0deg);
+        transform: scale(1);
       }
     }
     @keyframes titleEntrance {
       to {
         opacity: 1;
-        filter: blur(0);
-        letter-spacing: 2px;
         transform: translateY(0);
-      }
-    }
-    @keyframes subtitleEntrance {
-      to {
-        opacity: 0.85;
-        letter-spacing: 3px;
       }
     }
     @keyframes lineProgress {
       to {
-        width: 220px;
+        width: 160px;
       }
     }
     .preloader-overlay.fade-out {
       opacity: 0;
       pointer-events: none;
-      transform: scale(1.05); /* Cinematic camera zoom-out feel */
+      transform: translateY(-4%);
     }
   </style>
 </head>
@@ -750,7 +736,7 @@
             setTimeout(() => {
               preloader.remove();
             }, 800);
-          }, 1800);
+          }, 2000);
         }
       }
 
