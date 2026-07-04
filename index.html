@@ -216,10 +216,103 @@
     .city-grid-card:nth-child(5) { animation-delay: 0.3s; }
     .city-grid-card:nth-child(6) { animation-delay: 0.35s; }
     .city-grid-card:nth-child(7) { animation-delay: 0.4s; }
-    .city-grid-card:nth-child(8) { animation-delay: 0.45s; }
+    /* Royal Preloader Overlay */
+    .preloader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #1A0000 0%, #080000 100%);
+      z-index: 100000; /* Highest priority above all elements */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .preloader-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .preloader-logo {
+      height: 95px;
+      width: 95px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2.5px solid var(--accent-color);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+      opacity: 0;
+      transform: scale(0.85);
+      animation: logoEntrance 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      animation-delay: 0.2s;
+    }
+    .preloader-title {
+      font-family: var(--font-headings);
+      font-size: 2.3rem;
+      color: var(--accent-color);
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: titleEntrance 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      animation-delay: 0.5s;
+      letter-spacing: 1px;
+    }
+    .preloader-title span {
+      font-family: var(--font-body);
+      font-size: 1.4rem;
+      font-weight: 300;
+      display: block;
+      color: var(--white);
+      opacity: 0.9;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .preloader-line {
+      width: 0;
+      height: 2px;
+      background: var(--accent-gradient);
+      margin-top: 25px;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      animation: lineProgress 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      animation-delay: 0.4s;
+    }
+    @keyframes logoEntrance {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    @keyframes titleEntrance {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes lineProgress {
+      to {
+        width: 160px;
+      }
+    }
+    .preloader-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4%);
+    }
   </style>
 </head>
 <body>
+
+  <!-- Royal Entrance Preloader -->
+  <div id="royal-preloader" class="preloader-overlay">
+    <div class="preloader-content">
+      <img src="logo.jpg" alt="Heaven Marriage Bureau Logo" class="preloader-logo">
+      <h1 class="preloader-title">Heaven <span>Marriage Bureau</span></h1>
+      <div class="preloader-line"></div>
+    </div>
+  </div>
 
   <!-- Floating WhatsApp Button -->
   <a href="https://wa.me/923204048464?text=Assalam-o-Alaikum, I would like to inquire about premium matchmaking services on Heaven Marriage Bureau." class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp">
@@ -631,6 +724,22 @@
   <script src="js/main.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+      // Royal Preloader Controller
+      const preloader = document.getElementById("royal-preloader");
+      if (sessionStorage.getItem("seenPreloader") === "true") {
+        if (preloader) preloader.remove();
+      } else {
+        if (preloader) {
+          setTimeout(() => {
+            preloader.classList.add("fade-out");
+            sessionStorage.setItem("seenPreloader", "true");
+            setTimeout(() => {
+              preloader.remove();
+            }, 800);
+          }, 1800);
+        }
+      }
+
       const sliderWrapper = document.querySelector(".city-links-slider-wrapper");
       const btnLeft = document.getElementById("slide-left-btn");
       const btnRight = document.getElementById("slide-right-btn");
