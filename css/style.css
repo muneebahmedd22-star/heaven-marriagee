@@ -192,6 +192,13 @@ header {
   white-space: nowrap;
 }
 
+.logo-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+}
+
 .logo img {
   height: 48px;
   width: 48px;
@@ -988,10 +995,8 @@ footer {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.6rem;
-  }
+/* Responsive Navigation Collapse */
+@media (max-width: 1024px) {
   .nav-links {
     display: none;
     flex-direction: column;
@@ -1004,12 +1009,19 @@ footer {
     padding: 20px;
     box-shadow: var(--shadow-md);
     gap: 15px;
+    z-index: 1001;
   }
   .nav-links.active {
     display: flex;
   }
   .hamburger {
     display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.6rem;
   }
   .two-column-layout {
     grid-template-columns: 1fr;
