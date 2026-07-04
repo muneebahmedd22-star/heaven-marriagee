@@ -126,7 +126,7 @@ async function loadFeaturedProposals() {
   grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px 0;"><div class="gold-spinner"></div><p style="color: var(--light-text); font-size: 0.95rem; font-family: var(--font-headings); font-style: italic;">Curating handpicked matches for you...</p></div>';
 
   try {
-    const response = await api.getProposals({ isFeatured: true, limit: 3 });
+    const response = await api.getProposals({ limit: 4 });
     const proposals = response.data || [];
 
     if (proposals.length === 0) {
