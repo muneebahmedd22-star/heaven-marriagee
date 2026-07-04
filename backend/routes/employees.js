@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
     const admin = await Admin.create({
       username: req.body.username,
       password: req.body.password,
-      role: 'Employee'
+      role: req.body.accessRole || 'Employee'
     });
     adminId = admin._id;
 
@@ -70,17 +70,22 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Employee not found' });
     }
 
-    // Sync admin credentials if updated
+    // Sync admin credentials and role if updated
     if (employee.adminId) {
+      const updateFields = {};
+      if (req.body.username) updateFields.username = req.body.username;
+      if (req.body.accessRole) updateFields.role = req.body.accessRole;
+
       if (req.body.password) {
         const adminDoc = await Admin.findById(employee.adminId);
         if (adminDoc) {
           adminDoc.password = req.body.password;
           if (req.body.username) adminDoc.username = req.body.username;
+          if (req.body.accessRole) adminDoc.role = req.body.accessRole;
           await adminDoc.save();
         }
-      } else if (req.body.username) {
-        await Admin.findByIdAndUpdate(employee.adminId, { username: req.body.username });
+      } else if (Object.keys(updateFields).length > 0) {
+        await Admin.findByIdAndUpdate(employee.adminId, updateFields);
       }
     }
 

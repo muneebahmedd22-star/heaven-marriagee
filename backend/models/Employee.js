@@ -53,6 +53,11 @@ const EmployeeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Admin',
   },
+  accessRole: {
+    type: String,
+    enum: ['Employee', 'Matchmaker'],
+    default: 'Employee',
+  },
 });
 
 // Auto-increment EmployeeId (format: HMB-EMP-001)

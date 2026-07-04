@@ -43,8 +43,30 @@ document.addEventListener('DOMContentLoaded', () => {
     adminApi.logout();
   });
 
-  // 3. Overview Loading
-  loadOverview();
+  // 3. Role-based Access Restricting and Tab Initialization
+  if (adminUser.role === 'Matchmaker') {
+    // Hide restricted sidebar tabs
+    const restrictedTabs = ['overview', 'employees', 'inquiries', 'registrations'];
+    restrictedTabs.forEach(tab => {
+      const el = document.querySelector(`[data-tab="${tab}"]`);
+      if (el) el.style.display = 'none';
+    });
+
+    // Deactivate overview and activate proposals
+    navItems.forEach(nav => nav.classList.remove('active'));
+    tabContents.forEach(tab => tab.classList.remove('active'));
+
+    const propNavItem = document.querySelector('[data-tab="proposals"]');
+    const propTabContent = document.getElementById('proposals-tab');
+    if (propNavItem) propNavItem.classList.add('active');
+    if (propTabContent) propTabContent.classList.add('active');
+
+    // Force load proposals
+    loadProposals();
+  } else {
+    // Default load overview for SuperAdmin
+    loadOverview();
+  }
 
   // 4. Proposals CRUD Handlers
   setupProposalsHandlers();
@@ -312,6 +334,7 @@ function setupEmployeesHandlers() {
       phone: document.getElementById('emp-phone').value,
       salary: parseFloat(document.getElementById('emp-salary').value) || 0,
       status: document.getElementById('emp-status').value,
+      accessRole: document.getElementById('emp-access-role').value,
       username: username
     };
 
@@ -391,6 +414,7 @@ async function editEmployee(id) {
     document.getElementById('emp-username').value = emp.username || '';
     document.getElementById('emp-password').value = '';
     document.getElementById('emp-status').value = emp.status;
+    document.getElementById('emp-access-role').value = emp.accessRole || 'Employee';
 
     document.getElementById('employee-modal').classList.add('active');
   } catch (error) {
