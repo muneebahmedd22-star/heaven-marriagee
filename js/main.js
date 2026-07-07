@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fullName: document.getElementById('contact-name').value,
         email: document.getElementById('contact-email').value,
         phone: document.getElementById('contact-phone').value,
-        subject: document.getElementById('contact-subject').value || 'General Inquiry',
-        message: document.getElementById('contact-message').value
+        subject: 'General Inquiry',
+        message: 'Direct website inquiry form submission. Please follow up.'
       };
 
       try {
