@@ -25,7 +25,6 @@ const employees = require('./routes/employees');
 const inquiries = require('./routes/inquiries');
 const registrations = require('./routes/registrations');
 const reviews = require('./routes/reviews');
-const ai = require('./routes/ai');
 
 // Mount routers
 app.use('/api/v1/auth', auth);
@@ -34,7 +33,6 @@ app.use('/api/v1/employees', employees);
 app.use('/api/v1/inquiries', inquiries);
 app.use('/api/v1/registrations', registrations);
 app.use('/api/v1/reviews', reviews);
-app.use('/api/v1/ai', ai);
 
 // Root route
 app.get('/', (req, res) => {
