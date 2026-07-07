@@ -169,6 +169,236 @@
     </div>
   </section>
 
+  <!-- Gold section divider -->
+  <div class="section-flourish-divider"></div>
+
+  <!-- Meet Our Team Section -->
+  <section class="section scroll-reveal" id="our-team" style="background-color: var(--bg-color); border-top: 1px solid var(--border-muted); border-bottom: 1px solid var(--border-muted); max-width: 100%; padding-top: 80px; padding-bottom: 80px;">
+    <div class="section" style="padding: 0;">
+      <div class="section-header">
+        <label>Bureau Professionals</label>
+        <h2>Meet Our Dedicated Team</h2>
+        <p>The expert matchmakers and advisors behind Pakistan's most trusted matrimonial service</p>
+      </div>
+
+      <style>
+        .team-section-container {
+          display: flex;
+          flex-direction: column;
+          gap: 50px;
+          margin-top: 40px;
+        }
+        .team-category-block {
+          background: var(--white);
+          padding: 35px 30px;
+          border-radius: var(--border-radius);
+          border: 1px solid var(--border-muted);
+          box-shadow: var(--shadow-sm);
+        }
+        .team-category-title {
+          font-family: var(--font-headings);
+          font-size: 1.6rem;
+          color: var(--primary-color);
+          margin-bottom: 25px;
+          border-bottom: 2px solid var(--accent-color);
+          padding-bottom: 10px;
+          display: inline-block;
+          font-weight: 700;
+        }
+        .team-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 30px;
+        }
+        .team-card {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transition: var(--transition);
+        }
+        .team-card:hover {
+          transform: translateY(-5px);
+        }
+        .team-avatar-container {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          border: 3px solid var(--accent-color);
+          padding: 4px;
+          background: var(--white);
+          box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+          margin-bottom: 15px;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: var(--transition);
+        }
+        .team-card:hover .team-avatar-container {
+          border-color: var(--primary-color);
+          box-shadow: 0 6px 20px rgba(107, 0, 0, 0.25);
+          transform: scale(1.05);
+        }
+        .team-avatar-container img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+        .team-member-name {
+          font-family: var(--font-headings);
+          font-size: 1.15rem;
+          color: var(--primary-color);
+          font-weight: 700;
+          margin-bottom: 5px;
+        }
+        .team-member-role {
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: var(--accent-color);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      </style>
+
+      <div class="team-section-container">
+        <!-- Group 1: Administration & Legal -->
+        <div class="team-category-block">
+          <span class="team-category-title">Administration & Legal</span>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="images/team/farzana.jpg" alt="Mrs. Farzana Saqib - Administrator" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80'">
+              </div>
+              <div class="team-member-name">Mrs. Farzana Saqib</div>
+              <div class="team-member-role">Administrator</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&auto=format&fit=crop&q=80" alt="Adv. M Shahid Khan - Legal Advisor">
+              </div>
+              <div class="team-member-name">Adv. M Shahid Khan</div>
+              <div class="team-member-role">Legal Advisor</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group 2: Customer Care & Consultants -->
+        <div class="team-category-block">
+          <span class="team-category-title">Customer Care & Consultancy</span>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="images/team/zainab.jpg" alt="Miss Zainab - Senior Consultant" onerror="this.src='https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=200&auto=format&fit=crop&q=80'">
+              </div>
+              <div class="team-member-name">Miss Zainab</div>
+              <div class="team-member-role">Senior Consultant</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1594744803329-e58b31de215f?w=200&auto=format&fit=crop&q=80" alt="Miss Fatima - Consultant">
+              </div>
+              <div class="team-member-name">Miss Fatima</div>
+              <div class="team-member-role">Consultant</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="images/team/zareena.jpg" alt="Miss Zareena Gull - Customer Care" onerror="this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80'">
+              </div>
+              <div class="team-member-name">Miss Zareena Gull</div>
+              <div class="team-member-role">Customer Care Representative</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&auto=format&fit=crop&q=80" alt="Mr. Hadi - Customer Care & Support">
+              </div>
+              <div class="team-member-name">Mr. Hadi</div>
+              <div class="team-member-role">Customer Care & Support</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group 3: Matchmaking Department -->
+        <div class="team-category-block">
+          <span class="team-category-title">Matchmaking Experts</span>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&auto=format&fit=crop&q=80" alt="Miss Saira - Matchmaker">
+              </div>
+              <div class="team-member-name">Miss Saira</div>
+              <div class="team-member-role">Senior Matchmaker</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&auto=format&fit=crop&q=80" alt="Miss Fatima - Matchmaker">
+              </div>
+              <div class="team-member-name">Miss Fatima</div>
+              <div class="team-member-role">Matchmaker</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Miss Areeba - Matchmaker">
+              </div>
+              <div class="team-member-name">Miss Areeba</div>
+              <div class="team-member-role">Matchmaker</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80" alt="Miss Zarnab - Matchmaker">
+              </div>
+              <div class="team-member-name">Miss Zarnab</div>
+              <div class="team-member-role">Matchmaker</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80" alt="Mr. Zarar - Matchmaker">
+              </div>
+              <div class="team-member-name">Mr. Zarar</div>
+              <div class="team-member-role">Matchmaker</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80" alt="Mr. Zubair - Matchmaker">
+              </div>
+              <div class="team-member-name">Mr. Zubair</div>
+              <div class="team-member-role">Matchmaker</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&auto=format&fit=crop&q=80" alt="Mr. Arslan - Matchmaker">
+              </div>
+              <div class="team-member-name">Mr. Arslan</div>
+              <div class="team-member-role">Matchmaker</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group 4: Digital Marketing -->
+        <div class="team-category-block">
+          <span class="team-category-title">Digital Marketing & Outreach</span>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&auto=format&fit=crop&q=80" alt="Mr. Hadi - Digital Marketing">
+              </div>
+              <div class="team-member-name">Mr. Hadi</div>
+              <div class="team-member-role">Marketing Strategist</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar-container">
+                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80" alt="Mr. Wasiq - Content Creator">
+              </div>
+              <div class="team-member-name">Mr. Wasiq</div>
+              <div class="team-member-role">Content Creator</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <div class="footer-grid">
