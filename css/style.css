@@ -142,7 +142,8 @@ button, .btn {
 .floating-whatsapp {
   position: fixed;
   bottom: 90px;
-  right: 30px;
+  left: 30px;
+  right: auto;
   background-color: #25D366;
   color: white;
   width: 60px;
