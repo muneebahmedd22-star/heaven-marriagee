@@ -174,7 +174,7 @@
   <div class="section-flourish-divider"></div>
 
   <!-- Meet Our Team Section (Reference Redesign) -->
-  <section class="section scroll-reveal" id="our-team" style="background-color: var(--bg-color); border-top: 1px solid var(--border-muted); border-bottom: 1px solid var(--border-muted); max-width: 100%; padding-top: 80px; padding-bottom: 80px;">
+  <section class="section scroll-reveal" id="our-team" style="background-color: #FAF8F5; border-top: 1px solid var(--border-muted); border-bottom: 1px solid var(--border-muted); max-width: 100%; padding-top: 90px; padding-bottom: 90px;">
     <div class="section" style="padding: 0;">
       <!-- Title Block -->
       <div class="section-header" style="text-align: center; margin-bottom: 60px;">
@@ -190,9 +190,9 @@
         }
         .team-category-heading {
           font-family: var(--font-headings);
-          font-size: 1.6rem;
+          font-size: 1.65rem;
           color: var(--primary-color);
-          border-left: 4px solid var(--accent-color);
+          border-left: 4px solid var(--primary-color); /* Matches Maroon theme */
           padding-left: 15px;
           margin-bottom: 35px;
           font-weight: 700;
@@ -202,20 +202,15 @@
           display: flex;
           flex-wrap: wrap;
           gap: 30px;
-          justify-content: flex-start;
+          justify-content: center; /* Centered for balance */
           margin-bottom: 60px;
-        }
-        @media (max-width: 768px) {
-          .team-grid-flex {
-            justify-content: center;
-          }
         }
         .team-card {
           background: var(--white);
           border-radius: 24px;
-          border: 1px solid rgba(212,175,55,0.12);
-          padding: 35px 25px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+          border: 1px solid rgba(212,175,55,0.1);
+          padding: 40px 25px;
+          box-shadow: 0 10px 30px rgba(107, 0, 0, 0.02);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -241,26 +236,37 @@
         }
         .team-card:hover {
           transform: translateY(-8px);
-          box-shadow: 0 15px 40px rgba(107, 0, 0, 0.08);
-          border-color: var(--accent-color);
+          box-shadow: 0 20px 45px rgba(107, 0, 0, 0.08);
+          border-color: rgba(212, 175, 55, 0.4);
         }
         .avatar-ring {
-          width: 130px;
-          height: 130px;
+          width: 140px;
+          height: 140px;
           border-radius: 50%;
-          border: 3px solid var(--accent-color);
+          background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 6px;
-          margin-bottom: 20px;
+          padding: 4px;
+          margin-bottom: 22px;
           transition: all 0.3s ease;
+          position: relative;
         }
         .team-card:hover .avatar-ring {
-          border-color: var(--primary-color);
-          transform: scale(1.03);
+          transform: scale(1.05) rotate(5deg);
         }
-        .avatar-ring img {
+        /* Inner white ring container */
+        .avatar-ring-inner {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background: var(--white);
+          padding: 5px; /* Creates the white gap */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .avatar-ring-inner img {
           width: 100%;
           height: 100%;
           object-fit: cover;
@@ -268,16 +274,17 @@
         }
         .member-name {
           font-family: var(--font-headings);
-          font-size: 1.25rem;
+          font-size: 1.3rem;
           color: var(--primary-color);
           font-weight: 700;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
         }
         .member-role {
           font-size: 0.85rem;
           color: var(--accent-color);
           font-weight: 700;
-          margin-bottom: 4px;
+          margin-bottom: 5px;
+          letter-spacing: 0.5px;
         }
         .member-bureau {
           font-size: 0.8rem;
@@ -292,7 +299,9 @@
         <div class="team-grid-flex">
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="images/team/farzana.jpg" alt="Mrs. Farzana Saqib" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80'">
+              <div class="avatar-ring-inner">
+                <img src="images/team/farzana.jpg" alt="Mrs. Farzana Saqib" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80'">
+              </div>
             </div>
             <div class="member-name">Mrs. Farzana Saqib</div>
             <div class="member-role">Administrator</div>
@@ -300,7 +309,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80" alt="Adv. M Shahid Khan">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80" alt="Adv. M Shahid Khan">
+              </div>
             </div>
             <div class="member-name">Adv. M Shahid Khan</div>
             <div class="member-role">Legal Advisor</div>
@@ -313,7 +324,9 @@
         <div class="team-grid-flex">
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="images/team/zainab.jpg" alt="Miss Zainab" onerror="this.src='https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=300&auto=format&fit=crop&q=80'">
+              <div class="avatar-ring-inner">
+                <img src="images/team/zainab.jpg" alt="Miss Zainab" onerror="this.src='https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=300&auto=format&fit=crop&q=80'">
+              </div>
             </div>
             <div class="member-name">Miss Zainab</div>
             <div class="member-role">Senior Consultant</div>
@@ -321,7 +334,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1594744803329-e58b31de215f?w=300&auto=format&fit=crop&q=80" alt="Miss Fatima">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1594744803329-e58b31de215f?w=300&auto=format&fit=crop&q=80" alt="Miss Fatima">
+              </div>
             </div>
             <div class="member-name">Miss Fatima</div>
             <div class="member-role">Consultant</div>
@@ -329,7 +344,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="images/team/zareena.jpg" alt="Miss Zareena Gull" onerror="this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80'">
+              <div class="avatar-ring-inner">
+                <img src="images/team/zareena.jpg" alt="Miss Zareena Gull" onerror="this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80'">
+              </div>
             </div>
             <div class="member-name">Miss Zareena Gull</div>
             <div class="member-role">Customer Care Representative</div>
@@ -337,7 +354,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80" alt="Mr. Hadi">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80" alt="Mr. Hadi">
+              </div>
             </div>
             <div class="member-name">Mr. Hadi</div>
             <div class="member-role">Customer Care & Support</div>
@@ -350,7 +369,9 @@
         <div class="team-grid-flex">
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=300&auto=format&fit=crop&q=80" alt="Miss Saira">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=300&auto=format&fit=crop&q=80" alt="Miss Saira">
+              </div>
             </div>
             <div class="member-name">Miss Saira</div>
             <div class="member-role">Senior Matchmaker</div>
@@ -358,7 +379,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=300&auto=format&fit=crop&q=80" alt="Miss Fatima">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=300&auto=format&fit=crop&q=80" alt="Miss Fatima">
+              </div>
             </div>
             <div class="member-name">Miss Fatima</div>
             <div class="member-role">Matchmaker</div>
@@ -366,7 +389,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Miss Areeba">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Miss Areeba">
+              </div>
             </div>
             <div class="member-name">Miss Areeba</div>
             <div class="member-role">Matchmaker</div>
@@ -374,7 +399,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80" alt="Miss Zarnab">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80" alt="Miss Zarnab">
+              </div>
             </div>
             <div class="member-name">Miss Zarnab</div>
             <div class="member-role">Matchmaker</div>
@@ -382,7 +409,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80" alt="Mr. Zarar">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80" alt="Mr. Zarar">
+              </div>
             </div>
             <div class="member-name">Mr. Zarar</div>
             <div class="member-role">Matchmaker</div>
@@ -390,7 +419,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80" alt="Mr. Zubair">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80" alt="Mr. Zubair">
+              </div>
             </div>
             <div class="member-name">Mr. Zubair</div>
             <div class="member-role">Matchmaker</div>
@@ -398,7 +429,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80" alt="Mr. Arslan">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80" alt="Mr. Arslan">
+              </div>
             </div>
             <div class="member-name">Mr. Arslan</div>
             <div class="member-role">Matchmaker</div>
@@ -411,7 +444,9 @@
         <div class="team-grid-flex">
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80" alt="Mr. Hadi">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80" alt="Mr. Hadi">
+              </div>
             </div>
             <div class="member-name">Mr. Hadi</div>
             <div class="member-role">Marketing Strategist</div>
@@ -419,7 +454,9 @@
           </div>
           <div class="team-card">
             <div class="avatar-ring">
-              <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80" alt="Mr. Wasiq">
+              <div class="avatar-ring-inner">
+                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80" alt="Mr. Wasiq">
+              </div>
             </div>
             <div class="member-name">Mr. Wasiq</div>
             <div class="member-role">Content Creator</div>
