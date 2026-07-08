@@ -32,7 +32,7 @@ const RegistrationSchema = new mongoose.Schema({
   },
   maritalStatus: {
     type: String,
-    enum: ['Never Married', 'Divorced', 'Widowed', 'Awaiting Divorce'],
+    enum: ['Unmarried', 'Divorced', 'Widowed', 'Awaiting Divorce'],
   },
   height: {
     type: String,
