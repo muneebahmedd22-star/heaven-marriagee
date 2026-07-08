@@ -51,6 +51,9 @@
         <li class="nav-item" data-tab="registrations">
           <span>Registrations</span>
         </li>
+        <li class="nav-item" data-tab="logs" id="nav-logs-tab" style="display: none;">
+          <span>Attendance & Logs</span>
+        </li>
       </ul>
       <div class="logout-btn" id="logout-btn">Log Out</div>
     </aside>
@@ -195,6 +198,61 @@
             </thead>
             <tbody id="registrations-table-body">
               <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB: Logs & Attendance -->
+      <section class="tab-content" id="logs-tab">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+          <div>
+            <h3>Security Logs & Attendance Tracker</h3>
+            <p style="color: var(--light-text); font-size: 0.85rem; margin-top: 4px;">Monitor employee logins, active working days, and database modifications.</p>
+          </div>
+          
+          <div style="display: flex; gap: 15px; align-items: center;">
+            <select id="log-view-type" style="padding: 10px; border-radius: 4px; border: 1px solid var(--accent-color); font-weight: 600; background: white;">
+              <option value="attendance">Monthly Attendance Summary</option>
+              <option value="security">Raw Security Audit Trail</option>
+            </select>
+            <input type="month" id="log-month-select" style="padding: 10px; border-radius: 4px; border: 1px solid var(--accent-color); font-weight: 600;">
+          </div>
+        </div>
+
+        <!-- Attendance Summary Grid View -->
+        <div id="attendance-summary-wrapper" class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee Name</th>
+                <th>Username</th>
+                <th>Days Logged In This Month</th>
+                <th>First Login of Month</th>
+                <th>Last Login of Month</th>
+                <th>Status (Salary Base)</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-summary-table-body">
+              <!-- Summary rows loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Raw Security Audit logs View (Initially Hidden) -->
+        <div id="raw-audit-wrapper" class="table-wrapper" style="display: none;">
+          <table>
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Employee Name</th>
+                <th>Action Type</th>
+                <th>Audit Details</th>
+                <th>IP / Device</th>
+              </tr>
+            </thead>
+            <tbody id="raw-audit-table-body">
+              <!-- Raw logs loaded dynamically -->
             </tbody>
           </table>
         </div>

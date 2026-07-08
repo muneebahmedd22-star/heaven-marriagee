@@ -183,5 +183,22 @@ const adminApi = {
       headers: this.getHeaders()
     });
     return this.handleResponse(response);
+  },
+
+  // CRUD Logs & Attendance (SuperAdmin only)
+  async getLogs(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const response = await fetch(`${API_BASE_URL}/logs?${query}`, {
+      headers: this.getHeaders()
+    });
+    return this.handleResponse(response);
+  },
+
+  async getLogsSummary(month) {
+    const query = month ? `?month=${month}` : '';
+    const response = await fetch(`${API_BASE_URL}/logs/summary${query}`, {
+      headers: this.getHeaders()
+    });
+    return this.handleResponse(response);
   }
 };

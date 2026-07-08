@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (targetTab === 'inquiries') loadInquiries();
       if (targetTab === 'registrations') loadRegistrations();
       if (targetTab === 'overview') loadOverview();
+      if (targetTab === 'logs') loadLogs();
     });
   });
 
@@ -64,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Force load proposals
     loadProposals();
   } else {
+    // Show Logs Tab to SuperAdmin
+    const logsTabItem = document.getElementById('nav-logs-tab');
+    if (logsTabItem) logsTabItem.style.display = 'block';
+
     // Default load overview for SuperAdmin
     loadOverview();
   }
@@ -79,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. Registrations CRUD Handlers
   setupRegistrationsHandlers();
+
+  // 8. Logs & Attendance Handlers
+  setupLogsHandlers();
 });
 
 // --- Overview Dashboard stats ---
@@ -635,3 +643,137 @@ window.openConvertModal = openConvertModal;
 window.deleteRegistration = deleteRegistration;
 window.loadRegistrations = loadRegistrations;
 window.setupRegistrationsHandlers = setupRegistrationsHandlers;
+
+// --- Logs & Attendance UI Controllers ---
+let currentLogsView = 'attendance';
+
+function setupLogsHandlers() {
+  const monthSelect = document.getElementById('log-month-select');
+  const viewSelect = document.getElementById('log-view-type');
+  
+  if (monthSelect) {
+    // Set default value of month input to current month YYYY-MM
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    monthSelect.value = currentMonth;
+    
+    monthSelect.addEventListener('change', () => {
+      loadLogs();
+    });
+  }
+  
+  if (viewSelect) {
+    viewSelect.addEventListener('change', (e) => {
+      currentLogsView = e.target.value;
+      const attendanceWrapper = document.getElementById('attendance-summary-wrapper');
+      const rawWrapper = document.getElementById('raw-audit-wrapper');
+      
+      if (currentLogsView === 'attendance') {
+        attendanceWrapper.style.display = 'block';
+        rawWrapper.style.display = 'none';
+      } else {
+        attendanceWrapper.style.display = 'none';
+        rawWrapper.style.display = 'block';
+      }
+      loadLogs();
+    });
+  }
+}
+
+async function loadLogs() {
+  const monthSelect = document.getElementById('log-month-select');
+  const selectedMonth = monthSelect ? monthSelect.value : new Date().toISOString().slice(0, 7);
+  
+  if (currentLogsView === 'attendance') {
+    const tableBody = document.getElementById('attendance-summary-table-body');
+    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px 0;">Loading attendance summary...</td></tr>';
+    
+    try {
+      const resData = await adminApi.getLogsSummary(selectedMonth);
+      
+      if (resData.success) {
+        const data = resData.data || [];
+        if (data.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px 0; color: var(--light-text);">No attendance logs found for this month.</td></tr>';
+          return;
+        }
+        
+        tableBody.innerHTML = data.map(item => {
+          const firstLoginStr = item.firstLogin ? new Date(item.firstLogin).toLocaleString('en-GB') : '-';
+          const lastLoginStr = item.lastLogin ? new Date(item.lastLogin).toLocaleString('en-GB') : '-';
+          
+          // Salary Status badge calculation
+          let statusBadgeClass = 'badge-pending';
+          let statusText = 'Low Activity';
+          if (item.activeDaysCount >= 22) {
+            statusBadgeClass = 'badge-resolved'; // Green badge
+            statusText = 'Full Pay (22+ Days)';
+          } else if (item.activeDaysCount >= 15) {
+            statusBadgeClass = 'badge-pending'; // Orange badge
+            statusText = 'Partial Pay';
+          } else {
+            statusBadgeClass = 'badge-rejected'; // Red badge
+            statusText = 'Unpaid / Leave';
+          }
+          
+          return `
+            <tr>
+              <td><strong>${item.name}</strong></td>
+              <td>${item.username}</td>
+              <td style="font-weight: bold; font-size: 1.1rem; color: var(--primary-color);">${item.activeDaysCount} Days</td>
+              <td>${firstLoginStr}</td>
+              <td>${lastLoginStr}</td>
+              <td><span class="status-badge ${statusBadgeClass}">${statusText}</span></td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px 0; color: red;">Error: ${resData.message}</td></tr>`;
+      }
+    } catch (err) {
+      tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px 0; color: red;">Error connecting to API: ${err.message}</td></tr>`;
+    }
+  } else {
+    // Raw Security Logs view
+    const tableBody = document.getElementById('raw-audit-table-body');
+    tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px 0;">Loading audit logs...</td></tr>';
+    
+    try {
+      const resData = await adminApi.getLogs();
+      
+      if (resData.success) {
+        const data = resData.data || [];
+        if (data.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px 0; color: var(--light-text);">No activity logs found.</td></tr>';
+          return;
+        }
+        
+        tableBody.innerHTML = data.map(item => {
+          const dateStr = new Date(item.createdAt).toLocaleString('en-GB');
+          
+          // Action styling
+          let actionStyle = 'background: rgba(107, 0, 0, 0.08); color: var(--primary-color);';
+          if (item.action === 'Login') actionStyle = 'background: rgba(37, 211, 102, 0.1); color: #20ba5a;';
+          if (item.action.includes('Delete')) actionStyle = 'background: rgba(220, 53, 69, 0.1); color: #dc3545;';
+          if (item.action.includes('Create')) actionStyle = 'background: rgba(0, 123, 255, 0.1); color: #007bff;';
+
+          return `
+            <tr>
+              <td>${dateStr}</td>
+              <td><strong>${item.name || item.username}</strong></td>
+              <td><span style="padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; ${actionStyle}">${item.action}</span></td>
+              <td>${item.details}</td>
+              <td style="font-size: 0.8rem; color: var(--light-text); font-family: monospace;">${item.ipAddress || 'unknown'}</td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px 0; color: red;">Error: ${resData.message}</td></tr>`;
+      }
+    } catch (err) {
+      tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px 0; color: red;">Error connecting to API: ${err.message}</td></tr>`;
+    }
+  }
+}
+
+window.loadLogs = loadLogs;
+window.setupLogsHandlers = setupLogsHandlers;

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Proposal = require('../models/Proposal');
+const ActivityLog = require('../models/ActivityLog');
+const Employee = require('../models/Employee');
 const { protect } = require('../middleware/auth');
 const upload = require('../middleware/multer');
 const cloudinary = require('../config/cloudinary');
@@ -303,6 +305,20 @@ router.post('/', protect, upload.single('photo'), async (req, res) => {
     }
 
     const proposal = await Proposal.create(proposalData);
+
+    // Track activity log
+    const employee = await Employee.findOne({ adminId: req.admin._id });
+    const name = employee ? employee.fullName : 'Super Administrator';
+    await ActivityLog.create({
+      employee: employee ? employee._id : null,
+      username: req.admin.username,
+      name,
+      action: 'Create Proposal',
+      details: `${name} created new Proposal (Profile ID: ${proposal.profileId}).`,
+      ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+      userAgent: req.headers['user-agent']
+    });
+
     res.status(201).json({ success: true, data: proposal });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -343,6 +359,19 @@ router.put('/:id', protect, upload.single('photo'), async (req, res) => {
       runValidators: true,
     });
 
+    // Track activity log
+    const employee = await Employee.findOne({ adminId: req.admin._id });
+    const name = employee ? employee.fullName : 'Super Administrator';
+    await ActivityLog.create({
+      employee: employee ? employee._id : null,
+      username: req.admin.username,
+      name,
+      action: 'Update Proposal',
+      details: `${name} updated Proposal (Profile ID: ${proposal.profileId}).`,
+      ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+      userAgent: req.headers['user-agent']
+    });
+
     res.json({ success: true, data: proposal });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -364,7 +393,22 @@ router.delete('/:id', protect, async (req, res) => {
       await deleteFromCloudinary(proposal.photoPublicId);
     }
 
+    const deletedProfileId = proposal.profileId;
     await proposal.deleteOne();
+
+    // Track activity log
+    const employee = await Employee.findOne({ adminId: req.admin._id });
+    const name = employee ? employee.fullName : 'Super Administrator';
+    await ActivityLog.create({
+      employee: employee ? employee._id : null,
+      username: req.admin.username,
+      name,
+      action: 'Delete Proposal',
+      details: `${name} deleted Proposal (Profile ID: ${deletedProfileId}).`,
+      ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+      userAgent: req.headers['user-agent']
+    });
+
     res.json({ success: true, message: 'Proposal removed successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

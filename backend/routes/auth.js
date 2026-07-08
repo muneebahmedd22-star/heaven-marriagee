@@ -47,6 +47,9 @@ router.post('/register', async (req, res) => {
   }
 });
 
+const Employee = require('../models/Employee');
+const ActivityLog = require('../models/ActivityLog');
+
 // @desc    Auth admin & get token
 // @route   POST /api/v1/auth/login
 // @access  Public
@@ -67,6 +70,21 @@ router.post('/login', async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
+
+    // Find Employee associated with this Admin account
+    const employee = await Employee.findOne({ adminId: admin._id });
+    const name = employee ? employee.fullName : 'Super Administrator';
+
+    // Log the successful login as Attendance
+    await ActivityLog.create({
+      employee: employee ? employee._id : null,
+      username: admin.username,
+      name: name,
+      action: 'Login',
+      details: `${name} logged in successfully.`,
+      ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+      userAgent: req.headers['user-agent']
+    });
 
     res.json({
       success: true,
