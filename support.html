@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Customer Support for Heaven Marriage Bureau. Speak directly with our online support representatives.">
+  <title>Customer Support | Heaven Marriage Bureau</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .support-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-muted);
+      border-top: 5px solid var(--accent-color);
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+    }
+    .support-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-top-color: var(--primary-color);
+    }
+    .support-avatar-ring {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      padding: 4px;
+      background: var(--accent-gradient);
+      margin: 0 auto 20px auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .support-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--white);
+      background: #eee;
+    }
+    .support-avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .support-name {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      font-family: var(--font-headings);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .support-role {
+      font-size: 0.85rem;
+      color: var(--accent-color);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+    .support-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37, 211, 102, 0.1);
+      color: #20ba5a;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+    .support-btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #25D366;
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      width: 100%;
+      border: 1px solid #128C7E;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .support-btn-whatsapp:hover {
+      background-color: #128C7E;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/923204048464?text=Assalam-o-Alaikum, I would like to inquire about premium matchmaking services on Heaven Marriage Bureau." class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" style="vertical-align: middle;">
+      <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.233-1.371a9.945 9.945 0 0 0 4.777 1.224h.005c5.505 0 9.99-4.478 9.99-9.985 0-2.67-1.037-5.178-2.92-7.062C17.162 2.922 14.654 2 12.012 2zm5.727 14.072c-.314.888-1.543 1.637-2.13 1.722-.529.076-1.222.137-3.52-.816-2.936-1.218-4.836-4.218-4.983-4.417-.147-.197-1.184-1.579-1.184-3.013 0-1.433.748-2.137 1.015-2.423.267-.285.586-.356.782-.356.197 0 .393.002.563.01.18.009.421-.07.659.502.247.595.842 2.062.915 2.211.072.148.12.321.02.522-.097.2-.147.324-.294.496-.147.172-.31.385-.441.517-.148.147-.302.308-.13.603.172.295.767 1.266 1.644 2.049.88.784 1.62 1.025 1.915 1.173.295.148.466.12.639-.08.172-.2.748-.871.947-1.17.2-.298.397-.248.663-.148.267.1.1.92 2.052 1.947c.2.1.332.148.482.397.149.248.149 1.432-.165 2.32z"/>
+    </svg>
+  </a>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar" id="main-nav">
+      <a href="/" class="logo" id="nav-logo">
+        <img src="logo.jpg" alt="Heaven Marriage Bureau Logo">
+        <span class="logo-text">Heaven <span>Marriage Bureau</span></span>
+      </a>
+      <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/proposals">Proposals</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/reviews-faq.html">Reviews & FAQ</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/support.html" class="btn btn-accent active" style="padding: 5px 12px; font-size: 0.82rem; border-radius: 4px; font-weight: 700; color: #1A0000; letter-spacing: 0.5px;">Customer Support</a></li>
+        <li>
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Banner -->
+  <section class="hero" style="min-height: 45vh; padding: 60px 20px;">
+    <!-- Top gold scroll ornament -->
+    <div class="royal-flourish" style="margin-bottom: 10px;"></div>
+    <h1 style="color: var(--accent-color); font-size: 3.5rem;">Customer Support</h1>
+    <p style="color: var(--white); opacity: 0.95;">Speak directly with our dedicated representatives for assistance and package guidance.</p>
+  </section>
+
+  <!-- Support Representatives Section -->
+  <section class="section scroll-reveal">
+    <div class="support-grid">
+      
+      <!-- Card 1: Miss Zareena Gull -->
+      <div class="support-card">
+        <div class="support-avatar-ring">
+          <div class="support-avatar-inner">
+            <img src="images/team/zareena.jpg" alt="Miss Zareena Gull" onerror="this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80'">
+          </div>
+        </div>
+        <div class="support-name">Miss Zareena Gull</div>
+        <div class="support-role">Customer Care Representative</div>
+        <div class="support-status">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#20ba5a;"></span> Online Support
+        </div>
+        <p style="color: var(--light-text); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.5;">Contact Miss Zareena for basic packages queries, profile registration help, and general matching information.</p>
+        <a href="https://wa.me/923204048464?text=Assalam-o-Alaikum Miss Zareena, I want to inquire about registeration and customer support." target="_blank" class="support-btn-whatsapp">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
+            <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.233-1.371a9.945 9.945 0 0 0 4.777 1.224h.005c5.505 0 9.99-4.478 9.99-9.985 0-2.67-1.037-5.178-2.92-7.062C17.162 2.922 14.654 2 12.012 2zm5.727 14.072c-.314.888-1.543 1.637-2.13 1.722-.529.076-1.222.137-3.52-.816-2.936-1.218-4.836-4.218-4.983-4.417-.147-.197-1.184-1.579-1.184-3.013 0-1.433.748-2.137 1.015-2.423.267-.285.586-.356.782-.356.197 0 .393.002.563.01.18.009.421-.07.659.502.247.595.842 2.062.915 2.211.072.148.12.321.02.522-.097.2-.147.324-.294.496-.147.172-.31.385-.441.517-.148.147-.302.308-.13.603.172.295.767 1.266 1.644 2.049.88.784 1.62 1.025 1.915 1.173.295.148.466.12.639-.08.172-.2.748-.871.947-1.17.2-.298.397-.248.663-.148.267.1.1.92 2.052 1.947c.2.1.332.148.482.397.149.248.149 1.432-.165 2.32z"/>
+          </svg> Chat on WhatsApp
+        </a>
+      </div>
+
+      <!-- Card 2: Mr. Hadi -->
+      <div class="support-card">
+        <div class="support-avatar-ring">
+          <div class="support-avatar-inner">
+            <img src="images/team/hadi.jpg" alt="Mr. Hadi" onerror="this.src='https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80'">
+          </div>
+        </div>
+        <div class="support-name">Mr. Hadi</div>
+        <div class="support-role">Customer Care & Support</div>
+        <div class="support-status">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#20ba5a;"></span> Online Support
+        </div>
+        <p style="color: var(--light-text); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.5;">Contact Mr. Hadi for premium plans assistance, website technical support, or direct family verification statuses.</p>
+        <a href="https://wa.me/923204048464?text=Assalam-o-Alaikum Mr. Hadi, I want to inquire about customer support and verifications." target="_blank" class="support-btn-whatsapp">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
+            <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.233-1.371a9.945 9.945 0 0 0 4.777 1.224h.005c5.505 0 9.99-4.478 9.99-9.985 0-2.67-1.037-5.178-2.92-7.062C17.162 2.922 14.654 2 12.012 2zm5.727 14.072c-.314.888-1.543 1.637-2.13 1.722-.529.076-1.222.137-3.52-.816-2.936-1.218-4.836-4.218-4.983-4.417-.147-.197-1.184-1.579-1.184-3.013 0-1.433.748-2.137 1.015-2.423.267-.285.586-.356.782-.356.197 0 .393.002.563.01.18.009.421-.07.659.502.247.595.842 2.062.915 2.211.072.148.12.321.02.522-.097.2-.147.324-.294.496-.147.172-.31.385-.441.517-.148.147-.302.308-.13.603.172.295.767 1.266 1.644 2.049.88.784 1.62 1.025 1.915 1.173.295.148.466.12.639-.08.172-.2.748-.871.947-1.17.2-.298.397-.248.663-.148.267.1.1.92 2.052 1.947c.2.1.332.148.482.397.149.248.149 1.432-.165 2.32z"/>
+          </svg> Chat on WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Heaven Marriage Bureau</h4>
+        <p style="margin-bottom: 15px;">Pakistan's most trusted elite matrimonial service. Dedicated to bringing hearts together with values, integrity, and discretion since 2009.</p>
+        <p>Verified family circles in Islamabad, Lahore, Karachi & abroad.</p>
+        <div class="social-icons-wrapper">
+          <a href="https://www.facebook.com/share/1AgXnTDKLN/" class="social-icon-link" aria-label="Facebook" target="_blank">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/heavanmarriagebureau?igsh=MXBkYmh6dHVhZW5oaQ==" class="social-icon-link" aria-label="Instagram" target="_blank">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="social-icon-link" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="https://wa.me/923204048464" class="social-icon-link" aria-label="WhatsApp" target="_blank">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/" style="color: var(--accent-color);">Home Page</a></li>
+          <li><a href="/about">About Our Story</a></li>
+          <li><a href="/proposals">Browse Proposals</a></li>
+          <li><a href="/services">Packages & Plans</a></li>
+          <li><a href="/contact">Send Inquiry</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Matchmaker Contacts</h4>
+        <ul class="footer-contacts">
+          <li><strong>Direct Call:</strong> +92 42 35712345</li>
+          <li><strong>WhatsApp Chat:</strong> +92 320 4048464</li>
+          <li><strong>General Email:</strong> info@heavenmarriage.com</li>
+          <li><strong>Support Email:</strong> support@heavenmarriage.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Heaven Marriage Bureau. All rights reserved. Managed by Elite Matrimonial Services Co.</p>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
