@@ -376,7 +376,7 @@ header {
 
 .hero p {
   font-size: 1.3rem;
-  color: var(--white);
+  color: #ffffff;
   max-width: 650px;
   margin-bottom: 50px;
   font-family: var(--font-headings);
@@ -430,7 +430,7 @@ header {
   border: 1px solid var(--accent-color);
   border-radius: 4px;
   background-color: rgba(107, 0, 0, 0.25);
-  color: var(--white);
+  color: #ffffff;
   font-family: var(--font-body);
   font-size: 0.9rem;
   outline: none;
@@ -450,20 +450,20 @@ header {
 
 .form-group select:focus,
 .form-group input:focus {
-  border-color: var(--white);
+  border-color: #ffffff;
   background-color: rgba(107, 0, 0, 0.35);
   box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
 }
 
 .form-group select option {
   background-color: #1A0000;
-  color: var(--white);
+  color: #ffffff;
 }
 
 /* Stats Bar */
 .stats-bar {
   background: var(--primary-gradient);
-  color: var(--white);
+  color: #ffffff;
   padding: 80px 20px;
   border-bottom: 2px solid var(--accent-color);
 }
@@ -495,7 +495,7 @@ header {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: var(--white);
+  color: #ffffff;
   opacity: 0.9;
   font-weight: 500;
 }
@@ -749,7 +749,7 @@ header {
   align-items: center;
   gap: 6px;
   background-color: #25D366;
-  color: var(--white);
+  color: #ffffff;
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -1036,6 +1036,16 @@ body.dark-theme {
   --dark-text: #FAF7F2;          /* Off White Text */
   --light-text: #e6dfd3;          /* Soft Gold/Cream text */
   --border-muted: #4d0000;       /* Dark Maroon border */
+  --primary-color: #FFE082;      /* Golden/Cream for headers in dark mode */
+}
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4,
+body.dark-theme h5,
+body.dark-theme h6 {
+  color: var(--accent-color);
 }
 
 /* Base Transition for Theme swap */
