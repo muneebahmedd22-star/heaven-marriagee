@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #4A0080;
-  --primary-light: #6b14b0;
-  --primary-dark: #300054;
-  --accent-color: #C9972B;
-  --bg-color: #f5f2eb;
+  --primary-color: #6B0000;      /* Royal Maroon */
+  --primary-light: #8B1A1A;      /* Light Maroon */
+  --primary-dark: #3B0000;       /* Dark Maroon */
+  --accent-color: #D4AF37;       /* Rich Gold */
+  --bg-color: #FAF7F2;           /* Cream Background */
   --white: #ffffff;
-  --dark-text: #2b2333;
-  --light-text: #706876;
-  --border-color: #e0d9cd;
-  --shadow: 0 4px 12px rgba(74, 0, 128, 0.06);
+  --dark-text: #1A1A1A;          /* Charcoal Text */
+  --light-text: #605757;         /* Muted Text */
+  --border-color: #e6dfd3;       /* Border Cream */
+  --shadow: 0 4px 12px rgba(107, 0, 0, 0.05);
   --radius: 8px;
   --font: 'Inter', sans-serif;
 }
