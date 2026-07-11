@@ -650,6 +650,7 @@ let currentLogsView = 'attendance';
 function setupLogsHandlers() {
   const monthSelect = document.getElementById('log-month-select');
   const viewSelect = document.getElementById('log-view-type');
+  const exportBtn = document.getElementById('btn-export-logs');
   
   if (monthSelect) {
     // Set default value of month input to current month YYYY-MM
@@ -677,6 +678,80 @@ function setupLogsHandlers() {
       loadLogs();
     });
   }
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      exportLogsToCSV();
+    });
+  }
+}
+
+function exportLogsToCSV() {
+  const monthSelect = document.getElementById('log-month-select');
+  const selectedMonth = monthSelect ? monthSelect.value : new Date().toISOString().slice(0, 7);
+  
+  let csvContent = "";
+  let fileName = "";
+  
+  if (currentLogsView === 'attendance') {
+    fileName = `HMB_Attendance_Report_${selectedMonth}.csv`;
+    // Headers
+    csvContent += "Employee Name,Username,Days Logged In This Month,First Login of Month,Last Login of Month,Status (Salary Base)\n";
+    
+    const rows = document.querySelectorAll('#attendance-summary-table-body tr');
+    if (rows.length === 0 || (rows[0] && (rows[0].innerText.includes('No attendance logs') || rows[0].innerText.includes('Error') || rows[0].innerText.includes('Loading')))) {
+      alert("No data available to export.");
+      return;
+    }
+    
+    rows.forEach(row => {
+      const cols = row.querySelectorAll('td');
+      if (cols.length === 6) {
+        const name = cols[0].innerText.replace(/,/g, " ").trim();
+        const username = cols[1].innerText.replace(/,/g, " ").trim();
+        const activeDays = cols[2].innerText.replace(/,/g, " ").trim();
+        const firstLogin = cols[3].innerText.replace(/,/g, " ").trim();
+        const lastLogin = cols[4].innerText.replace(/,/g, " ").trim();
+        const status = cols[5].innerText.replace(/,/g, " ").trim();
+        
+        csvContent += `"${name}","${username}","${activeDays}","${firstLogin}","${lastLogin}","${status}"\n`;
+      }
+    });
+  } else {
+    fileName = `HMB_Security_Audit_Logs_${selectedMonth}.csv`;
+    // Headers
+    csvContent += "Date & Time,Employee Name,Action Type,Audit Details,IP / Device\n";
+    
+    const rows = document.querySelectorAll('#raw-audit-table-body tr');
+    if (rows.length === 0 || (rows[0] && (rows[0].innerText.includes('No activity logs') || rows[0].innerText.includes('Error') || rows[0].innerText.includes('Loading')))) {
+      alert("No data available to export.");
+      return;
+    }
+    
+    rows.forEach(row => {
+      const cols = row.querySelectorAll('td');
+      if (cols.length === 5) {
+        const datetime = cols[0].innerText.replace(/,/g, " ").trim();
+        const name = cols[1].innerText.replace(/,/g, " ").trim();
+        const action = cols[2].innerText.replace(/,/g, " ").trim();
+        const details = cols[3].innerText.replace(/,/g, " ").replace(/"/g, '""').trim(); // Escape double quotes
+        const ip = cols[4].innerText.replace(/,/g, " ").trim();
+        
+        csvContent += `"${datetime}","${name}","${action}","${details}","${ip}"\n`;
+      }
+    });
+  }
+  
+  // Trigger file download
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", fileName);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 async function loadLogs() {
