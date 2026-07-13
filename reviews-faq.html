@@ -376,33 +376,12 @@
             listContainer.innerHTML = data.map(r => {
               const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
               
-              // Seeded reviews will have their dates randomized deterministically between Jan 26, 2026 and Jul 26, 2026
-              const createdDate = new Date(r.createdAt);
-              let dateStr;
-              
-              // July 4, 2026 is the seed day. Check if the record was created on that day.
-              if (createdDate.getFullYear() === 2026 && createdDate.getMonth() === 6 && createdDate.getDate() === 4) {
-                // Calculate simple character-code hash from review ID/name
-                const hash = [...(r._id || r.fullName || "")].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                const start = new Date('2026-01-26').getTime();
-                const end = new Date('2026-07-26').getTime();
-                const randomTime = start + (hash % (end - start));
-                dateStr = new Date(randomTime).toLocaleDateString('en-US', {
-                  year: 'numeric', month: 'short', day: 'numeric'
-                });
-              } else {
-                dateStr = createdDate.toLocaleDateString('en-US', {
-                  year: 'numeric', month: 'short', day: 'numeric'
-                });
-              }
-              
               return `
                 <div class="review-item-box">
                   <div class="review-stars">${stars}</div>
                   <p style="color: var(--dark-text); font-size: 0.95rem; margin-bottom: 12px; font-style: italic; line-height: 1.6;">"${r.message}"</p>
-                  <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--light-text); font-weight: 600;">
-                    <span>— ${r.fullName}</span>
-                    <span>${dateStr}</span>
+                  <div style="font-size: 0.8rem; color: var(--light-text); font-weight: 600;">
+                    — ${r.fullName}
                   </div>
                 </div>
               `;
