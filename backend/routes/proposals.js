@@ -428,14 +428,16 @@ router.post('/ai-matchmaker', async (req, res) => {
 
     // Check for general FAQs first
     let faqResponse = null;
-    if (/\b(faq|faqs|how does it work|method|process|work|info|about)\b/.test(text)) {
+    if (/\b(faq|faqs|how does it work|method|process|work|info|about|story)\b/.test(text)) {
       faqResponse = "Heaven Marriage Bureau is Pakistan's most trusted elite matrimonial service. We work in 3 simple steps: 1. Register online or at our office. 2. Our matchmakers analyze compatibility. 3. We arrange private family meetings with parental approval. How can I help you search today?";
-    } else if (/\b(price|pricing|charge|fee|cost|package|packages|plan|plans|membership)\b/.test(text)) {
+    } else if (/\b(price|pricing|charge|fee|cost|package|packages|plan|plans|membership|services|tier|rate)\b/.test(text)) {
       faqResponse = "We offer three premium packages: Basic (registration & matching support), Gold (personalized matchmaker matching), and Royal (our elite VIP tier with direct matchmaker priority and custom verifications). You can view full details on our Packages & Plans page!";
-    } else if (/\b(where|office|address|location|locate|timing|hours|time|open|branch)\b/.test(text)) {
+    } else if (/\b(where|office|address|location|locate|timing|hours|time|open|branch|society)\b/.test(text)) {
       faqResponse = "Our head office is located at Plot No. 34-D, Khayaban-e-Jinnah, Block - D, OPF Housing Scheme, Lahore, Pakistan. We are open Monday to Saturday, 10 AM to 6 PM. Feel free to visit us!";
-    } else if (/\b(fbr|register|legal|verified|tax|trust|fake|secure|privacy|safe)\b/.test(text)) {
+    } else if (/\b(fbr|register|legal|verified|tax|trust|fake|secure|privacy|safe|compliant)\b/.test(text)) {
       faqResponse = "Heaven Marriage Bureau is a legally registered, tax-compliant enterprise verified by the Federal Board of Revenue (FBR), Pakistan. We guarantee absolute family security and privacy. Photos and coordinates are never shared publicly.";
+    } else if (/\b(review|reviews|feedback|rating|ratings|client|clients|experience|testimonial|testimonials)\b/.test(text)) {
+      faqResponse = "Our elite client families have rated us 4.9/5 stars! We focus on verified backgrounds and complete confidentiality. You can read all verified client reviews and feedback on our Reviews & FAQ page!";
     }
 
     if (faqResponse) {
@@ -495,6 +497,23 @@ router.post('/ai-matchmaker', async (req, res) => {
         { education: new RegExp(profession, 'i') }
       ];
     }
+
+    // 5. Advanced filters (Second marriage, Late marriage, International)
+    if (/\b(second marriage|2nd marriage|divorced|widowed)\b/.test(text)) {
+      query.maritalStatus = { $ne: 'Unmarried' };
+    }
+    
+    if (/\b(late marriage|older)\b/.test(text)) {
+      // Born 30 or more years ago (DOB <= 30 years ago)
+      const cutoffDate = new Date();
+      cutoffDate.setFullYear(cutoffDate.getFullYear() - 30);
+      query.dob = { $lte: cutoffDate };
+    }
+
+    if (/\b(international|overseas|abroad|foreign|outside)\b/.test(text)) {
+      query.country = { $ne: 'Pakistan' };
+    }
+
 
     let proposals = await Proposal.find(query).limit(3);
     let fallback = false;

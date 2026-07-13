@@ -365,16 +365,55 @@
     if (indicator) indicator.remove();
   };
 
-  const appendGuidedChips = () => {
+  const getGenderSuffix = (name) => {
+    const lower = name.toLowerCase();
+    const femaleEndings = ['a', 'i', 'e', 'n', 'sh', 'ra', 'ma', 'ab', 'am', 'y'];
+    const femaleNames = ['alisha', 'fatima', 'ayesha', 'zainab', 'maryam', 'kiran', 'saira', 'zarnab', 'zareena', 'alina', 'anum', 'sidra', 'iqra', 'amna', 'sana', 'komal', 'hina', 'saba', 'bushra', 'nadia', 'maria', 'hadiqa', 'uzma', 'fiza', 'tayyaba'];
+    
+    if (femaleNames.includes(lower)) return 'Sahiba';
+    
+    const lastChar = lower.slice(-1);
+    const lastTwo = lower.slice(-2);
+    if (femaleEndings.includes(lastChar) || femaleEndings.includes(lastTwo)) {
+      return 'Sahiba';
+    }
+    
+    return 'Sahib';
+  };
+
+  const appendGuidedChips = (category = 'primary') => {
     const chipWrapper = document.createElement('div');
     chipWrapper.className = 'ai-prompt-chips';
     
-    const prompts = [
-      { text: "🤵 Look for Groom (Dulha)", query: "I am looking for a Groom" },
-      { text: "👰 Look for Bride (Dulhan)", query: "I am looking for a Bride" },
-      { text: "💼 Doctors Proposals", query: "I am looking for a Doctor match" },
-      { text: "📍 Lahore Matches", query: "Show matches from Lahore" }
-    ];
+    let prompts = [];
+    if (category === 'primary') {
+      prompts = [
+        { text: "🤵 Look for Groom (Dulha)", type: 'select_groom' },
+        { text: "👰 Look for Bride (Dulhan)", type: 'select_bride' },
+        { text: "💳 Packages & Services", query: "services and plans" },
+        { text: "⭐ Read Client Reviews", query: "reviews and testimonials" }
+      ];
+    } else if (category === 'groom') {
+      prompts = [
+        { text: "🤵 Doctor Groom", query: "I need a doctor groom" },
+        { text: "🤵 Engineer Groom", query: "I need an engineer groom" },
+        { text: "📍 Lahore Grooms", query: "Show grooms from Lahore" },
+        { text: "✈️ Overseas Grooms", query: "Show international grooms" },
+        { text: "🕰️ Late Marriage Grooms", query: "Show late marriage grooms" },
+        { text: "💍 2nd Marriage Grooms", query: "Show 2nd marriage grooms" },
+        { text: "⬅️ Back", type: 'select_primary' }
+      ];
+    } else if (category === 'bride') {
+      prompts = [
+        { text: "👰 Doctor Bride", query: "I need a doctor bride" },
+        { text: "👰 Educated Bride", query: "I need a bachelors educated bride" },
+        { text: "📍 Lahore Brides", query: "Show brides from Lahore" },
+        { text: "✈️ Overseas Brides", query: "Show international brides" },
+        { text: "🕰️ Late Marriage Brides", query: "Show late marriage brides" },
+        { text: "💍 2nd Marriage Brides", query: "Show 2nd marriage brides" },
+        { text: "⬅️ Back", type: 'select_primary' }
+      ];
+    }
 
     prompts.forEach(p => {
       const chip = document.createElement('button');
@@ -383,7 +422,31 @@
       chip.addEventListener('click', () => {
         appendUserMessage(p.text);
         chipWrapper.remove();
-        processChatMessage(p.query);
+        
+        if (p.type === 'select_groom') {
+          appendBotTypingIndicator();
+          setTimeout(() => {
+            removeBotTypingIndicator();
+            appendBotMessage("Select a category for Groom proposals:");
+            appendGuidedChips('groom');
+          }, 600);
+        } else if (p.type === 'select_bride') {
+          appendBotTypingIndicator();
+          setTimeout(() => {
+            removeBotTypingIndicator();
+            appendBotMessage("Select a category for Bride proposals:");
+            appendGuidedChips('bride');
+          }, 600);
+        } else if (p.type === 'select_primary') {
+          appendBotTypingIndicator();
+          setTimeout(() => {
+            removeBotTypingIndicator();
+            appendBotMessage("How can I assist you today?");
+            appendGuidedChips('primary');
+          }, 600);
+        } else {
+          processChatMessage(p.query);
+        }
       });
       chipWrapper.appendChild(chip);
     });
@@ -405,8 +468,9 @@
       appendBotTypingIndicator();
       setTimeout(() => {
         removeBotTypingIndicator();
-        appendBotMessage(`Honored to assist you, ${userName} Sahib! Let's find the perfect family match for you today.`);
-        appendGuidedChips();
+        const suffix = getGenderSuffix(userName);
+        appendBotMessage(`Honored to assist you, ${userName} ${suffix}! Let's find the perfect family match for you today.`);
+        appendGuidedChips('primary');
       }, 1000);
     } else if (currentStep === "chat") {
       processChatMessage(val);
