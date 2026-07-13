@@ -3,6 +3,7 @@ const router = express.Router();
 const Proposal = require('../models/Proposal');
 const ActivityLog = require('../models/ActivityLog');
 const Employee = require('../models/Employee');
+const Inquiry = require('../models/Inquiry');
 const { protect } = require('../middleware/auth');
 const upload = require('../middleware/multer');
 const cloudinary = require('../config/cloudinary');
@@ -419,12 +420,42 @@ router.delete('/:id', protect, async (req, res) => {
 // @access  Public
 router.post('/ai-matchmaker', async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, name, phone } = req.body;
     if (!message) {
       return res.status(400).json({ success: false, message: 'Message is required' });
     }
 
     const text = message.toLowerCase();
+
+    // 1. Check for Phone Number (Lead Capture)
+    const phoneMatch = message.match(/(?:\+92|0092|0)?3\d{9}\b/);
+    const extractedPhone = phone || (phoneMatch ? phoneMatch[0] : null);
+
+    if (extractedPhone) {
+      const newLead = new Inquiry({
+        fullName: name || 'AI Chatbot Visitor',
+        email: 'ai-lead@heaven.com',
+        phone: extractedPhone,
+        subject: 'AI Matchmaker Lead',
+        message: `User conversation message: "${message}"`
+      });
+      await newLead.save();
+      return res.json({
+        success: true,
+        type: 'lead_registered',
+        phone: extractedPhone,
+        message: `Thank you! I have registered your callback request in our system. One of our senior matchmakers will contact you on ${extractedPhone} shortly via WhatsApp/Call.`
+      });
+    }
+
+    // 2. Check if user wants to register / talk to human but no phone was provided
+    if (/\b(call me|callback|register me|contact me|talk to matchmaker|human matchmaker|agent|phone number|whatsapp number)\b/.test(text)) {
+      return res.json({
+        success: true,
+        type: 'request_phone',
+        message: "Please provide your active WhatsApp or Phone number (e.g. 03001234567) so our senior matchmaker can contact you with verified proposals."
+      });
+    }
 
     // Check for general FAQs first
     let faqResponse = null;

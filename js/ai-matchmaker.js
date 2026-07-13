@@ -489,15 +489,26 @@
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userText })
+        body: JSON.stringify({ message: userText, name: userName })
       });
       
       const resObj = await response.json();
       removeBotTypingIndicator();
 
+      if (resObj.success && resObj.type === 'lead_registered') {
+        appendBotMessage(resObj.message);
+        appendGuidedChips('primary');
+        return;
+      }
+
+      if (resObj.success && resObj.type === 'request_phone') {
+        appendBotMessage(resObj.message);
+        return;
+      }
+
       if (resObj.success && resObj.type === 'faq') {
         appendBotMessage(resObj.message);
-        appendGuidedChips();
+        appendGuidedChips('primary');
         return;
       }
 
