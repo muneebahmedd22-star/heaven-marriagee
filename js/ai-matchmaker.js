@@ -468,8 +468,7 @@
       appendBotTypingIndicator();
       setTimeout(() => {
         removeBotTypingIndicator();
-        const suffix = getGenderSuffix(userName);
-        appendBotMessage(`Honored to assist you, ${userName} ${suffix}! Let's find the perfect family match for you today.`);
+        appendBotMessage(`Honored to assist you, ${userName}! Let's find the perfect family match for you today.`);
         appendGuidedChips('primary');
       }, 1000);
     } else if (currentStep === "chat") {
