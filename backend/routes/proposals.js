@@ -428,7 +428,7 @@ router.post('/ai-matchmaker', async (req, res) => {
     const text = message.toLowerCase();
 
     // 1. Check for Phone Number (Lead Capture)
-    const phoneMatch = message.match(/(?:\+92|0092|0)?3\d{9}\b/);
+    const phoneMatch = message.match(/(?:\+92|0092|0)?3\d{7,10}\b/);
     const extractedPhone = phone || (phoneMatch ? phoneMatch[0] : null);
 
     if (extractedPhone) {
