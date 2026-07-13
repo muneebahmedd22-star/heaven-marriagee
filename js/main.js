@@ -126,7 +126,7 @@ async function loadFeaturedProposals() {
   grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px 0;"><div class="gold-spinner"></div><p style="color: var(--light-text); font-size: 0.95rem; font-family: var(--font-headings); font-style: italic;">Curating handpicked matches for you...</p></div>';
 
   try {
-    const response = await api.getProposals({ limit: 4 });
+    const response = await api.getProposals({ limit: 10 });
     const proposals = response.data || [];
 
     if (proposals.length === 0) {
@@ -228,7 +228,7 @@ async function loadFeaturedProposals() {
           <div class="more-info-title">For More Information</div>
           <div class="more-info-box">
             <span class="contact-person-name">Heaven Matchmaker</span>
-            <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum, I am inquiring about Profile ID ${p.profileId} on Heaven Marriage Bureau" target="_blank" class="whatsapp-contact-link">
+            <a href="https://wa.me/923204048464?text=Assalam-o-Alaikum, I am inquiring about Profile ID ${p.profileId} on Heaven Marriage Bureau" target="_blank" class="whatsapp-contact-link">
               <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
                 <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.233-1.371a9.945 9.945 0 0 0 4.777 1.224h.005c5.505 0 9.99-4.478 9.99-9.985 0-2.67-1.037-5.178-2.92-7.062C17.162 2.922 14.654 2 12.012 2zm5.727 14.072c-.314.888-1.543 1.637-2.13 1.722-.529.076-1.222.137-3.52-.816-2.936-1.218-4.836-4.218-4.983-4.417-.147-.197-1.184-1.579-1.184-3.013 0-1.433.748-2.137 1.015-2.423.267-.285.586-.356.782-.356.197 0 .393.002.563.01.18.009.421-.07.659.502.247.595.842 2.062.915 2.211.072.148.12.321.02.522-.097.2-.147.324-.294.496-.147.172-.31.385-.441.517-.148.147-.302.308-.13.603.172.295.767 1.266 1.644 2.049.88.784 1.62 1.025 1.915 1.173.295.148.466.12.639-.08.172-.2.748-.871.947-1.17.2-.298.397-.248.663-.148.267.1.1.92 2.052 1.947c.2.1.332.148.482.397.149.248.149 1.432-.165 2.32z"/>
               </svg> Chat
@@ -240,7 +240,67 @@ async function loadFeaturedProposals() {
       grid.appendChild(card);
     });
 
+    // Initialize the auto-scroller for trending profiles
+    initializeTrendingSlider();
+
   } catch (error) {
     grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: red;">Error: ${error.message}</div>`;
   }
+}
+
+function initializeTrendingSlider() {
+  const grid = document.getElementById('trending-proposals-grid');
+  const prevBtn = document.getElementById('trending-prev');
+  const nextBtn = document.getElementById('trending-next');
+  if (!grid || !prevBtn || !nextBtn) return;
+
+  const cardWidth = 350 + 30; // Card width + gap
+  let currentScroll = 0;
+  let autoScrollInterval;
+
+  const startAutoScroll = () => {
+    stopAutoScroll();
+    autoScrollInterval = setInterval(() => {
+      const maxScroll = grid.scrollWidth - grid.parentElement.clientWidth;
+      if (maxScroll <= 0) return;
+      
+      if (currentScroll >= maxScroll) {
+        currentScroll = 0;
+      } else {
+        currentScroll += cardWidth;
+        if (currentScroll > maxScroll) currentScroll = maxScroll;
+      }
+      grid.style.transform = `translateX(-${currentScroll}px)`;
+    }, 3500);
+  };
+
+  const stopAutoScroll = () => {
+    clearInterval(autoScrollInterval);
+  };
+
+  nextBtn.addEventListener('click', () => {
+    stopAutoScroll();
+    const maxScroll = grid.scrollWidth - grid.parentElement.clientWidth;
+    if (maxScroll <= 0) return;
+    
+    currentScroll += cardWidth;
+    if (currentScroll > maxScroll) currentScroll = maxScroll;
+    grid.style.transform = `translateX(-${currentScroll}px)`;
+    startAutoScroll();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    stopAutoScroll();
+    currentScroll -= cardWidth;
+    if (currentScroll < 0) currentScroll = 0;
+    grid.style.transform = `translateX(-${currentScroll}px)`;
+    startAutoScroll();
+  });
+
+  // Pause on hover
+  grid.addEventListener('mouseenter', stopAutoScroll);
+  grid.addEventListener('mouseleave', startAutoScroll);
+
+  // Initialize
+  startAutoScroll();
 }
