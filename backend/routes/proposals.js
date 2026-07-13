@@ -426,6 +426,26 @@ router.post('/ai-matchmaker', async (req, res) => {
 
     const text = message.toLowerCase();
 
+    // Check for general FAQs first
+    let faqResponse = null;
+    if (/\b(faq|faqs|how does it work|method|process|work|info|about)\b/.test(text)) {
+      faqResponse = "Heaven Marriage Bureau is Pakistan's most trusted elite matrimonial service. We work in 3 simple steps: 1. Register online or at our office. 2. Our matchmakers analyze compatibility. 3. We arrange private family meetings with parental approval. How can I help you search today?";
+    } else if (/\b(price|pricing|charge|fee|cost|package|packages|plan|plans|membership)\b/.test(text)) {
+      faqResponse = "We offer three premium packages: Basic (registration & matching support), Gold (personalized matchmaker matching), and Royal (our elite VIP tier with direct matchmaker priority and custom verifications). You can view full details on our Packages & Plans page!";
+    } else if (/\b(where|office|address|location|locate|timing|hours|time|open|branch)\b/.test(text)) {
+      faqResponse = "Our head office is located at Plot No. 34-D, Khayaban-e-Jinnah, Block - D, OPF Housing Scheme, Lahore, Pakistan. We are open Monday to Saturday, 10 AM to 6 PM. Feel free to visit us!";
+    } else if (/\b(fbr|register|legal|verified|tax|trust|fake|secure|privacy|safe)\b/.test(text)) {
+      faqResponse = "Heaven Marriage Bureau is a legally registered, tax-compliant enterprise verified by the Federal Board of Revenue (FBR), Pakistan. We guarantee absolute family security and privacy. Photos and coordinates are never shared publicly.";
+    }
+
+    if (faqResponse) {
+      return res.json({
+        success: true,
+        type: 'faq',
+        message: faqResponse
+      });
+    }
+
     // 1. Extract Gender
     let gender = null;
     if (/\b(groom|male|boy|son|dulha|larka|man)\b/.test(text)) {

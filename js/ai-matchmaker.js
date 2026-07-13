@@ -431,6 +431,12 @@
       const resObj = await response.json();
       removeBotTypingIndicator();
 
+      if (resObj.success && resObj.type === 'faq') {
+        appendBotMessage(resObj.message);
+        appendGuidedChips();
+        return;
+      }
+
       if (resObj.success && resObj.data && resObj.data.length > 0) {
         if (resObj.fallback) {
           appendBotMessage(`We couldn't find exact matches for all filters, but here are some highly compatible matches matching your caste/city:`);
