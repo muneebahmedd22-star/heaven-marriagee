@@ -414,7 +414,97 @@ router.delete('/:id', protect, async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+// @desc    AI Matchmaker Assistant intent parsing and proposals matching
+// @route   POST /api/v1/proposals/ai-matchmaker
+// @access  Public
+router.post('/ai-matchmaker', async (req, res) => {
+  try {
+    const { message } = req.body;
+    if (!message) {
+      return res.status(400).json({ success: false, message: 'Message is required' });
+    }
 
+    const text = message.toLowerCase();
 
+    // 1. Extract Gender
+    let gender = null;
+    if (/\b(groom|male|boy|son|dulha|larka|man)\b/.test(text)) {
+      gender = 'Male';
+    } else if (/\b(bride|female|girl|daughter|dulhan|larki|woman)\b/.test(text)) {
+      gender = 'Female';
+    }
+
+    // 2. Extract City
+    let city = null;
+    const cities = ['lahore', 'karachi', 'islamabad', 'rawalpindi', 'faisalabad', 'multan', 'sialkot', 'peshawar', 'gujranwala', 'abbottabad'];
+    for (const c of cities) {
+      if (text.includes(c)) {
+        city = c.charAt(0).toUpperCase() + c.slice(1);
+        break;
+      }
+    }
+
+    // 3. Extract Caste
+    let caste = null;
+    const castes = ['rajput', 'awan', 'syed', 'butt', 'jatoi', 'gujjar', 'mughal', 'sheikh', 'malik', 'abbasi', 'janjua', 'rana', 'chaudhary'];
+    for (const cst of castes) {
+      if (text.includes(cst)) {
+        caste = cst.charAt(0).toUpperCase() + cst.slice(1);
+        break;
+      }
+    }
+
+    // 4. Extract Profession
+    let profession = null;
+    const professions = ['doctor', 'engineer', 'software', 'business', 'teacher', 'it', 'css', 'manager', 'accountant', 'lawyer'];
+    for (const prof of professions) {
+      if (text.includes(prof)) {
+        profession = prof.charAt(0).toUpperCase() + prof.slice(1);
+        break;
+      }
+    }
+
+    // Build DB Query
+    let query = {};
+    if (gender) query.gender = gender;
+    if (city) query.city = new RegExp(city, 'i');
+    if (caste) query.caste = new RegExp(caste, 'i');
+    if (profession) {
+      query.$or = [
+        { occupation: new RegExp(profession, 'i') },
+        { education: new RegExp(profession, 'i') }
+      ];
+    }
+
+    let proposals = await Proposal.find(query).limit(3);
+    let fallback = false;
+
+    // Fallback: If no matches, search by gender + caste (relax city and profession)
+    if (proposals.length === 0 && (caste || city)) {
+      fallback = true;
+      let relaxedQuery = {};
+      if (gender) relaxedQuery.gender = gender;
+      
+      if (caste) {
+        relaxedQuery.caste = new RegExp(caste, 'i');
+      } else if (city) {
+        relaxedQuery.city = new RegExp(city, 'i');
+      }
+      
+      proposals = await Proposal.find(relaxedQuery).limit(3);
+    }
+
+    res.json({
+      success: true,
+      extracted: { gender, city, caste, profession },
+      fallback,
+      data: proposals
+    });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 module.exports = router;
+
