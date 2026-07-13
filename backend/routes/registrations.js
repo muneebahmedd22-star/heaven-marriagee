@@ -49,6 +49,17 @@ router.post('/', upload.single('photo'), async (req, res) => {
 
     const registration = await Registration.create(registrationData);
 
+    // Trigger WebSockets Notification
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('new_registration', {
+        name: registration.fullName,
+        city: registration.city || 'Lahore',
+        phone: registration.phone,
+        time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+      });
+    }
+
     res.status(201).json({
       success: true,
       data: registration,

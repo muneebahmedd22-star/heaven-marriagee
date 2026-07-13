@@ -46,6 +46,18 @@ router.post('/', async (req, res) => {
       message,
       status: 'Approved'
     });
+
+    // Trigger WebSockets Notification
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('new_review', {
+        name: review.fullName,
+        rating: review.rating,
+        message: review.message,
+        time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+      });
+    }
+
     res.status(201).json({ success: true, data: review });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });

@@ -3,6 +3,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const Admin = require('./models/Admin');
+const http = require('http');
+const { Server } = require('socket.io');
 
 // Load env vars
 dotenv.config();
@@ -11,6 +13,23 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+// Store socket.io instance on express app configuration
+app.set('io', io);
+
+io.on('connection', (socket) => {
+  console.log('Client connected to WebSocket: ', socket.id);
+  socket.on('disconnect', () => {
+    console.log('Client disconnected from WebSocket');
+  });
+});
 
 // Body parser
 app.use(express.json());
@@ -78,7 +97,7 @@ const seedDefaultAdmin = async () => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, async () => {
+server.listen(PORT, async () => {
   console.log(`Server running in development mode on port ${PORT}`);
   await seedDefaultAdmin();
 });

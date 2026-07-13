@@ -440,6 +440,17 @@ router.post('/ai-matchmaker', async (req, res) => {
         message: `User conversation message: "${message}"`
       });
       await newLead.save();
+
+      // Trigger WebSockets Notification
+      const io = req.app.get('io');
+      if (io) {
+        io.emit('new_lead', {
+          name: name || 'AI Chatbot Visitor',
+          phone: extractedPhone,
+          time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        });
+      }
+
       return res.json({
         success: true,
         type: 'lead_registered',

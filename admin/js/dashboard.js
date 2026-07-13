@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // Initialize WebSockets real-time notifications
+  initializeWebSockets();
+
   // Display Admin Username
   const adminUser = JSON.parse(localStorage.getItem('hmb_admin_user') || '{}');
   const adminDisplay = document.getElementById('admin-display-name');
@@ -852,3 +855,123 @@ async function loadLogs() {
 
 window.loadLogs = loadLogs;
 window.setupLogsHandlers = setupLogsHandlers;
+
+// Initialize WebSockets real-time notifications
+function initializeWebSockets() {
+  const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  const socketUrl = isLocal ? "http://localhost:5000" : "https://heaven-marriagee.onrender.com";
+  
+  const socket = io(socketUrl);
+  
+  socket.on('connect', () => {
+    console.log('Admin connected to WebSocket server: ', socket.id);
+  });
+  
+  socket.on('new_lead', (data) => {
+    showToastNotification(`🔔 Alert: New AI Lead from ${data.name} (${data.phone}) just received!`, 'lead');
+    playNotificationSound();
+    if (typeof loadInquiries === 'function') loadInquiries();
+    if (typeof loadOverview === 'function') loadOverview();
+  });
+  
+  socket.on('new_registration', (data) => {
+    showToastNotification(`👰 Alert: New Registration from ${data.name} (${data.city})!`, 'registration');
+    playNotificationSound();
+    if (typeof loadRegistrations === 'function') loadRegistrations();
+    if (typeof loadOverview === 'function') loadOverview();
+  });
+  
+  socket.on('new_review', (data) => {
+    showToastNotification(`⭐ Alert: New Review from ${data.name} (${data.rating} Stars)!`, 'review');
+    playNotificationSound();
+    if (typeof loadReviews === 'function') loadReviews();
+    if (typeof loadOverview === 'function') loadOverview();
+  });
+}
+
+// Play synthesized gold notification chime (Web Audio API)
+function playNotificationSound() {
+  try {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    const playNote = (freq, startTime, duration) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      
+      gain.gain.setValueAtTime(0.15, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    };
+    
+    const now = audioCtx.currentTime;
+    playNote(587.33, now, 0.4);      // D5
+    playNote(880.00, now + 0.15, 0.6); // A5
+  } catch (e) {
+    console.error("Audio Context failed: ", e);
+  }
+}
+
+// Show a gold-accented toast notification at top-right
+function showToastNotification(message, type) {
+  let container = document.getElementById('admin-toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'admin-toast-container';
+    container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; pointer-events: none;';
+    document.body.appendChild(container);
+  }
+  
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    background: #6B0000;
+    color: #fff;
+    border: 1.5px solid #D4AF37;
+    border-radius: 8px;
+    padding: 15px 20px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    min-width: 320px;
+    max-width: 400px;
+    transform: translateX(120%);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: auto;
+    cursor: pointer;
+  `;
+  
+  toast.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; gap: 15px;">
+      <span>${message}</span>
+      <span style="font-size: 1.2rem; line-height: 1; opacity: 0.8;">&times;</span>
+    </div>
+  `;
+  
+  toast.addEventListener('click', () => {
+    toast.style.transform = 'translateX(120%)';
+    setTimeout(() => toast.remove(), 300);
+  });
+  
+  container.appendChild(toast);
+  
+  // Animate in
+  setTimeout(() => {
+    toast.style.transform = 'translateX(0)';
+  }, 50);
+  
+  // Auto-dismiss after 6 seconds
+  setTimeout(() => {
+    if (toast.parentNode) {
+      toast.style.transform = 'translateX(120%)';
+      setTimeout(() => toast.remove(), 300);
+    }
+  }, 6000);
+}
