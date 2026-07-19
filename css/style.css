@@ -24,6 +24,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Base Styles */
@@ -38,6 +40,8 @@ body {
   background-color: var(--bg-color);
   color: var(--dark-text);
   line-height: 1.7;
+  overflow-x: hidden;
+  width: 100%;
   overflow-x: hidden;
 }
 
@@ -1505,6 +1509,22 @@ body {
 
 .slider-arrow.right {
   right: 0;
+}
+
+/* Mobile Responsive Optimization for Trending Slider */
+@media (max-width: 480px) {
+  .trending-slider-wrapper {
+    padding: 0 35px !important;
+  }
+  #trending-proposals-grid .clean-proposal-card {
+    flex: 0 0 280px !important;
+    max-width: 280px !important;
+  }
+  .slider-arrow {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1rem !important;
+  }
 }
 
 

@@ -254,7 +254,14 @@ function initializeTrendingSlider() {
   const nextBtn = document.getElementById('trending-next');
   if (!grid || !prevBtn || !nextBtn) return;
 
-  const cardWidth = 350 + 30; // Card width + gap
+  const getCardWidth = () => {
+    const firstCard = grid.querySelector('.clean-proposal-card');
+    if (firstCard) {
+      return firstCard.clientWidth + 30; // Card width + gap
+    }
+    return 350 + 30; // Fallback
+  };
+
   let currentScroll = 0;
   let autoScrollInterval;
 
@@ -264,10 +271,11 @@ function initializeTrendingSlider() {
       const maxScroll = grid.scrollWidth - grid.parentElement.clientWidth;
       if (maxScroll <= 0) return;
       
+      const width = getCardWidth();
       if (currentScroll >= maxScroll) {
         currentScroll = 0;
       } else {
-        currentScroll += cardWidth;
+        currentScroll += width;
         if (currentScroll > maxScroll) currentScroll = maxScroll;
       }
       grid.style.transform = `translateX(-${currentScroll}px)`;
@@ -283,7 +291,8 @@ function initializeTrendingSlider() {
     const maxScroll = grid.scrollWidth - grid.parentElement.clientWidth;
     if (maxScroll <= 0) return;
     
-    currentScroll += cardWidth;
+    const width = getCardWidth();
+    currentScroll += width;
     if (currentScroll > maxScroll) currentScroll = maxScroll;
     grid.style.transform = `translateX(-${currentScroll}px)`;
     startAutoScroll();
@@ -291,7 +300,8 @@ function initializeTrendingSlider() {
 
   prevBtn.addEventListener('click', () => {
     stopAutoScroll();
-    currentScroll -= cardWidth;
+    const width = getCardWidth();
+    currentScroll -= width;
     if (currentScroll < 0) currentScroll = 0;
     grid.style.transform = `translateX(-${currentScroll}px)`;
     startAutoScroll();
