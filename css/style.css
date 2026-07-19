@@ -73,6 +73,14 @@ body {
   transform: translateY(0);
 }
 
+@media (max-width: 768px) {
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-headings);
   color: var(--primary-color);
