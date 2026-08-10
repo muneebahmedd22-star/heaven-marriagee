@@ -255,9 +255,9 @@ async function loadProposals(searchQuery = '') {
         <td>${p.city}</td>
         <td>${p.caste}</td>
         <td>${p.showOnPublicWebsite ? '<span style="color: #5cb85c; font-weight:bold;">Public</span>' : '<span style="color: #d9534f; font-weight:bold;">Private</span>'}</td>
-        <td>
-          <button class="btn btn-primary" onclick="editProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
-          <button class="btn btn-danger" onclick="deleteProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem;">Delete</button>
+          <button class="btn btn-primary" onclick="editProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px; margin-bottom: 2px;">Edit</button>
+          <button class="btn btn-danger" onclick="deleteProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px; margin-bottom: 2px;">Delete</button>
+          <button class="btn" onclick="generateBrochure('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; background-color: #D4AF37; color: #1A0000; font-weight: bold; margin-bottom: 2px;">Brochure</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -997,3 +997,305 @@ function showToastNotification(message, type) {
     }
   }, 6000);
 }
+
+// Branded PDF Brochure Generator (WhatsApp Share-Ready)
+async function generateBrochure(id) {
+  try {
+    const resObj = await adminApi.getProposal(id);
+    const p = resObj.data;
+    if (!p) {
+      alert("Error: Proposal details could not be retrieved.");
+      return;
+    }
+
+    const birthYear = new Date(p.dob).getFullYear();
+    const currentYear = new Date().getFullYear();
+    const age = currentYear - birthYear;
+
+    const brochureWindow = window.open('', '_blank');
+    if (!brochureWindow) {
+      alert("Please allow popups to generate brochures.");
+      return;
+    }
+
+    brochureWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Brochure - ${p.profileId}</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+          
+          body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #1A0000;
+            margin: 0;
+            padding: 30px;
+            box-sizing: border-box;
+            position: relative;
+            min-height: 100vh;
+          }
+
+          /* Secure Watermark Overlay */
+          .watermark-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            opacity: 0.04; /* Very subtle watermark */
+          }
+
+          .watermark-text {
+            font-size: 2.2rem;
+            font-weight: 700;
+            transform: rotate(-35deg);
+            white-space: nowrap;
+            margin: 80px;
+            color: #6B0000;
+          }
+
+          /* Layout Main Card Frame */
+          .brochure-card {
+            border: 6px double #D4AF37; /* Royal gold double border */
+            padding: 40px;
+            border-radius: 12px;
+            background: #ffffff;
+            max-width: 750px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(107, 0, 0, 0.05);
+          }
+
+          /* Header Logo & Title Block */
+          .brochure-header {
+            text-align: center;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+          }
+
+          .header-main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #6B0000; /* Royal Maroon */
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          }
+
+          .header-sub-title {
+            font-size: 0.9rem;
+            color: #D4AF37; /* Gold */
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+          }
+
+          /* Profile Badge Row */
+          .profile-badge-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: #FDFBF7;
+            padding: 12px 20px;
+            border-radius: 6px;
+            border-left: 4px solid #6B0000;
+          }
+
+          .profile-id {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #6B0000;
+          }
+
+          .badge-gender {
+            background: #6B0000;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+          }
+
+          /* Two Column Details Grid */
+          .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+          }
+
+          .detail-item {
+            border-bottom: 1px dashed #e6dfd3;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+          }
+
+          .detail-label {
+            color: #605757;
+            font-weight: 600;
+          }
+
+          .detail-value {
+            color: #1A0000;
+            font-weight: 700;
+          }
+
+          /* About/Expectations Block */
+          .desc-block {
+            background: #FAF7F2;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 3px solid #D4AF37;
+            margin-bottom: 30px;
+          }
+
+          .desc-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: #6B0000;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+          }
+
+          .desc-text {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #1A0000;
+            margin: 0;
+          }
+
+          /* Footer Bureau Contact (Branded safe details) */
+          .brochure-footer {
+            text-align: center;
+            border-top: 1px solid #D4AF37;
+            padding-top: 20px;
+            margin-top: 30px;
+          }
+
+          .footer-note {
+            font-size: 0.8rem;
+            color: #605757;
+            margin-bottom: 8px;
+          }
+
+          .footer-contacts {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #6B0000;
+          }
+
+          /* Print Override styling */
+          @media print {
+            body {
+              padding: 0;
+              margin: 0;
+            }
+            .brochure-card {
+              box-shadow: none;
+              border: 6px double #D4AF37 !important;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="watermark-container">
+          <div class="watermark-text">HEAVEN MARRIAGE BUREAU</div>
+          <div class="watermark-text">HEAVEN MARRIAGE BUREAU</div>
+          <div class="watermark-text">HEAVEN MARRIAGE BUREAU</div>
+          <div class="watermark-text">HEAVEN MARRIAGE BUREAU</div>
+          <div class="watermark-text">HEAVEN MARRIAGE BUREAU</div>
+          <div class="watermark-text">HEAVEN MARRIAGE BUREAU</div>
+        </div>
+
+        <div class="brochure-card">
+          <div class="brochure-header">
+            <h1 class="header-main-title">Heaven Marriage Bureau</h1>
+            <p class="header-sub-title">Verified Matrimonial Proposal</p>
+          </div>
+
+          <div class="profile-badge-row">
+            <span class="profile-id">ID: ${p.profileId}</span>
+            <span class="badge-gender">${p.gender}</span>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="detail-label">Age</span>
+              <span class="detail-value">${age} Years</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Marital Status</span>
+              <span class="detail-value">${p.maritalStatus}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Caste</span>
+              <span class="detail-value">${p.caste}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Sect/Religion</span>
+              <span class="detail-value">${p.religion}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Height</span>
+              <span class="detail-value">${p.height || '-'}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">City</span>
+              <span class="detail-value">${p.city}</span>
+            </div>
+            <div class="detail-item" style="grid-column: span 2;">
+              <span class="detail-label">Education</span>
+              <span class="detail-value">${p.education}</span>
+            </div>
+            <div class="detail-item" style="grid-column: span 2;">
+              <span class="detail-label">Occupation</span>
+              <span class="detail-value">${p.occupation || '-'}</span>
+            </div>
+          </div>
+
+          <div class="desc-block">
+            <h3 class="desc-title">About & Family Expectations</h3>
+            <p class="desc-text">${p.aboutMe || 'Details not provided. Contact the bureau representative for details.'}</p>
+          </div>
+
+          <div class="brochure-footer">
+            <p class="footer-note">Note: For privacy, contact details of this profile are not printed. For match discussions, refer this Profile ID to the administrator.</p>
+            <p class="footer-contacts">For Inquiries: +92 304 5920408 | info@heavenmarriage.com</p>
+          </div>
+        </div>
+
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 500);
+          }
+        <\/script>
+      </body>
+      </html>
+    `);
+    brochureWindow.document.close();
+  } catch (error) {
+    alert("Error generating brochure: " + error.message);
+  }
+}
+
+window.generateBrochure = generateBrochure;
+
