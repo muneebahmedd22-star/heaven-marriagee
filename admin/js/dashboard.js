@@ -157,7 +157,8 @@ function setupProposalsHandlers() {
     formData.append('fullName', document.getElementById('prop-name').value);
     formData.append('gender', document.getElementById('prop-gender').value);
     formData.append('maritalStatus', document.getElementById('prop-status').value);
-    formData.append('dob', document.getElementById('prop-dob').value);
+    const birthYear = document.getElementById('prop-dob').value;
+    formData.append('dob', `${birthYear}-01-01`);
     formData.append('education', document.getElementById('prop-education').value);
     formData.append('occupation', document.getElementById('prop-occupation').value);
     formData.append('height', document.getElementById('prop-height').value);
@@ -282,9 +283,8 @@ async function editProposal(id) {
     document.getElementById('prop-gender').value = p.gender;
     document.getElementById('prop-status').value = p.maritalStatus;
     
-    // Format date string for standard date inputs (YYYY-MM-DD)
     if (p.dob) {
-      document.getElementById('prop-dob').value = new Date(p.dob).toISOString().split('T')[0];
+      document.getElementById('prop-dob').value = new Date(p.dob).getFullYear();
     }
     
     document.getElementById('prop-education').value = p.education;
