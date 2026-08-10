@@ -200,14 +200,36 @@ function setupProposalsHandlers() {
       submitBtn.textContent = 'Save Proposal';
     }
   });
+
+  // Search and Clear Handlers for Proposals
+  const searchInput = document.getElementById('proposal-search-input');
+  const searchBtn = document.getElementById('btn-search-proposals');
+  const clearBtn = document.getElementById('btn-clear-proposals-search');
+
+  if (searchBtn && searchInput && clearBtn) {
+    const handleSearch = () => {
+      const q = searchInput.value.trim();
+      loadProposals(q);
+    };
+
+    searchBtn.addEventListener('click', handleSearch);
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleSearch();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      loadProposals('');
+    });
+  }
 }
 
-async function loadProposals() {
+async function loadProposals(searchQuery = '') {
   const tbody = document.getElementById('proposals-table-body');
   tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">Loading proposals data...</td></tr>';
 
   try {
-    const response = await adminApi.getProposals();
+    const response = await adminApi.getProposals(searchQuery ? { search: searchQuery } : {});
     const proposals = response.data || [];
 
     if (proposals.length === 0) {

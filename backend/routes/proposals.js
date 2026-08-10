@@ -186,6 +186,7 @@ router.get('/', async (req, res) => {
 router.get('/admin', protect, async (req, res) => {
   try {
     const {
+      search,
       gender,
       maritalStatus,
       education,
@@ -204,6 +205,16 @@ router.get('/admin', protect, async (req, res) => {
     } = req.query;
 
     const query = {};
+
+    if (search) {
+      const searchRegex = new RegExp(search.trim(), 'i');
+      query.$or = [
+        { profileId: searchRegex },
+        { fullName: searchRegex },
+        { caste: searchRegex },
+        { city: searchRegex }
+      ];
+    }
 
     if (gender) query.gender = gender;
     if (maritalStatus) query.maritalStatus = maritalStatus;
