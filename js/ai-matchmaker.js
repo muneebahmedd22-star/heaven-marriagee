@@ -532,7 +532,7 @@
               <strong>Education:</strong> ${p.education}<br>
               <strong>Profession:</strong> ${p.occupation || '-'} | <strong>Age:</strong> ${age} yrs
             </div>
-            <a href="https://wa.me/923204048464?text=Assalam-o-Alaikum, I am inquiring about AI-recommended Profile ID ${p.profileId} on Heaven Marriage Bureau." target="_blank" class="ai-mini-card-chat-btn">
+            <a href="https://wa.me/923045920408?text=Assalam-o-Alaikum, I am inquiring about AI-recommended Profile ID ${p.profileId} on Heaven Marriage Bureau." target="_blank" class="ai-mini-card-chat-btn">
               Discuss on WhatsApp
             </a>
           `;
