@@ -880,35 +880,40 @@ window.setupLogsHandlers = setupLogsHandlers;
 
 // Initialize WebSockets real-time notifications
 function initializeWebSockets() {
+  if (typeof io !== 'function') return;
   const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-  const socketUrl = isLocal ? "http://localhost:5000" : "https://heaven-marriagee.onrender.com";
+  const socketUrl = isLocal ? "http://localhost:5000" : window.location.origin;
   
-  const socket = io(socketUrl);
-  
-  socket.on('connect', () => {
-    console.log('Admin connected to WebSocket server: ', socket.id);
-  });
-  
-  socket.on('new_lead', (data) => {
-    showToastNotification(`🔔 Alert: New AI Lead from ${data.name} (${data.phone}) just received!`, 'lead');
-    playNotificationSound();
-    if (typeof loadInquiries === 'function') loadInquiries();
-    if (typeof loadOverview === 'function') loadOverview();
-  });
-  
-  socket.on('new_registration', (data) => {
-    showToastNotification(`👰 Alert: New Registration from ${data.name} (${data.city})!`, 'registration');
-    playNotificationSound();
-    if (typeof loadRegistrations === 'function') loadRegistrations();
-    if (typeof loadOverview === 'function') loadOverview();
-  });
-  
-  socket.on('new_review', (data) => {
-    showToastNotification(`⭐ Alert: New Review from ${data.name} (${data.rating} Stars)!`, 'review');
-    playNotificationSound();
-    if (typeof loadReviews === 'function') loadReviews();
-    if (typeof loadOverview === 'function') loadOverview();
-  });
+  try {
+    const socket = io(socketUrl, { transports: ['polling', 'websocket'] });
+    
+    socket.on('connect', () => {
+      console.log('Admin connected to WebSocket server: ', socket.id);
+    });
+    
+    socket.on('new_lead', (data) => {
+      showToastNotification(`🔔 Alert: New AI Lead from ${data.name} (${data.phone}) just received!`, 'lead');
+      playNotificationSound();
+      if (typeof loadInquiries === 'function') loadInquiries();
+      if (typeof loadOverview === 'function') loadOverview();
+    });
+    
+    socket.on('new_registration', (data) => {
+      showToastNotification(`👰 Alert: New Registration from ${data.name} (${data.city})!`, 'registration');
+      playNotificationSound();
+      if (typeof loadRegistrations === 'function') loadRegistrations();
+      if (typeof loadOverview === 'function') loadOverview();
+    });
+    
+    socket.on('new_review', (data) => {
+      showToastNotification(`⭐ Alert: New Review from ${data.name} (${data.rating} Stars)!`, 'review');
+      playNotificationSound();
+      if (typeof loadReviews === 'function') loadReviews();
+      if (typeof loadOverview === 'function') loadOverview();
+    });
+  } catch (e) {
+    console.warn('WebSocket notification disabled:', e);
+  }
 }
 
 // Play synthesized gold notification chime (Web Audio API)

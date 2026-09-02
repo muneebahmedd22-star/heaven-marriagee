@@ -1,7 +1,7 @@
 // Heaven Marriage Bureau API Helper
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:'
+const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
   ? 'http://localhost:5000/api/v1'
-  : 'https://heaven-marriagee.onrender.com/api/v1'; // Production URL for backend
+  : '/api/v1'; // Dynamic relative path for Vercel/Production
 
 const api = {
   // Get proposals with optional filters/queries

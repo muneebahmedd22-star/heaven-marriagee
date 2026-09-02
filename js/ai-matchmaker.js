@@ -483,7 +483,7 @@
       const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
       const apiUrl = isLocal 
         ? 'http://localhost:5000/api/v1/proposals/ai-matchmaker'
-        : 'https://heaven-marriagee.onrender.com/api/v1/proposals/ai-matchmaker';
+        : '/api/v1/proposals/ai-matchmaker';
 
       const response = await fetch(apiUrl, {
         method: 'POST',

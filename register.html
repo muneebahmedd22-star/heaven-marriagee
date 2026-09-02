@@ -285,9 +285,9 @@
           formData.append('email', document.getElementById('reg-email').value);
 
           // Production API Server URL resolving
-          const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:'
+          const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
             ? 'http://localhost:5000/api/v1/registrations'
-            : 'https://heaven-marriagee.onrender.com/api/v1/registrations';
+            : '/api/v1/registrations';
 
           try {
             const response = await fetch(API_URL, {

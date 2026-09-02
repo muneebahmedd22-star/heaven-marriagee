@@ -1,7 +1,9 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "version": 2,
   "rewrites": [
-    { "source": "/data-bank", "destination": "/data-bank.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    }
   ]
 }
