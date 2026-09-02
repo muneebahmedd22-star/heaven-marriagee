@@ -6,8 +6,16 @@ const Admin = require('./models/Admin');
 const http = require('http');
 const { Server } = require('socket.io');
 
-// Load env vars
+const path = require('path');
 dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+// Fallback environment constants
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'hmb_secret_key_123456';
+process.env.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'j0wsazru';
+process.env.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '876412548252857';
+process.env.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || 'MluLW14Fs_FEbPd09jiBnNQmUoI';
 
 // Connect to database
 connectDB();
@@ -52,14 +60,21 @@ const registrations = require('./routes/registrations');
 const reviews = require('./routes/reviews');
 const logs = require('./routes/logs');
 
-// Mount routers
-app.use('/api/v1/auth', auth);
-app.use('/api/v1/proposals', proposals);
-app.use('/api/v1/employees', employees);
-app.use('/api/v1/inquiries', inquiries);
-app.use('/api/v1/registrations', registrations);
-app.use('/api/v1/reviews', reviews);
-app.use('/api/v1/logs', logs);
+// Mount routers on multiple URL variants for full Vercel rewrite compatibility
+const mountRoutes = (prefix) => {
+  app.use(`${prefix}/auth`, auth);
+  app.use(`${prefix}/proposals`, proposals);
+  app.use(`${prefix}/employees`, employees);
+  app.use(`${prefix}/inquiries`, inquiries);
+  app.use(`${prefix}/registrations`, registrations);
+  app.use(`${prefix}/reviews`, reviews);
+  app.use(`${prefix}/logs`, logs);
+};
+
+mountRoutes('/api/v1');
+mountRoutes('/v1');
+mountRoutes('/api');
+mountRoutes('');
 
 // Root route
 app.get('/', (req, res) => {
