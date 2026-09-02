@@ -247,8 +247,8 @@ router.get('/admin', protect, async (req, res) => {
     }
 
     const pageNum = parseInt(page, 10) || 1;
-    const limitNum = parseInt(limit, 10) || 20;
-    const skip = (pageNum - 1) * limitNum;
+    const limitNum = (limit === 'all' || parseInt(limit, 10) === 0) ? 5000 : (parseInt(limit, 10) || 50);
+    const skip = (limit === 'all' || parseInt(limit, 10) === 0) ? 0 : (pageNum - 1) * limitNum;
 
     const proposals = await Proposal.find(query)
       .skip(skip)

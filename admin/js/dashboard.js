@@ -202,15 +202,23 @@ function setupProposalsHandlers() {
     }
   });
 
+  // Pagination State for Proposals
+  window.currentProposalPage = 1;
+  window.currentProposalLimit = '50';
+  window.currentProposalSearch = '';
+
   // Search and Clear Handlers for Proposals
   const searchInput = document.getElementById('proposal-search-input');
   const searchBtn = document.getElementById('btn-search-proposals');
   const clearBtn = document.getElementById('btn-clear-proposals-search');
+  const pageLimitSelect = document.getElementById('proposal-page-limit');
 
   if (searchBtn && searchInput && clearBtn) {
     const handleSearch = () => {
       const q = searchInput.value.trim();
-      loadProposals(q);
+      window.currentProposalSearch = q;
+      window.currentProposalPage = 1;
+      loadProposals(q, 1, window.currentProposalLimit);
     };
 
     searchBtn.addEventListener('click', handleSearch);
@@ -220,21 +228,47 @@ function setupProposalsHandlers() {
 
     clearBtn.addEventListener('click', () => {
       searchInput.value = '';
-      loadProposals('');
+      window.currentProposalSearch = '';
+      window.currentProposalPage = 1;
+      loadProposals('', 1, window.currentProposalLimit);
+    });
+  }
+
+  if (pageLimitSelect) {
+    pageLimitSelect.addEventListener('change', (e) => {
+      window.currentProposalLimit = e.target.value;
+      window.currentProposalPage = 1;
+      loadProposals(window.currentProposalSearch, 1, window.currentProposalLimit);
     });
   }
 }
 
-async function loadProposals(searchQuery = '') {
+async function loadProposals(searchQuery = window.currentProposalSearch || '', page = window.currentProposalPage || 1, limit = window.currentProposalLimit || '50') {
+  window.currentProposalSearch = searchQuery;
+  window.currentProposalPage = page;
+  window.currentProposalLimit = limit;
+
   const tbody = document.getElementById('proposals-table-body');
+  const paginationInfo = document.getElementById('proposals-pagination-info');
+  const paginationButtons = document.getElementById('proposals-pagination-buttons');
   tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">Loading proposals data...</td></tr>';
 
   try {
-    const response = await adminApi.getProposals(searchQuery ? { search: searchQuery } : {});
+    const params = {
+      page: window.currentProposalPage,
+      limit: window.currentProposalLimit
+    };
+    if (searchQuery) params.search = searchQuery;
+
+    const response = await adminApi.getProposals(params);
     const proposals = response.data || [];
+    const total = response.total || proposals.length;
+    const totalPages = response.pages || 1;
 
     if (proposals.length === 0) {
       tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--light-text);">No proposals database matches found.</td></tr>';
+      if (paginationInfo) paginationInfo.textContent = 'No records found';
+      if (paginationButtons) paginationButtons.innerHTML = '';
       return;
     }
 
@@ -255,6 +289,7 @@ async function loadProposals(searchQuery = '') {
         <td>${p.city}</td>
         <td>${p.caste}</td>
         <td>${p.showOnPublicWebsite ? '<span style="color: #5cb85c; font-weight:bold;">Public</span>' : '<span style="color: #d9534f; font-weight:bold;">Private</span>'}</td>
+        <td>
           <button class="btn btn-primary" onclick="editProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px; margin-bottom: 2px;">Edit</button>
           <button class="btn btn-danger" onclick="deleteProposal('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px; margin-bottom: 2px;">Delete</button>
           <button class="btn" onclick="generateBrochure('${p._id}')" style="padding: 4px 10px; font-size: 0.8rem; background-color: #D4AF37; color: #1A0000; font-weight: bold; margin-bottom: 2px;">Brochure</button>
@@ -262,8 +297,29 @@ async function loadProposals(searchQuery = '') {
       `;
       tbody.appendChild(tr);
     });
+
+    // Render Pagination Info & Buttons
+    if (paginationInfo && paginationButtons) {
+      const limitNum = (window.currentProposalLimit === 'all' || parseInt(window.currentProposalLimit) === 0) ? total : (parseInt(window.currentProposalLimit) || 50);
+      const startIdx = (window.currentProposalPage - 1) * limitNum + 1;
+      const endIdx = Math.min(window.currentProposalPage * limitNum, total);
+
+      paginationInfo.innerHTML = `Showing <strong>${startIdx}</strong> to <strong>${endIdx}</strong> of <strong>${total}</strong> registered proposals`;
+
+      let btnHtml = '';
+      if (totalPages > 1 && window.currentProposalLimit !== 'all') {
+        const hasPrev = window.currentProposalPage > 1;
+        const hasNext = window.currentProposalPage < totalPages;
+        btnHtml += `
+          <button class="btn" style="padding: 6px 12px; font-size: 0.8rem; background: #fff; border: 1px solid var(--border-color); cursor: pointer; border-radius: 4px;" ${!hasPrev ? 'disabled style="opacity:0.5;"' : `onclick="loadProposals('${window.currentProposalSearch}', ${window.currentProposalPage - 1})"`}>« Prev</button>
+          <span style="font-size: 0.85rem; font-weight: bold; padding: 0 10px; color: var(--primary-color);">Page ${window.currentProposalPage} of ${totalPages}</span>
+          <button class="btn" style="padding: 6px 12px; font-size: 0.8rem; background: #fff; border: 1px solid var(--border-color); cursor: pointer; border-radius: 4px;" ${!hasNext ? 'disabled style="opacity:0.5;"' : `onclick="loadProposals('${window.currentProposalSearch}', ${window.currentProposalPage + 1})"`}>Next »</button>
+        `;
+      }
+      paginationButtons.innerHTML = btnHtml;
+    }
   } catch (error) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: red;">Error: ${error.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: red;">Error: ${error.message}</td></tr>`;
   }
 }
 

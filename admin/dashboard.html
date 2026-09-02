@@ -101,11 +101,22 @@
           <button class="btn btn-primary" id="btn-add-proposal">+ Add New Proposal</button>
         </div>
 
-        <!-- Search Filter Block -->
-        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
-          <input type="text" id="proposal-search-input" placeholder="Search by ID, Name, Caste, or City..." style="padding: 10px; border-radius: 4px; border: 1px solid var(--accent-color); font-family: inherit; font-size: 0.95rem; min-width: 320px; outline: none; background: #ffffff; color: #1a0000;">
-          <button class="btn btn-primary" id="btn-search-proposals" style="padding: 10px 20px;">Search</button>
-          <button class="btn" id="btn-clear-proposals-search" style="padding: 10px 20px; background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); font-weight: bold; cursor: pointer; transition: all 0.3s;">Clear</button>
+        <!-- Search Filter & Limit Controls Block -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="proposal-search-input" placeholder="Search by ID, Name, Caste, or City..." style="padding: 10px; border-radius: 4px; border: 1px solid var(--accent-color); font-family: inherit; font-size: 0.95rem; min-width: 300px; outline: none; background: #ffffff; color: #1a0000;">
+            <button class="btn btn-primary" id="btn-search-proposals" style="padding: 10px 20px;">Search</button>
+            <button class="btn" id="btn-clear-proposals-search" style="padding: 10px 18px; background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); font-weight: bold; cursor: pointer; transition: all 0.3s;">Clear</button>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <span style="font-size: 0.85rem; font-weight: 600; color: var(--dark-text);">Show:</span>
+            <select id="proposal-page-limit" style="padding: 8px 12px; border-radius: 4px; border: 1px solid var(--accent-color); font-weight: bold; background: #ffffff; cursor: pointer;">
+              <option value="50">50 per page</option>
+              <option value="100">100 per page</option>
+              <option value="200">200 per page</option>
+              <option value="all">Show All (360+)</option>
+            </select>
+          </div>
         </div>
 
         <div class="table-wrapper">
@@ -128,6 +139,16 @@
               <!-- Loaded dynamically -->
             </tbody>
           </table>
+        </div>
+
+        <!-- Pagination Controls Bar -->
+        <div id="proposals-pagination-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding: 12px 15px; background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius); flex-wrap: wrap; gap: 10px;">
+          <div id="proposals-pagination-info" style="font-size: 0.9rem; font-weight: 600; color: var(--dark-text);">
+            Showing proposals...
+          </div>
+          <div id="proposals-pagination-buttons" style="display: flex; gap: 6px; align-items: center;">
+            <!-- Buttons injected dynamically -->
+          </div>
         </div>
       </section>
 
