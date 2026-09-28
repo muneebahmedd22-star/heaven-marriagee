@@ -158,7 +158,7 @@ function setupProposalsHandlers() {
     formData.append('gender', document.getElementById('prop-gender').value);
     formData.append('maritalStatus', document.getElementById('prop-status').value);
     const birthYear = document.getElementById('prop-dob').value;
-    formData.append('dob', `${birthYear}-01-01`);
+    formData.append('dob', `${birthYear}-07-01T00:00:00.000Z`);
     formData.append('education', document.getElementById('prop-education').value);
     formData.append('occupation', document.getElementById('prop-occupation').value);
     formData.append('height', document.getElementById('prop-height').value);
@@ -274,16 +274,14 @@ async function loadProposals(searchQuery = window.currentProposalSearch || '', p
 
     tbody.innerHTML = '';
     proposals.forEach(p => {
-      const birthYear = new Date(p.dob).getFullYear();
-      const currentYear = new Date().getFullYear();
-      const age = currentYear - birthYear;
+      const birthYear = p.dob ? new Date(p.dob).getUTCFullYear() : '-';
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td><strong>${p.profileId}</strong></td>
         <td>${p.fullName}</td>
         <td>${p.gender}</td>
-        <td>${age} yrs</td>
+        <td>${birthYear}</td>
         <td>${p.region || '-'}</td>
         <td>${p.category || '-'}</td>
         <td>${p.city}</td>
@@ -340,7 +338,7 @@ async function editProposal(id) {
     document.getElementById('prop-status').value = p.maritalStatus;
     
     if (p.dob) {
-      document.getElementById('prop-dob').value = new Date(p.dob).getFullYear();
+      document.getElementById('prop-dob').value = new Date(p.dob).getUTCFullYear();
     }
     
     document.getElementById('prop-education').value = p.education;

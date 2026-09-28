@@ -222,11 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         tbody.innerHTML = proposalsData.map((p, index) => {
-          const birthYear = new Date(p.dob).getFullYear();
-          const currentYear = new Date().getFullYear();
-          const age = currentYear - birthYear;
+          const birthYear = p.dob ? new Date(p.dob).getUTCFullYear() : '-';
           
-          const dateFormatted = p.dob ? new Date(p.dob).toLocaleDateString('en-GB') : '-';
           const regDateFormatted = new Date(p.createdAt).toLocaleDateString('en-US', {
             year: 'numeric', month: 'short', day: 'numeric'
           });
@@ -253,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <strong>Marital:</strong> ${p.maritalStatus}
               </td>
               <td class="profile-details-text">
-                <strong>Age:</strong> ${age} yrs (DOB: ${dateFormatted})<br>
+                <strong>Birth Year:</strong> ${birthYear}<br>
                 <strong>Height:</strong> ${p.height || '-'}<br>
                 <strong>Education:</strong> ${p.education}<br>
                 <strong>Profession:</strong> ${p.occupation || '-'}
@@ -286,10 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = proposalsData[index];
     if (!p) return;
 
-    const birthYear = new Date(p.dob).getFullYear();
-    const currentYear = new Date().getFullYear();
-    const age = currentYear - birthYear;
-    const dateFormatted = p.dob ? new Date(p.dob).toLocaleDateString('en-GB') : '-';
+    const birthYear = p.dob ? new Date(p.dob).getUTCFullYear() : '-';
 
     document.getElementById('modal-title-id').textContent = `Candidate Card: ${p.profileId}`;
 
@@ -317,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="modal-details-grid">
-        <div class="modal-grid-item"><strong>Age / Date of Birth:</strong> ${age} yrs (${dateFormatted})</div>
+        <div class="modal-grid-item"><strong>Birth Year:</strong> ${birthYear}</div>
         <div class="modal-grid-item"><strong>Height:</strong> ${p.height || '-'}</div>
         <div class="modal-grid-item"><strong>Education Level:</strong> ${p.education}</div>
         <div class="modal-grid-item"><strong>Profession/Job:</strong> ${p.occupation || '-'}</div>

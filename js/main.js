@@ -137,9 +137,7 @@ async function loadFeaturedProposals() {
     grid.innerHTML = ''; // Clear loading indicator
 
     proposals.forEach(p => {
-      const birthYear = new Date(p.dob).getFullYear();
-      const currentYear = new Date().getFullYear();
-      const age = currentYear - birthYear;
+      const birthYear = p.dob ? new Date(p.dob).getUTCFullYear() : '-';
       
       const card = document.createElement('div');
       card.className = 'clean-proposal-card';
@@ -197,8 +195,8 @@ async function loadFeaturedProposals() {
             <span class="row-icon">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </span>
-            <span class="row-label">Age:</span>
-            <span class="row-value">${age} Yrs</span>
+            <span class="row-label">Birth Year:</span>
+            <span class="row-value">${birthYear}</span>
           </div>
           <div class="info-row">
             <span class="row-icon">
