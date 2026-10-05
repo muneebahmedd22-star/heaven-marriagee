@@ -130,10 +130,30 @@ function setupProposalsHandlers() {
   const closeModalBtn = modal.querySelector('.modal-close');
   const proposalForm = document.getElementById('proposal-form');
 
+  const regionSelect = document.getElementById('prop-region');
+  const countryInput = document.getElementById('prop-country');
+  if (regionSelect && countryInput) {
+    regionSelect.addEventListener('change', () => {
+      if (regionSelect.value === 'International') {
+        if (!countryInput.value || countryInput.value.toLowerCase() === 'pakistan') {
+          countryInput.value = '';
+          countryInput.placeholder = 'e.g. United Kingdom, USA, UAE';
+          countryInput.focus();
+        }
+      } else {
+        if (!countryInput.value) {
+          countryInput.value = 'Pakistan';
+          countryInput.placeholder = 'e.g. Pakistan, UK, USA, UAE';
+        }
+      }
+    });
+  }
+
   openModalBtn.addEventListener('click', () => {
     currentEditingProposalId = null;
     document.getElementById('proposal-modal-title').textContent = 'Add Match Proposal';
     proposalForm.reset();
+    if (countryInput) countryInput.value = 'Pakistan';
     modal.classList.add('active');
     const modalContent = document.querySelector('#proposal-modal .modal-content');
     if (modalContent) modalContent.scrollTop = 0;
@@ -164,11 +184,14 @@ function setupProposalsHandlers() {
     formData.append('height', document.getElementById('prop-height').value);
     formData.append('caste', document.getElementById('prop-caste').value);
     formData.append('religion', document.getElementById('prop-religion').value);
+    const countryVal = document.getElementById('prop-country')?.value?.trim();
+    const regionVal = document.getElementById('prop-region')?.value;
+    formData.append('country', countryVal || (regionVal === 'International' ? 'International' : 'Pakistan'));
     formData.append('city', document.getElementById('prop-city').value);
     formData.append('state', document.getElementById('prop-state').value);
     formData.append('aboutMe', document.getElementById('prop-about').value);
     formData.append('showOnPublicWebsite', document.getElementById('prop-show-public').checked);
-    formData.append('region', document.getElementById('prop-region').value);
+    formData.append('region', regionVal);
     formData.append('category', document.getElementById('prop-category').value);
 
     // Nested object stringified so backend parses correctly
@@ -346,6 +369,9 @@ async function editProposal(id) {
     document.getElementById('prop-height').value = p.height || '';
     document.getElementById('prop-caste').value = p.caste;
     document.getElementById('prop-religion').value = p.religion;
+    if (document.getElementById('prop-country')) {
+      document.getElementById('prop-country').value = p.country || (p.region === 'International' ? (p.city || 'International') : 'Pakistan');
+    }
     document.getElementById('prop-city').value = p.city;
     document.getElementById('prop-state').value = p.state || '';
     document.getElementById('prop-about').value = p.aboutMe || '';

@@ -101,8 +101,11 @@ const ProposalSchema = new mongoose.Schema({
   },
 });
 
-// Auto-increment ProfileId (format: HMB1000) - Only if not manually provided
 ProposalSchema.pre('save', async function (next) {
+  if (this.region === 'International' && (!this.country || this.country.toLowerCase() === 'pakistan')) {
+    this.country = this.city || 'International';
+  }
+
   if (this.isNew && !this.profileId) {
     try {
       let counter = await Counter.findOne({ id: 'profileId' });

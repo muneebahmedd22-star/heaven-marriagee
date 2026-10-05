@@ -108,30 +108,50 @@ router.get('/', async (req, res) => {
     if (maritalStatus) query.maritalStatus = maritalStatus;
     if (education) query.education = new RegExp(education, 'i');
     if (caste) query.caste = new RegExp(caste, 'i');
-    if (city) query.city = new RegExp(city, 'i');
+    let effectiveRegion = region;
+    if (city && /^(overseas|international)$/i.test(city.trim())) {
+      effectiveRegion = 'International';
+    } else if (city) {
+      query.city = new RegExp(city, 'i');
+    }
     if (religion) query.religion = new RegExp(religion, 'i');
     if (isFeatured) query.isFeatured = isFeatured === 'true';
     if (category) query.category = category;
 
     // Region mapping
-    if (region) {
-      const reg = region.trim().toLowerCase();
+    if (effectiveRegion) {
+      const reg = effectiveRegion.trim().toLowerCase();
       if (reg === 'lahore') {
-        query.city = /Lahore/i;
+        query.$or = [{ region: /Lahore/i }, { city: /Lahore/i }];
       } else if (reg === 'karachi') {
-        query.city = /Karachi/i;
+        query.$or = [{ region: /Karachi/i }, { city: /Karachi/i }];
       } else if (reg === 'islamabad/rawalpindi' || reg === 'islamabad' || reg === 'rawalpindi') {
-        query.city = { $in: [/Islamabad/i, /Rawalpindi/i] };
+        query.$or = [
+          { region: /Islamabad/i },
+          { region: /Rawalpindi/i },
+          { city: { $in: [/Islamabad/i, /Rawalpindi/i] } }
+        ];
       } else if (reg === 'kpk') {
-        query.$or = [{ city: /Peshawar/i }, { state: /KPK/i }, { state: /Khyber/i }];
+        query.$or = [{ region: /KPK/i }, { city: /Peshawar/i }, { state: /KPK/i }, { state: /Khyber/i }];
       } else if (reg === 'kashmir') {
-        query.$or = [{ city: /Muzaffarabad/i }, { city: /Kashmir/i }, { state: /Kashmir/i }];
+        query.$or = [{ region: /Kashmir/i }, { city: /Muzaffarabad/i }, { city: /Kashmir/i }, { state: /Kashmir/i }];
       } else if (reg === 'south punjab') {
-        query.city = { $in: [/Multan/i, /Bahawalpur/i, /Dera Ghazi Khan/i, /DG Khan/i] };
+        query.$or = [
+          { region: /South Punjab/i },
+          { city: { $in: [/Multan/i, /Bahawalpur/i, /Dera Ghazi Khan/i, /DG Khan/i] } }
+        ];
       } else if (reg === 'punjab other cities') {
-        query.city = { $in: [/Faisalabad/i, /Sialkot/i, /Gujranwala/i, /Sargodha/i, /Gujrat/i] };
-      } else if (reg === 'international') {
-        query.country = { $ne: 'Pakistan' };
+        query.$or = [
+          { region: /Punjab Other Cities/i },
+          { city: { $in: [/Faisalabad/i, /Sialkot/i, /Gujranwala/i, /Sargodha/i, /Gujrat/i] } }
+        ];
+      } else if (reg === 'international' || reg === 'overseas') {
+        query.$or = [
+          { region: /international/i },
+          { country: { $ne: 'Pakistan' } }
+        ];
+      } else {
+        query.region = new RegExp(region.trim(), 'i');
       }
     }
 
@@ -220,29 +240,49 @@ router.get('/admin', protect, async (req, res) => {
     if (maritalStatus) query.maritalStatus = maritalStatus;
     if (education) query.education = new RegExp(education, 'i');
     if (caste) query.caste = new RegExp(caste, 'i');
-    if (city) query.city = new RegExp(city, 'i');
+    let effectiveRegion = region;
+    if (city && /^(overseas|international)$/i.test(city.trim())) {
+      effectiveRegion = 'International';
+    } else if (city) {
+      query.city = new RegExp(city, 'i');
+    }
     if (religion) query.religion = new RegExp(religion, 'i');
     if (isFeatured) query.isFeatured = isFeatured === 'true';
     if (category) query.category = category;
 
-    if (region) {
-      const reg = region.trim().toLowerCase();
+    if (effectiveRegion) {
+      const reg = effectiveRegion.trim().toLowerCase();
       if (reg === 'lahore') {
-        query.city = /Lahore/i;
+        query.$or = [{ region: /Lahore/i }, { city: /Lahore/i }];
       } else if (reg === 'karachi') {
-        query.city = /Karachi/i;
+        query.$or = [{ region: /Karachi/i }, { city: /Karachi/i }];
       } else if (reg === 'islamabad/rawalpindi' || reg === 'islamabad' || reg === 'rawalpindi') {
-        query.city = { $in: [/Islamabad/i, /Rawalpindi/i] };
+        query.$or = [
+          { region: /Islamabad/i },
+          { region: /Rawalpindi/i },
+          { city: { $in: [/Islamabad/i, /Rawalpindi/i] } }
+        ];
       } else if (reg === 'kpk') {
-        query.$or = [{ city: /Peshawar/i }, { state: /KPK/i }, { state: /Khyber/i }];
+        query.$or = [{ region: /KPK/i }, { city: /Peshawar/i }, { state: /KPK/i }, { state: /Khyber/i }];
       } else if (reg === 'kashmir') {
-        query.$or = [{ city: /Muzaffarabad/i }, { city: /Kashmir/i }, { state: /Kashmir/i }];
+        query.$or = [{ region: /Kashmir/i }, { city: /Muzaffarabad/i }, { city: /Kashmir/i }, { state: /Kashmir/i }];
       } else if (reg === 'south punjab') {
-        query.city = { $in: [/Multan/i, /Bahawalpur/i, /Dera Ghazi Khan/i, /DG Khan/i] };
+        query.$or = [
+          { region: /South Punjab/i },
+          { city: { $in: [/Multan/i, /Bahawalpur/i, /Dera Ghazi Khan/i, /DG Khan/i] } }
+        ];
       } else if (reg === 'punjab other cities') {
-        query.city = { $in: [/Faisalabad/i, /Sialkot/i, /Gujranwala/i, /Sargodha/i, /Gujrat/i] };
-      } else if (reg === 'international') {
-        query.country = { $ne: 'Pakistan' };
+        query.$or = [
+          { region: /Punjab Other Cities/i },
+          { city: { $in: [/Faisalabad/i, /Sialkot/i, /Gujranwala/i, /Sargodha/i, /Gujrat/i] } }
+        ];
+      } else if (reg === 'international' || reg === 'overseas') {
+        query.$or = [
+          { region: /international/i },
+          { country: { $ne: 'Pakistan' } }
+        ];
+      } else {
+        query.region = new RegExp(region.trim(), 'i');
       }
     }
 
@@ -316,6 +356,12 @@ router.post('/', protect, upload.single('photo'), async (req, res) => {
       proposalData.photoPublicId = result.public_id;
     }
 
+    if (proposalData.region === 'International') {
+      if (!proposalData.country || proposalData.country.toLowerCase() === 'pakistan') {
+        proposalData.country = proposalData.city || 'International';
+      }
+    }
+
     const proposal = await Proposal.create(proposalData);
 
     // Track activity log
@@ -364,6 +410,12 @@ router.put('/:id', protect, upload.single('photo'), async (req, res) => {
       const result = await uploadToCloudinary(req.file.buffer);
       proposalData.photoUrl = result.secure_url;
       proposalData.photoPublicId = result.public_id;
+    }
+
+    if (proposalData.region === 'International') {
+      if (!proposalData.country || proposalData.country.toLowerCase() === 'pakistan') {
+        proposalData.country = proposalData.city || 'International';
+      }
     }
 
     proposal = await Proposal.findByIdAndUpdate(req.params.id, proposalData, {
@@ -564,7 +616,10 @@ router.post('/ai-matchmaker', async (req, res) => {
     }
 
     if (/\b(international|overseas|abroad|foreign|outside)\b/.test(text)) {
-      query.country = { $ne: 'Pakistan' };
+      query.$or = [
+        { region: /international/i },
+        { country: { $ne: 'Pakistan' } }
+      ];
     }
 
 

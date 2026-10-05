@@ -144,6 +144,9 @@ async function loadFeaturedProposals() {
       
       const dobFormatted = p.dob ? new Date(p.dob).toLocaleDateString('en-GB') : '-';
       const heightStr = p.height || (p.gender === 'Male' ? `5' 8"` : `5' 4"`);
+      const displayCountry = (p.region === 'International' && (!p.country || p.country.toLowerCase() === 'pakistan'))
+        ? (p.city || 'International')
+        : (p.country || (p.region === 'International' ? 'International' : 'Pakistan'));
       
       card.innerHTML = `
         <div class="clean-card-id">ID: ${p.profileId}</div>
@@ -175,7 +178,7 @@ async function loadFeaturedProposals() {
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             </span>
             <span class="row-label">Country:</span>
-            <span class="row-value">${p.country || 'Pakistan'}</span>
+            <span class="row-value">${displayCountry}</span>
           </div>
           <div class="info-row">
             <span class="row-icon">
