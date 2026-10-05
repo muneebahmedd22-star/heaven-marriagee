@@ -157,7 +157,7 @@ router.get('/', async (req, res) => {
 
     // Pagination
     const pageNum = parseInt(page, 10) || 1;
-    const limitNum = parseInt(limit, 10) || 20;
+    const limitNum = (limit === 'all' || parseInt(limit, 10) === 0) ? 5000 : (parseInt(limit, 10) || 500);
     const skip = (pageNum - 1) * limitNum;
 
     const proposals = await Proposal.find(query)
