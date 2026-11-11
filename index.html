@@ -77,9 +77,14 @@
     }
     .city-links-row {
       display: flex;
-      gap: 30px;
+      gap: 18px;
       align-items: center;
+      justify-content: flex-start;
       flex-wrap: nowrap;
+      margin: 0 !important;
+      padding: 0 5px !important;
+      max-width: none !important;
+      width: max-content;
     }
     .city-grid-card {
       display: flex;
@@ -88,7 +93,7 @@
       text-align: center;
       text-decoration: none;
       transition: all 0.3s ease;
-      width: 140px;
+      width: 118px;
       flex-shrink: 0;
     }
     .city-grid-icon-circle {
@@ -1022,6 +1027,10 @@
       const btnLeft = document.getElementById("slide-left-btn");
       const btnRight = document.getElementById("slide-right-btn");
       
+      if (sliderWrapper) {
+        sliderWrapper.scrollLeft = 0;
+      }
+
       if (sliderWrapper && btnLeft && btnRight) {
         btnRight.addEventListener("click", () => {
           const maxScroll = sliderWrapper.scrollWidth - sliderWrapper.clientWidth;

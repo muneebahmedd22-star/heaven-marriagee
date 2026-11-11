@@ -515,12 +515,14 @@ header {
 /* City Links */
 .city-links-row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin: 30px auto;
-  max-width: 1000px;
-  padding: 0 20px;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+  max-width: none;
+  padding: 0;
+  width: max-content;
 }
 
 .city-pill {
