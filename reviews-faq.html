@@ -60,50 +60,11 @@
     <div class="section" style="padding: 0;">
       <div class="section-header">
         <label>Trust & Credibility</label>
-        <h2>Reviews & Frequently Asked Questions</h2>
-        <p>What our clients say and answers to common queries</p>
+        <h2>Frequently Asked Questions & Feedback</h2>
+        <p>Get answers to common queries or share your valuable matchmaking experience with us</p>
       </div>
 
-      <!-- Rating Metrics Panel -->
-      <div class="rating-metrics-panel">
-        <!-- Average Rating Box (Left side with gold gradient border) -->
-        <div class="gold-gradient-border-card">
-          <div style="font-size: 4.8rem; font-weight: 700; color: var(--primary-color); line-height: 1; font-family: var(--font-headings);" id="avg-rating-val">4.9</div>
-          <div class="review-stars" style="font-size: 1.5rem; margin-top: 10px;" id="avg-stars-val">★★★★★</div>
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--light-text); text-transform: uppercase; letter-spacing: 1px; margin-top: 12px;" id="rating-count-label">2000+ Matches - Since 2009</div>
-        </div>
-
-        <!-- Rating Progress Bars (Right side) -->
-        <div style="display: flex; flex-direction: column; justify-content: center;">
-          <div class="rating-bar-container">
-            <span class="rating-bar-label">5 Stars</span>
-            <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar-5" style="width: 96%"></div></div>
-            <span class="rating-bar-value" id="val-5">96%</span>
-          </div>
-          <div class="rating-bar-container">
-            <span class="rating-bar-label">4 Stars</span>
-            <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar-4" style="width: 4%"></div></div>
-            <span class="rating-bar-value" id="val-4">4%</span>
-          </div>
-          <div class="rating-bar-container">
-            <span class="rating-bar-label">3 Stars</span>
-            <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar-3" style="width: 0%"></div></div>
-            <span class="rating-bar-value" id="val-3">0%</span>
-          </div>
-          <div class="rating-bar-container">
-            <span class="rating-bar-label">2 Stars</span>
-            <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar-2" style="width: 0%"></div></div>
-            <span class="rating-bar-value" id="val-2">0%</span>
-          </div>
-          <div class="rating-bar-container">
-            <span class="rating-bar-label">1 Star</span>
-            <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar-1" style="width: 0%"></div></div>
-            <span class="rating-bar-value" id="val-1">0%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Two-Column Grid: FAQ (Left) vs Reviews (Right) -->
+      <!-- Two-Column Grid: FAQ (Left) vs Review Form (Right) -->
       <div class="reviews-faq-grid">
         <!-- Left: Accordion FAQ -->
         <div style="display: flex; flex-direction: column; gap: 20px;">
@@ -148,27 +109,34 @@
           </div>
         </div>
 
-        <!-- Right: Dynamic Reviews List & Form -->
+        <!-- Right: Submit Review / Feedback Form -->
         <div style="display: flex; flex-direction: column; gap: 20px;">
-          <h3 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--primary-color); margin-bottom: 10px;">Client Reviews</h3>
+          <h3 style="font-family: var(--font-headings); font-size: 1.8rem; color: var(--primary-color); margin-bottom: 10px;">Share Your Review</h3>
           
-          <!-- Reviews Scrollable List -->
-          <div class="reviews-scroll-list" id="reviews-list-container">
-            <!-- Dynamically populated via API -->
-          </div>
+          <div style="background: var(--bg-color); padding: 30px; border-radius: var(--border-radius); border: 1px solid var(--border-muted); box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+              <div style="background: rgba(107, 0, 0, 0.08); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-color); flex-shrink: 0;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 style="font-family: var(--font-headings); font-size: 1.2rem; color: var(--primary-color); margin-bottom: 3px;">Write a Review</h4>
+                <p style="font-size: 0.85rem; color: var(--light-text); line-height: 1.4;">We value your trust. Share your feedback or experience with our matchmaking team.</p>
+              </div>
+            </div>
 
-          <!-- Write a Review Form -->
-          <div style="background: var(--bg-color); padding: 25px; border-radius: var(--border-radius); border: 1px solid var(--border-muted); box-shadow: var(--shadow-sm);">
-            <h4 style="font-family: var(--font-headings); font-size: 1.25rem; color: var(--primary-color); margin-bottom: 15px;">Write a Review</h4>
-            <form id="submit-review-form" style="display: flex; flex-direction: column; gap: 15px;">
-              <div style="display: flex; flex-direction: column; gap: 5px;">
-                <label style="font-size: 0.75rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase;">Full Name</label>
-                <input type="text" id="rev-name" required placeholder="e.g. Zainab Malik" style="padding: 10px; border: 1px solid var(--border-muted); border-radius: 4px; outline: none; background: var(--white); color: var(--dark-text); font-family: var(--font-body);">
+            <div id="review-alert-box" style="display: none; padding: 12px 15px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px;"></div>
+
+            <form id="submit-review-form" style="display: flex; flex-direction: column; gap: 18px;">
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px;">Full Name</label>
+                <input type="text" id="rev-name" required placeholder="e.g. Zainab Malik" style="padding: 12px; border: 1px solid var(--border-muted); border-radius: 4px; outline: none; background: var(--white); color: var(--dark-text); font-family: var(--font-body); font-size: 0.95rem;">
               </div>
               
-              <div style="display: flex; flex-direction: column; gap: 5px;">
-                <label style="font-size: 0.75rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase;">Rating</label>
-                <div class="star-rating-select" id="star-rating-select-container">
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px;">Your Rating</label>
+                <div class="star-rating-select" id="star-rating-select-container" style="display: flex; gap: 6px; font-size: 1.8rem; cursor: pointer;">
                   <span data-star="1">★</span>
                   <span data-star="2">★</span>
                   <span data-star="3">★</span>
@@ -178,12 +146,12 @@
                 <input type="hidden" id="rev-rating" value="5">
               </div>
 
-              <div style="display: flex; flex-direction: column; gap: 5px;">
-                <label style="font-size: 0.75rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase;">Review Message</label>
-                <textarea id="rev-message" required placeholder="Share your matchmaking experience with us..." style="padding: 10px; border: 1px solid var(--border-muted); border-radius: 4px; height: 80px; outline: none; background: var(--white); color: var(--dark-text); font-family: var(--font-body); resize: none;"></textarea>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px;">Your Review / Feedback</label>
+                <textarea id="rev-message" required placeholder="Share your experience, satisfaction, or suggestions with us..." style="padding: 12px; border: 1px solid var(--border-muted); border-radius: 4px; height: 110px; outline: none; background: var(--white); color: var(--dark-text); font-family: var(--font-body); font-size: 0.95rem; resize: vertical; line-height: 1.6;"></textarea>
               </div>
 
-              <button type="submit" class="btn btn-accent" style="width: 100%; height: 45px; font-weight: 700; font-size: 0.85rem; border-radius: 4px;">Submit Review</button>
+              <button type="submit" class="btn btn-accent" style="width: 100%; height: 48px; font-weight: 700; font-size: 0.9rem; border-radius: 4px; letter-spacing: 0.5px; cursor: pointer; transition: var(--transition);">Submit Review</button>
             </form>
           </div>
         </div>
@@ -319,85 +287,14 @@
         });
       });
 
-      // 3. API Load Reviews & Calculate Averages
+      // 3. Submit Review Form Handler
       const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
         ? 'http://localhost:5000/api/v1/reviews'
         : '/api/v1/reviews';
 
-      async function loadReviews() {
-        const listContainer = document.getElementById("reviews-list-container");
-        if (!listContainer) return;
-        
-        listContainer.innerHTML = '<p style="text-align:center; color:var(--light-text); padding: 20px 0;">Loading reviews...</p>';
-        
-        try {
-          const response = await fetch(API_URL);
-          const result = await response.json();
-          
-          if (response.ok && result.success) {
-            const data = result.data || [];
-            
-            // Calculate averages
-            let total = 0;
-            let starCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-            
-            data.forEach(r => {
-              total += r.rating;
-              if (starCounts[r.rating] !== undefined) {
-                starCounts[r.rating]++;
-              }
-            });
-            
-            const avg = data.length > 0 ? (total / data.length).toFixed(1) : "5.0";
-            
-            // Update UI Average Ratings
-            document.getElementById("avg-rating-val").textContent = avg;
-            const fullStars = Math.round(parseFloat(avg));
-            document.getElementById("avg-stars-val").textContent = "★".repeat(fullStars) + "☆".repeat(5 - fullStars);
-            document.getElementById("rating-count-label").textContent = `${data.length + 2000}+ Matches - Since 2009`;
-            
-            // Update Bar Percentages
-            const totalCount = data.length;
-            for (let i = 1; i <= 5; i++) {
-              const count = starCounts[i];
-              const percent = totalCount > 0 ? Math.round((count / totalCount) * 100) : (i === 5 ? 100 : 0);
-              
-              const barElement = document.getElementById(`bar-${i}`);
-              const valElement = document.getElementById(`val-${i}`);
-              if (barElement) barElement.style.width = percent + "%";
-              if (valElement) valElement.textContent = percent + "%";
-            }
-            
-            // Render Review Items
-            if (data.length === 0) {
-              listContainer.innerHTML = '<p style="text-align:center; color:var(--light-text); padding: 20px 0;">No reviews submitted yet.</p>';
-              return;
-            }
-            
-            listContainer.innerHTML = data.map(r => {
-              const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
-              
-              return `
-                <div class="review-item-box">
-                  <div class="review-stars">${stars}</div>
-                  <p style="color: var(--dark-text); font-size: 0.95rem; margin-bottom: 12px; font-style: italic; line-height: 1.6;">"${r.message}"</p>
-                  <div style="font-size: 0.8rem; color: var(--light-text); font-weight: 600;">
-                    — ${r.fullName}
-                  </div>
-                </div>
-              `;
-            }).join('');
-          }
-        } catch (error) {
-          console.error("Error loading reviews: ", error);
-          listContainer.innerHTML = '<p style="text-align:center; color:red; padding: 20px 0;">Failed to load reviews from database.</p>';
-        }
-      }
-
-      loadReviews();
-
-      // 4. Submit Review Form Handler
       const reviewForm = document.getElementById("submit-review-form");
+      const alertBox = document.getElementById("review-alert-box");
+
       if (reviewForm) {
         reviewForm.addEventListener("submit", async (e) => {
           e.preventDefault();
@@ -405,11 +302,12 @@
           const origText = submitBtn.textContent;
           submitBtn.disabled = true;
           submitBtn.textContent = "Submitting Review...";
+          if (alertBox) alertBox.style.display = "none";
           
           const reviewPayload = {
-            fullName: document.getElementById("rev-name").value,
-            rating: parseInt(document.getElementById("rev-rating").value),
-            message: document.getElementById("rev-message").value
+            fullName: document.getElementById("rev-name").value.trim(),
+            rating: parseInt(document.getElementById("rev-rating").value) || 5,
+            message: document.getElementById("rev-message").value.trim()
           };
           
           try {
@@ -421,17 +319,31 @@
             const resObj = await response.json();
             
             if (response.ok && resObj.success) {
-              alert("Thank you! Your review has been submitted and published successfully.");
               reviewForm.reset();
-              // Reset stars selection
               starSpans.forEach(s => s.classList.add("selected"));
               document.getElementById("rev-rating").value = 5;
-              loadReviews();
+              if (alertBox) {
+                alertBox.style.display = "block";
+                alertBox.style.backgroundColor = "rgba(40, 167, 69, 0.12)";
+                alertBox.style.color = "#155724";
+                alertBox.style.border = "1px solid rgba(40, 167, 69, 0.3)";
+                alertBox.textContent = "Thank you! Your review has been submitted successfully.";
+              } else {
+                alert("Thank you! Your review has been submitted successfully.");
+              }
             } else {
               throw new Error(resObj.error || "Failed to submit review");
             }
           } catch (error) {
-            alert("Error: " + error.message);
+            if (alertBox) {
+              alertBox.style.display = "block";
+              alertBox.style.backgroundColor = "rgba(220, 53, 69, 0.12)";
+              alertBox.style.color = "#721c24";
+              alertBox.style.border = "1px solid rgba(220, 53, 69, 0.3)";
+              alertBox.textContent = "Error: " + error.message;
+            } else {
+              alert("Error: " + error.message);
+            }
           } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = origText;
